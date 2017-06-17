@@ -7,14 +7,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
-import java.awt.*;
-import java.awt.Color;
-
-import static java.awt.Color.CYAN;
-import static java.awt.Color.RED;
-import static java.awt.Color.blue;
-import static java.awt.SystemColor.control;
-import static java.awt.SystemColor.text;
 
 public class Window extends Application {
 
@@ -71,26 +63,3 @@ public class Window extends Application {
         launch(args);//Здесь запускаем приложение
     }
 }
-//    //КУСОК КОДА МАЛИКА
-//    public Button(String string) {
-//        bg = new Rectangle(100, 40);
-//        bg.setFill(Color.AZURE);
-//        bg.setArcWidth(5);
-//        bg.setArcHeight(5);
-//        fillTransition = new FillTransition(Duration.seconds(1), bg);
-//        fillTransition.setFromValue(Color.AZURE);
-//        fillTransition.setToValue(Color.DEEPSKYBLUE);
-//        fillTransition.setAutoReverse(true);
-//        fillTransition.setCycleCount(Animation.INDEFINITE);
-//        setAlignment(Pos.CENTER);
-//
-//        this.text = new Text(string);
-//
-//        text.setId("button"); //Установим красоту через CSS
-//        getChildren().addAll(bg,text);
-//        setCursor(Cursor.HAND);
-//        setPrefSize(100,40);
-//
-//        setOnMouseEntered(event -> {
-//            fillTransition.play();
-//        });

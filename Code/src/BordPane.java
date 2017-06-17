@@ -21,6 +21,7 @@ public class BordPane extends Application {
 
         hBox.setAlignment(Pos.CENTER);//Выравнивание(по центру)
         hBox2.setAlignment(Pos.CENTER);
+        vBox.setAlignment(Pos.CENTER);
 
         Button btn1 = addButton("1");
         Button btn2 = addButton("2");
