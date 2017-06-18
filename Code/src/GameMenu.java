@@ -1,10 +1,14 @@
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.FillTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -26,36 +30,55 @@ public class GameMenu extends Application {
         image.setFitWidth(900);
         root.getChildren().addAll(image);
 
+
+        Text text = new Text("НАЖМИТЕ ПРОБЕЛ");
+        text.setFill(Color.WHITE);
+        text.setX(360);
+        text.setY(300);
+        text.setScaleY(3);
+        text.setScaleX(3);
+
+
         MenuItem newGame = new MenuItem("НОВАЯ ИГРА");
         MenuItem options = new MenuItem("НАСТРОЙКИ");
         MenuItem exitGame = new MenuItem("ВЫХОД");
         SubMenu mainMenu = new SubMenu(newGame, options, exitGame);
 
-        MenuItem Sound = new MenuItem("ЗВУК");
-        MenuItem Video = new MenuItem("ВИДЕО");
+        //Настройки пока что не реализованы
+        MenuItem sound = new MenuItem("ЗВУК");
+        MenuItem video = new MenuItem("ВИДЕО");
         MenuItem keys = new MenuItem("УПРАВЛЕНИЕ");
         MenuItem optionsBack = new MenuItem("НАЗАД");
-        SubMenu optionsMenu = new SubMenu(Sound, Video, keys, optionsBack);
+        SubMenu optionsMenu = new SubMenu(sound, video, keys, optionsBack);
 
 
-        MenuBox menuBox = new MenuBox(mainMenu);
+        MenuBox menuuBox = new MenuBox(mainMenu);
 
-        options.setOnMouseClicked(event -> menuBox.setSubMenu(optionsMenu));
+        //НАПИСАТЬ СОБЫТИЕ ДЛЯ КНОПКИ НОВАЯ ИГРА
+        //newGame.setOnMouseClicked(event -> );
+        options.setOnMouseClicked(event -> menuuBox.setSubMenu(optionsMenu));
+        exitGame.setOnMouseClicked(event -> primaryStage.close());
+        optionsBack.setOnMouseClicked(event -> menuuBox.setSubMenu(mainMenu));
 
 
-        root.getChildren().addAll(menuBox);
-        Scene scene = new Scene(root,900,600);
-
+        root.getChildren().addAll(text);
+        Scene scene = new Scene(root, 900, 600);
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SPACE) {
+                text.setVisible(false);
+                root.getChildren().addAll(menuuBox);
+            }
+        });
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Название игры");
+        primaryStage.setTitle("ПРИКЛЮЧЕНИЯ ПРИНЦЕССЫ");
         primaryStage.show();
     }
 
     //Класс иконок меню
     private static class MenuItem extends StackPane {
         public MenuItem(String name) {
-            Rectangle bg = new Rectangle(200, 20, Color.WHITE);
+            Rectangle bg = new Rectangle(300, 40, Color.WHITE);
             bg.setOpacity(0.5);//Прозрачность прямоугольника
 
             Text text = new Text(name);
@@ -69,32 +92,51 @@ public class GameMenu extends Application {
 
             //Анимация при наведении
             setOnMouseEntered(event -> {
+                setScaleX(1.5);
+                setScaleY(1.5);
                 st.setFromValue(Color.BLACK);
                 st.setToValue(Color.RED);
                 st.setCycleCount(Animation.INDEFINITE);//Цикл анимации,в данном случае происходит бесконечно
-
 
             });
 
             //После того как сняли курсор
             setOnMouseExited(event -> {
+                setScaleX(1);
+                setScaleY(1);
                 st.stop();
                 bg.setFill(Color.WHITE);
             });
+
 
         }
 
     }
 
+    //Класс хранящий икнонки
+    private static class SubMenu extends VBox {
+        public SubMenu(MenuItem... items) {
+            setSpacing(20);//Отступы между элементами меню
+            setTranslateY(250);
+            setTranslateX(280);
+            for (MenuItem item : items) {
+                getChildren().addAll(item);
+
+            }
+        }
+    }
+
+    //Класс хранящий SubMen и меняющий их
     private static class MenuBox extends Pane {
         static SubMenu subMenu;
 
         public MenuBox(SubMenu subMenu) {
             MenuBox.subMenu = subMenu;
-            setVisible(false);//Когда открываем приложению меню не отбражено
-            Rectangle bg = new Rectangle(900, 600, Color.LIGHTBLUE);
-            bg.setOpacity(0.4);//Прозрачность
-            getChildren().addAll(bg, subMenu);
+            //setVisible(false);//Когда открываем приложению меню не отбражено
+            //Rectangle bg = new Rectangle(900, 600, Color.LIGHTBLUE);
+            //bg.setOpacity(0.4);//Прозрачность
+            subMenu.setAlignment(Pos.TOP_CENTER);
+            getChildren().addAll(subMenu);
 
         }
 
@@ -107,20 +149,6 @@ public class GameMenu extends Application {
         }
 
     }
-
-
-    private static class SubMenu extends VBox {
-        public SubMenu(MenuItem... items) {
-            setSpacing(15);//Отступы между элементами меню
-            setTranslateY(100);
-            setTranslateX(50);
-            for (MenuItem item : items) {
-                getChildren().addAll(item);
-
-            }
-        }
-    }
-
 
 
 }
