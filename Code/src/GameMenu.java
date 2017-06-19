@@ -4,6 +4,7 @@ import javafx.animation.FillTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,7 +32,7 @@ public class GameMenu extends Application {
         root.getChildren().addAll(image);
 
 
-        Text text = new Text("НАЖМИТЕ ПРОБЕЛ");
+        Text text = new Text("ЛЕТАЮЩИЙ КОСМИЧЕСКИЙ НОС");
         text.setFill(Color.WHITE);
         text.setX(360);
         text.setY(300);
@@ -55,7 +56,8 @@ public class GameMenu extends Application {
         MenuBox menuuBox = new MenuBox(mainMenu);
 
         //НАПИСАТЬ СОБЫТИЕ ДЛЯ КНОПКИ НОВАЯ ИГРА
-        //newGame.setOnMouseClicked(event -> );
+        newGame.setOnMouseClicked(event -> {
+        });
         options.setOnMouseClicked(event -> menuuBox.setSubMenu(optionsMenu));
         exitGame.setOnMouseClicked(event -> primaryStage.close());
         optionsBack.setOnMouseClicked(event -> menuuBox.setSubMenu(mainMenu));
