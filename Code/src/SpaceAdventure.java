@@ -16,6 +16,7 @@ public class SpaceAdventure extends Application {
     public static ArrayList<Meteor> meteors = new ArrayList<>();//Список помех
 
     Rocket rocket=new Rocket();
+    Bullet bullet=new Bullet();
     public static int score = 0;
     public static int bestScore =0;
     public Label scoreLabel = new Label();
@@ -57,9 +58,8 @@ public class SpaceAdventure extends Application {
         }
 
 
-        Meteor a=new Meteor(20);
         gameRoot.getChildren().add(rocket);
-        gameRoot.getChildren().addAll(a);
+        gameRoot.getChildren().addAll(bullet);
         appRoot.getChildren().addAll(gameRoot,scoreLabel,bestLabel);
         return appRoot;
     }
@@ -67,21 +67,21 @@ public class SpaceAdventure extends Application {
     //Метод который вызывается каждый кадр
     public void update() {
 
-        if (rocket.velocity.getX() < 5) {
-            rocket.velocity = rocket.velocity.add(0,0);
-        }
         rocket.go();
+        bullet.go();
 
-        rocket.moveX((int) rocket.velocity.getX());
-        rocket.moveY((int) rocket.velocity.getY());
+
+
         scoreLabel.setText("Score " + score);
         bestLabel.setText("Best "+bestScore );
 
         //??????????
         rocket.translateYProperty().addListener((ovs, old,newValue) -> {
             int offset=newValue.intValue();
-            if(offset<200)gameRoot.setLayoutY(-(offset-200));
+            if(offset<400)gameRoot.setLayoutY(-(offset-400));
         });
+
+
     }
 
     @Override
@@ -90,16 +90,22 @@ public class SpaceAdventure extends Application {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.LEFT) {
                 rocket.left();
+                bullet.left();
+
             }
             if(event.getCode()==KeyCode.RIGHT){
                 rocket.right();
+                bullet.right();
             }
             if(event.getCode()==KeyCode.UP){
                 rocket.up();
+                bullet.up();
             }
             if(event.getCode()==KeyCode.DOWN){
                 rocket.down();
+                bullet.down();
             }
+
 
         });
 

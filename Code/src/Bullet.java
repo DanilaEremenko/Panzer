@@ -1,17 +1,16 @@
-import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Rocket extends Pane {
-    public Point2D velocity = new Point2D(0, 0);
-    Rectangle rect;
+public class Bullet extends Pane {
+    Rectangle rect = new Rectangle(5, 5);
 
-    public Rocket() {
-        rect = new Rectangle(20, 20, Color.RED);
-        velocity = new javafx.geometry.Point2D(0, 0);
-        setTranslateY(300);
+
+
+    Bullet() {
+        rect.setFill(Color.BLACK);
+        setTranslateY(305);
         setTranslateX(220);
         getChildren().addAll(rect);
 
@@ -41,24 +40,12 @@ public class Rocket extends Pane {
 
     public void go() {
         setTranslateY(getTranslateY() - 2);
-        for (Meteor meteor : SpaceAdventure.meteors) {
-
-                if (getTranslateY() == meteor.getTranslateY()-20) {
-                    setTranslateY(getTranslateY() + 1);
-                    return;
-                }
-
-            if (getTranslateY() == meteor.getTranslateY()) {
-
-            }
-
-        }
-
     }
 
     public void Pow(){
-
+        setTranslateY(getTranslateY()-50);
     }
+
 }
 
 
