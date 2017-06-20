@@ -5,15 +5,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by danil on 19.06.2017.
- */
 public class FlappyBird extends Application {
 
     public static Pane appRoot = new Pane();//Панель самого приложения
@@ -22,10 +20,20 @@ public class FlappyBird extends Application {
 
     Bird bird = new Bird();
     public static int score = 0;
-    public Label scoreLabel = new Label("Score :" + score);
+    public static int bestScore = 0;
+    public Label scoreLabel = new Label();
+    public Label bestLabel = new Label();
+
 
     //Метод отвечающий за создание сцены
     public Parent createContent() {
+        scoreLabel.setTranslateX(20);
+        scoreLabel.setScaleX(2);
+        scoreLabel.setScaleY(2);
+        bestLabel.setTranslateX(120);
+        bestLabel.setScaleX(2);
+        bestLabel.setScaleY(2);
+
 
         gameRoot.setPrefSize(600, 600);
 
@@ -48,7 +56,7 @@ public class FlappyBird extends Application {
 
 
         gameRoot.getChildren().add(bird);
-        appRoot.getChildren().addAll(gameRoot);
+        appRoot.getChildren().addAll(gameRoot, scoreLabel, bestLabel);
         return appRoot;
     }
 
@@ -61,12 +69,13 @@ public class FlappyBird extends Application {
 
         bird.moveX((int) bird.velocity.getX());
         bird.moveY((int) bird.velocity.getY());
-        scoreLabel.setText("Score :" + score);
+        scoreLabel.setText("Score " + score);
+        bestLabel.setText("Best " + bestScore);
 
         //??????????
-        bird.translateXProperty().addListener((ovs, old,newValue) -> {
-            int offset=newValue.intValue();
-            if(offset>200)gameRoot.setLayoutX(-(offset-200));
+        bird.translateXProperty().addListener((ovs, old, newValue) -> {
+            int offset = newValue.intValue();
+            if (offset > 200) gameRoot.setLayoutX(-(offset - 200));
         });
     }
 
@@ -78,6 +87,7 @@ public class FlappyBird extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
 
         AnimationTimer timer = new AnimationTimer() {
             @Override

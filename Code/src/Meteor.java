@@ -2,18 +2,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 
-public class Wall extends Pane {
+public class Meteor extends Pane {
     Rectangle rect;
-    public int height;//Длина стены
+    public int width;//Длина стены
 
 
 
-    public Wall(int height) {
-        this.height = height;
-        rect = new Rectangle(20, height);
+    public Meteor(int width) {
+        this.width = width;
+        rect = new Rectangle(width, 20);
         getChildren().addAll(rect);//Добавляем прямоугольник на панель
 
     }
-
-
 }

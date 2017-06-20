@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -7,6 +9,7 @@ import java.awt.geom.Point2D;
 public class Bird extends Pane {
     public javafx.geometry.Point2D velocity = new javafx.geometry.Point2D(0, 0);
     Rectangle rect;
+
 
     public Bird() {
         rect = new Rectangle(20, 20, Color.RED);
@@ -21,6 +24,7 @@ public class Bird extends Pane {
         for (int i = 0; i < Math.abs(value); i++) {
             for (Wall w : FlappyBird.walls) {
 
+                //Если граница птицы совпадает с границей стены
                 if (this.getBoundsInParent().intersects(w.getBoundsInParent()))//Граница персонажа
                 {
                     if (moveDown)
@@ -32,6 +36,7 @@ public class Bird extends Pane {
                 }
 
             }
+            //Не дает выйти за пределы рамки
             if (getTranslateY() < 0) {
                 setTranslateY(0);
             }
@@ -39,6 +44,7 @@ public class Bird extends Pane {
                 setTranslateY(580);
             }
 
+            //Как это работает
             setTranslateY(getTranslateY() + (moveDown ? 1 : -1));//текущая коордиата и прибавить или отнять 1
         }
 
@@ -47,17 +53,21 @@ public class Bird extends Pane {
     //Принмает значение на которое нужно передвинуть птицу
     public void moveX(int value) {
         for (int i = 0; i < value; i++) {
-            setTranslateX(getTranslateX()+1);
+            setTranslateX(getTranslateX() + 1);
             for (Wall w : FlappyBird.walls) {
 
                 if (getBoundsInParent().intersects(w.getBoundsInParent()))
                     if (getTranslateX() + 20 == w.getTranslateX()) {
                         setTranslateX(getTranslateX() - 1);
+                        FlappyBird.score = 0;
                         return;
                     }
 
-                if (getTranslateX() + 20==w.getTranslateX())
+                if (getTranslateX() + 20 == w.getTranslateX()) {
                     FlappyBird.score++;
+                    if (FlappyBird.score > FlappyBird.bestScore)
+                        FlappyBird.bestScore = FlappyBird.score;
+                }
 
             }
 
@@ -65,8 +75,9 @@ public class Bird extends Pane {
 
 
     }
-    public void jump(){
-        velocity=new javafx.geometry.Point2D(3,-15);
+
+    public void jump() {
+        velocity = new javafx.geometry.Point2D(3, -15);
 
 
     }
