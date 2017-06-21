@@ -32,7 +32,7 @@ public class GameMenu extends Application {
         root.getChildren().addAll(image);
 
 
-        Text text = new Text("ЛЕТАЮЩИЙ КОСМИЧЕСКИЙ НОС");
+        Text text = new Text("НАЖМИТЕ ПРОБЕЛ");
         text.setFill(Color.WHITE);
         text.setX(360);
         text.setY(300);
@@ -55,8 +55,10 @@ public class GameMenu extends Application {
 
         MenuBox menuuBox = new MenuBox(mainMenu);
 
+        FlappyBird flappyBird=new FlappyBird();
         //НАПИСАТЬ СОБЫТИЕ ДЛЯ КНОПКИ НОВАЯ ИГРА
         newGame.setOnMouseClicked(event -> {
+            //flappyBird.main();
         });
         options.setOnMouseClicked(event -> menuuBox.setSubMenu(optionsMenu));
         exitGame.setOnMouseClicked(event -> primaryStage.close());
@@ -73,7 +75,7 @@ public class GameMenu extends Application {
         });
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("ПРИКЛЮЧЕНИЯ ПРИНЦЕССЫ");
+        primaryStage.setTitle("ИГРА");
         primaryStage.show();
     }
 
