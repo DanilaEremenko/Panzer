@@ -154,6 +154,10 @@ public class GameMenu extends Application {
 
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 
 }
 
