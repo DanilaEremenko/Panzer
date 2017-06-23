@@ -13,15 +13,13 @@ import java.util.Random;
 public class SpaceAdventure extends Application {
     public static Pane appRoot = new Pane();//Панель самого приложения
     public static Pane gameRoot = new Pane();//Поле стенок
-    public static ArrayList<Meteor> meteors = new ArrayList<>();//Список помех
+    public static ArrayList<SpaceMeteor> spaceMeteors = new ArrayList<>();//Список помех
 
-    Rocket rocket=new Rocket();
-    Bullet bullet=new Bullet();
+    SpaceRocket spaceRocket = new SpaceRocket();
     public static int score = 0;
-    public static int bestScore =0;
+    public static int bestScore = 0;
     public Label scoreLabel = new Label();
     public Label bestLabel = new Label();
-
 
 
     //Метод отвечающий за создание сцены
@@ -38,47 +36,45 @@ public class SpaceAdventure extends Application {
 
         gameRoot.setPrefSize(600, 600);
 
-        for (int i = 0;i<100; i++) {
-            int enter = (int) (Math.random() * 100 + 50);//рандомная число (0-100) +50
-            int height = new Random().nextInt(600 - enter);
-            Meteor meteor = new Meteor(height);
-            meteor.setTranslateY(-(i * 350 + 600));//Каждая стена через 350 пикселей+600 чтобы за пределы экрана
-            meteor.setTranslateX(0);
-            meteors.add(meteor);
-
-            Meteor meteor2=new Meteor(600 - enter - height);//Вторая стена=-проем-первая стена
-            meteor2.setTranslateY(-(i * 350 + 600));
-            meteor2.setTranslateX(height + enter);
-            meteors.add(meteor2);
-            gameRoot.getChildren().addAll(meteor,meteor2);
+        for (int i = 0; i < 1000; i++) {
+            int enter = 200;
 
 
+            SpaceMeteor spaceMeteor = new SpaceMeteor(200);
+            spaceMeteor.setTranslateY(-(i * 350 + 600));//Каждая стена через 350 пикселей+600 чтобы за пределы экрана
+            spaceMeteor.setTranslateX(new Random().nextInt(3) * 200);
+            spaceMeteors.add(spaceMeteor);
+
+            SpaceMeteor spaceMeteor2 = new SpaceMeteor(200);//Вторая стена=-проем-первая стена
+            spaceMeteor2.setTranslateY(-(i * 350 + 600));
+            spaceMeteor2.setTranslateX(new Random().nextInt(3) * 200);
+            while (spaceMeteor.getTranslateX() == spaceMeteor2.getTranslateX())
+                spaceMeteor2.setTranslateX(new Random().nextInt(3) * 200);
+            spaceMeteors.add(spaceMeteor2);
+            gameRoot.getChildren().addAll(spaceMeteor, spaceMeteor2);
 
 
         }
 
 
-        gameRoot.getChildren().add(rocket);
-        gameRoot.getChildren().addAll(bullet);
-        appRoot.getChildren().addAll(gameRoot,scoreLabel,bestLabel);
+        gameRoot.getChildren().add(spaceRocket);
+        appRoot.getChildren().addAll(gameRoot, scoreLabel, bestLabel);
         return appRoot;
     }
 
     //Метод который вызывается каждый кадр
     public void update() {
 
-        rocket.go();
-        bullet.go();
-
+        spaceRocket.go();
 
 
         scoreLabel.setText("Score " + score);
-        bestLabel.setText("Best "+bestScore );
+        bestLabel.setText("Best " + bestScore);
 
         //??????????
-        rocket.translateYProperty().addListener((ovs, old,newValue) -> {
-            int offset=newValue.intValue();
-            if(offset<400)gameRoot.setLayoutY(-(offset-400));
+        spaceRocket.translateYProperty().addListener((ovs, old, newValue) -> {
+            int offset = newValue.intValue();
+            if (offset < 400) gameRoot.setLayoutY(-(offset - 400));
         });
 
 
@@ -89,27 +85,19 @@ public class SpaceAdventure extends Application {
         Scene scene = new Scene(createContent());
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.LEFT) {
-                rocket.left();
-                bullet.left();
+                spaceRocket.left();
 
             }
-            if(event.getCode()==KeyCode.RIGHT){
-                rocket.right();
-                bullet.right();
+            if (event.getCode() == KeyCode.RIGHT) {
+                spaceRocket.right();
             }
-            if(event.getCode()==KeyCode.UP){
-                rocket.up();
-                bullet.up();
-            }
-            if(event.getCode()==KeyCode.DOWN){
-                rocket.down();
-                bullet.down();
-            }
+            if (event.getCode() == KeyCode.ESCAPE)
+                primaryStage.close();
 
 
         });
 
-        scene.setOnMouseClicked(event -> rocket.setTranslateY(rocket.getTranslateY()+5));
+        scene.setOnMouseClicked(event -> spaceRocket.setTranslateY(spaceRocket.getTranslateY() + 5));
 
         primaryStage.setScene(scene);
         primaryStage.show();

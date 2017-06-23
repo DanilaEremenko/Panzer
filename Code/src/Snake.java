@@ -11,8 +11,6 @@ public class Snake extends Pane {
 
     public Snake() {
         Rectangle rect=new Rectangle(width,20,Color.RED);
-        rect.setArcWidth(50);
-        rect.setArcHeight(50);
         getChildren().addAll(rect);
     }
 

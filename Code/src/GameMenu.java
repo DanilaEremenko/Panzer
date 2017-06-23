@@ -55,10 +55,9 @@ public class GameMenu extends Application {
 
         MenuBox menuuBox = new MenuBox(mainMenu);
 
-        FlappyBird flappyBird=new FlappyBird();
         //НАПИСАТЬ СОБЫТИЕ ДЛЯ КНОПКИ НОВАЯ ИГРА
         newGame.setOnMouseClicked(event -> {
-            //flappyBird.main();
+
         });
         options.setOnMouseClicked(event -> menuuBox.setSubMenu(optionsMenu));
         exitGame.setOnMouseClicked(event -> primaryStage.close());

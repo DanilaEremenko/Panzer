@@ -1,13 +1,10 @@
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +13,7 @@ public class FlappyBird extends Application {
 
     public static Pane appRoot = new Pane();//Панель самого приложения
     public static Pane gameRoot = new Pane();//Поле стенок
-    public static ArrayList<Wall> walls = new ArrayList<>();//Список стен, для проверки столкновений
+    public static ArrayList<FlappyWall> flappyWalls = new ArrayList<>();//Список стен, для проверки столкновений
 
     Bird bird = new Bird();
     public static int score = 0;
@@ -40,16 +37,16 @@ public class FlappyBird extends Application {
         for (int i = 0; i < 100; i++) {
             int enter = (int) (Math.random() * 100 + 50);//рандомная число (0-100) +50
             int height = new Random().nextInt(600 - enter);
-            Wall wall = new Wall(height);
-            wall.setTranslateX(i * 350 + 600);//Каждая стена через 350 пикселей+600 чтобы за пределы экрана
-            wall.setTranslateY(0);
-            walls.add(wall);
+            FlappyWall flappyWall = new FlappyWall(height);
+            flappyWall.setTranslateX(i * 350 + 600);//Каждая стена через 350 пикселей+600 чтобы за пределы экрана
+            flappyWall.setTranslateY(0);
+            flappyWalls.add(flappyWall);
 
-            Wall wall2 = new Wall(600 - enter - height);//Вторая стена=-проем-первая стена
-            wall2.setTranslateX(i * 350 + 600);
-            wall2.setTranslateY(height + enter);
-            walls.add(wall2);
-            gameRoot.getChildren().addAll(wall, wall2);
+            FlappyWall flappyWall2 = new FlappyWall(600 - enter - height);//Вторая стена=-проем-первая стена
+            flappyWall2.setTranslateX(i * 350 + 600);
+            flappyWall2.setTranslateY(height + enter);
+            flappyWalls.add(flappyWall2);
+            gameRoot.getChildren().addAll(flappyWall, flappyWall2);
 
 
         }

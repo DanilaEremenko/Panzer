@@ -1,10 +1,6 @@
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
-import java.awt.geom.Point2D;
 
 public class Bird extends Pane {
     public javafx.geometry.Point2D velocity = new javafx.geometry.Point2D(0, 0);
@@ -22,7 +18,7 @@ public class Bird extends Pane {
     public void moveY(int value) {
         boolean moveDown = value > 0 ? true : false;//Если объект больше нуля движется вниз
         for (int i = 0; i < Math.abs(value); i++) {
-            for (Wall w : FlappyBird.walls) {
+            for (FlappyWall w : FlappyBird.flappyWalls) {
 
                 //Если граница птицы совпадает с границей стены
                 if (this.getBoundsInParent().intersects(w.getBoundsInParent()))//Граница персонажа
@@ -54,7 +50,7 @@ public class Bird extends Pane {
     public void moveX(int value) {
         for (int i = 0; i < value; i++) {
             setTranslateX(getTranslateX() + 1);
-            for (Wall w : FlappyBird.walls) {
+            for (FlappyWall w : FlappyBird.flappyWalls) {
 
                 if (getBoundsInParent().intersects(w.getBoundsInParent()))
                     if (getTranslateX() + 20 == w.getTranslateX()) {
