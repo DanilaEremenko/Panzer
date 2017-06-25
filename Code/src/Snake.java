@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class Snake extends Pane {
     public javafx.geometry.Point2D velocity = new javafx.geometry.Point2D(0, 0);
+    private double lastPositoionX;
+    private double lastPositoionY;
     String vector;//Указывает в какую сторону движется объект, принимать значения U,D,R,L
 
     //Конструтор для головы
@@ -24,7 +26,7 @@ public class Snake extends Pane {
         Rectangle rect = new Rectangle(20, 20, massColor[new Random().nextInt(4)]);
         rect.setArcHeight(50);
         rect.setArcWidth(50);
-        //Для удобства при обнаружении ошибок можно установить на каждый объект цифру вместо цвета
+
 
         getChildren().addAll(rect);
         setTranslateX(snake.getTranslateX() - 20);
@@ -34,11 +36,7 @@ public class Snake extends Pane {
 
     //Точка в которую движется голова
     public void setTarget(double x, double y) {
-        velocity = new javafx.geometry.Point2D(x, y).subtract(getTranslateX(), getTranslateY()).normalize().multiply(2);
-        //double angle = calcAngle(velocity.getX(), velocity.getY());
-        //getTransforms().clear();
-        //getTransforms().add(new Rotate(angle, 0, 0));
-
+        velocity = new javafx.geometry.Point2D(x, y).subtract(getTranslateX(), getTranslateY()).normalize().multiply(7);
     }
 
     //У каждого объекта класса Snake есть направление в любой момент времени
@@ -50,11 +48,13 @@ public class Snake extends Pane {
 
     //Движение для головы
     public void move() {
+        lastPositoionX = getTranslateX();
+        lastPositoionY = getTranslateY();
         setTranslateX(getTranslateX() + velocity.getX());
         setTranslateY(getTranslateY() + velocity.getY());
         if (getTranslateX() > 620)
             setTranslateX(1);
-        if (getTranslateX() <-20)
+        if (getTranslateX() < -20)
             setTranslateX(580);
         if (getTranslateY() < -20)
             setTranslateY(580);
@@ -66,36 +66,10 @@ public class Snake extends Pane {
     //ПЕРЕДЕЛАТЬ ДВИЖЕНИЕ ЧЕРЕЗ velocity
     //Движение для объектов не являющихся головой,в конструкторе указываем объект за которым необходимо следовать
     public void move(Snake snake) {
-        if (snake.getTranslateX() != getTranslateX() && snake.getTranslateY() != getTranslateY()) {
-            if (snake.getVector().equals("R") || snake.getVector().equals("L")) {
-                setTranslateY(snake.getTranslateY());
-                if (snake.getTranslateY() == getTranslateY() + 20)
-                    vector = "D";
-                else if (snake.getTranslateY() == getTranslateY() - 20)
-                    vector = "U";
-            } else if (snake.getVector().equals("U") || snake.getVector().equals("D")) {
-                setTranslateX(snake.getTranslateX());
-                if (snake.getTranslateX() == getTranslateX() + 20)
-                    vector = "U";
-                else if (snake.getTranslateY() == getTranslateY() - 20)
-                    vector = "D";
-            }
-        } else if (snake.getTranslateX() == getTranslateX() && snake.getTranslateY() < getTranslateY() + 20) {
-            setTranslateY(snake.getTranslateY() + 20);
-            vector = "U";
-        } else if (snake.getTranslateX() == getTranslateX() && snake.getTranslateY() > getTranslateY() - 20) {
-            setTranslateY(snake.getTranslateY() - 20);
-            vector = "D";
-        } else if (snake.getTranslateY() == getTranslateY() && snake.getTranslateX() > getTranslateX() + 20) {
-            setTranslateX(snake.getTranslateX() - 20);
-            vector = "R";
-        } else if (snake.getTranslateY() == getTranslateY() && snake.getTranslateX() < getTranslateX() - 20) {
-            setTranslateX(snake.getTranslateX() + 20);
-            vector = "L";
-        }
-
-        if (getTranslateY() == snake.getTranslateY() && getTranslateX() == snake.getTranslateX())
-            System.out.println("эээээээээ");
+        lastPositoionX = getTranslateX();
+        lastPositoionY = getTranslateY();
+        setTranslateX(snake.lastPositoionX);
+        setTranslateY(snake.lastPositoionY);
     }
 
 
