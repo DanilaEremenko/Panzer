@@ -55,8 +55,10 @@ public class GameMenu extends Application {
 
         MenuBox menuuBox = new MenuBox(mainMenu);
 
+        String[] s = null;
         //НАПИСАТЬ СОБЫТИЕ ДЛЯ КНОПКИ НОВАЯ ИГРА
         newGame.setOnMouseClicked(event -> {
+            SnakeGame.main(s);
 
         });
         options.setOnMouseClicked(event -> menuuBox.setSubMenu(optionsMenu));

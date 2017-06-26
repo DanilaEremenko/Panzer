@@ -12,7 +12,8 @@ public class Snake extends Pane {
     public javafx.geometry.Point2D velocity = new javafx.geometry.Point2D(0, 0);
     private double lastPositoionX;
     private double lastPositoionY;
-    String vector;//Указывает в какую сторону движется объект, принимать значения U,D,R,L
+    public String vector = "R";//Указывает в какую сторону движется объект, принимать значения U,D,R,L
+    public static double speed = 10;//скорость перемещния змейки
 
     //Конструтор для головы
     public Snake() {
@@ -22,8 +23,7 @@ public class Snake extends Pane {
 
     //Конструктор для элементов не являющихся головой
     public Snake(Snake snake) {
-        Color massColor[] = new Color[]{Color.GREEN, Color.BLUE, Color.GRAY, Color.BLACK};
-        Rectangle rect = new Rectangle(20, 20, massColor[new Random().nextInt(4)]);
+        Rectangle rect = new Rectangle(20, 20, Color.BLUE);
         rect.setArcHeight(50);
         rect.setArcWidth(50);
 
@@ -33,13 +33,15 @@ public class Snake extends Pane {
         setTranslateY(snake.getTranslateY());
     }
 
-
+//КАК ВАРИАНТ,ТОЛЬКО ТОГДА ПРИДЕТСЯ
     //Точка в которую движется голова
     public void setTarget(double x, double y) {
-        velocity = new javafx.geometry.Point2D(x, y).subtract(getTranslateX(), getTranslateY()).normalize().multiply(7);
+        //    velocity = new javafx.geometry.Point2D(x, y).subtract(getTranslateX(), getTranslateY()).normalize().multiply(this.x);
+
     }
 
     //У каждого объекта класса Snake есть направление в любой момент времени
+    //Возможно не понадобится
     public String getVector() {
         return vector;
 
@@ -50,26 +52,40 @@ public class Snake extends Pane {
     public void move() {
         lastPositoionX = getTranslateX();
         lastPositoionY = getTranslateY();
-        setTranslateX(getTranslateX() + velocity.getX());
-        setTranslateY(getTranslateY() + velocity.getY());
-        if (getTranslateX() > 620)
+        //setTranslateX(getTranslateX() + velocity.getX());
+        //setTranslateY(getTranslateY() + velocity.getY());
+        if (getVector() == "D")
+            setTranslateY(getTranslateY() + speed);
+        if (getVector() == "U")
+            setTranslateY(getTranslateY() - speed);
+        if (getVector() == "R")
+            setTranslateX(getTranslateX() + speed);
+        if (getVector() == "L")
+            setTranslateX(getTranslateX() - speed);
+        if (getVector() == "STOP") {
+            setTranslateX(getTranslateX());
+            setTranslateY(getTranslateY());
+        }
+
+        //Немного подвинуть границу
+        if (getTranslateX() > SnakeGame.sceneWidt+20)
             setTranslateX(1);
         if (getTranslateX() < -20)
-            setTranslateX(580);
+            setTranslateX(SnakeGame.sceneWidt-20);
         if (getTranslateY() < -20)
-            setTranslateY(580);
-        if (getTranslateY() > 620)
+            setTranslateY(SnakeGame.sceneHeight-20);
+        if (getTranslateY() > SnakeGame.sceneHeight+20)
             setTranslateY(1);
 
     }
 
-    //ПЕРЕДЕЛАТЬ ДВИЖЕНИЕ ЧЕРЕЗ velocity
     //Движение для объектов не являющихся головой,в конструкторе указываем объект за которым необходимо следовать
     public void move(Snake snake) {
         lastPositoionX = getTranslateX();
         lastPositoionY = getTranslateY();
         setTranslateX(snake.lastPositoionX);
         setTranslateY(snake.lastPositoionY);
+
     }
 
 
