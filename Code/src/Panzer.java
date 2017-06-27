@@ -9,7 +9,10 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Panzer extends Pane {
+    private double lastPositionX;
+    private double lastPositionY;
     private int speed = 2;
+    public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();
     public ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();
     private Rectangle body;
     public int numberofBullet = 0;
@@ -38,11 +41,11 @@ public class Panzer extends Pane {
             bullets.get(numberofBullet).setTranslateX(getTranslateX() - 60);
             bullets.get(numberofBullet).setTranslateY(getTranslateY() - 21);
         } else if (vector == "U") {
-            bullets.get(numberofBullet).setTranslateX(getTranslateX()+8);
-            bullets.get(numberofBullet).setTranslateY(getTranslateY() -60);
+            bullets.get(numberofBullet).setTranslateX(getTranslateX() + 8);
+            bullets.get(numberofBullet).setTranslateY(getTranslateY() - 60);
         } else if (vector == "D") {
-            bullets.get(numberofBullet).setTranslateX(getTranslateX() -22);
-            bullets.get(numberofBullet).setTranslateY(getTranslateY()+ 45);
+            bullets.get(numberofBullet).setTranslateX(getTranslateX() - 22);
+            bullets.get(numberofBullet).setTranslateY(getTranslateY() + 45);
         }
 
         numberofBullet++;
@@ -56,24 +59,28 @@ public class Panzer extends Pane {
     public void move() {
         if (health == 0)
             speed = 0;
+        lastPositionX = getTranslateX();
+        lastPositionY = getTranslateY();
 
-        if (vector == "R") {
+        if (vector == "R")
             setTranslateX(getTranslateX() + speed);
-            if (getBoundsInParent().intersects(opponent.getBoundsInParent()))
-                setTranslateX(getTranslateX() - speed);
-        } else if (vector == "L") {
+        else if (vector == "L")
             setTranslateX(getTranslateX() - speed);
-            if (getBoundsInParent().intersects(opponent.getBoundsInParent()))
-                setTranslateX(getTranslateX() + speed);
-        } else if (vector == "D") {
+        else if (vector == "D")
             setTranslateY(getTranslateY() + speed);
-            if (getBoundsInParent().intersects(opponent.getBoundsInParent()))
-                setTranslateY(getTranslateY() - speed);
-        } else if (vector == "U") {
+        else if (vector == "U")
             setTranslateY(getTranslateY() - speed);
-            if (getBoundsInParent().intersects(opponent.getBoundsInParent()))
-                setTranslateY(getTranslateY() + speed);
+
+        if (getBoundsInParent().intersects(opponent.getBoundsInParent())) {
+            setTranslateX(lastPositionX);
+            setTranslateY(lastPositionY);
         }
+        for (PanzerElement element : elements)
+            if (getBoundsInParent().intersects(element.getBoundsInParent())) {
+                setTranslateX(lastPositionX);
+                setTranslateY(lastPositionY);
+            }
+
 
         if (getTranslateX() > PanzerGame.sceneWidt + 20)
             setTranslateX(1);
@@ -89,6 +96,7 @@ public class Panzer extends Pane {
 
 
     //Метод поворачивающий танк
+
     public void setVector(String newVector) {
         if ((vector == "R" && newVector == "L") || (vector == "L" && newVector == "R") || (vector == "U" && newVector == "D") || (vector == "D" && newVector == "U")) {
             getTransforms().add(new Rotate(180, 0, 0));

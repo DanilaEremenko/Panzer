@@ -30,6 +30,13 @@ public class PanzerBullet extends Pane {
             vrag.health--;
             vector = "STOP";
         }
+
+        for (PanzerElement element : Panzer.elements)
+            if (getBoundsInParent().intersects(element.getBoundsInParent())) {
+                setTranslateX(-15);
+                setTranslateY(-15);
+                vector="STOP";
+            }
         //ПОРОФЛИТЬ
         if (getTranslateX() > PanzerGame.sceneWidt + 20)
             setTranslateX(1);

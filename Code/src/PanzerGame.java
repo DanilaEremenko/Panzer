@@ -17,10 +17,19 @@ public class PanzerGame extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane root = new Pane();
+        PanzerElement.gorizontal.setTranslateY(sceneHeight-20);
+        PanzerElement.vertical.setTranslateX(sceneWidt-20);
         Panzer panzer = new Panzer(Color.GREEN);
+        panzer.setTranslateX(200);
+        panzer.setTranslateY(200);
         Panzer panzer2 = new Panzer(Color.RED);
+        panzer2.setTranslateY(200);
         panzer.opponent = panzer2;
         panzer2.opponent = panzer;
+        Panzer.elements.add(PanzerElement.vertical);
+        Panzer.elements.add(PanzerElement.vertical2);
+        Panzer.elements.add(PanzerElement.gorizontal);
+        Panzer.elements.add(PanzerElement.gorizontal2);
         for (int i = 0; i < 10; i++) {
             panzer.bullets.add(new PanzerBullet());
             panzer2.bullets.add(new PanzerBullet());
@@ -30,6 +39,7 @@ public class PanzerGame extends Application {
 
         panzer2.setTranslateX(300);
         root.getChildren().addAll(panzer, panzer2);
+        root.getChildren().addAll(PanzerElement.vertical,PanzerElement.vertical2,PanzerElement.gorizontal,PanzerElement.gorizontal2);
         Scene scene = new Scene(root, 600, 600);
 
 
