@@ -8,20 +8,28 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.security.Key;
+import java.util.ArrayList;
 
-/**
- * Created by danil on 27.06.2017.
- */
+
 public class PanzerGame extends Application {
+    static int sceneHeight = 600;
+    static int sceneWidt = 600;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Panzer panzer = new Panzer(Color.GREEN);
-        Panzer panzer2= new Panzer(Color.RED);
-        panzer.opponent=panzer2;
-        panzer2.opponent=panzer;
-        panzer2.setTranslateX(300);
         Pane root = new Pane();
-        root.getChildren().addAll(panzer,panzer2);
+        Panzer panzer = new Panzer(Color.GREEN);
+        Panzer panzer2 = new Panzer(Color.RED);
+        panzer.opponent = panzer2;
+        panzer2.opponent = panzer;
+        for (int i = 0; i < 10; i++) {
+            panzer.bullets.add(new PanzerBullet());
+            panzer2.bullets.add(new PanzerBullet());
+            root.getChildren().addAll(panzer.bullets.get(i),panzer2.bullets.get(i));
+
+        }
+
+        panzer2.setTranslateX(300);
+        root.getChildren().addAll(panzer, panzer2);
         Scene scene = new Scene(root, 600, 600);
 
 
@@ -31,19 +39,44 @@ public class PanzerGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                int k=0;
+                for (PanzerBullet bullet:panzer.bullets) {
+                    bullet.move(panzer2);
+                }
+                for (PanzerBullet bullet:panzer2.bullets) {
+                    bullet.move(panzer);
+                }
                 panzer.move();
+                panzer2.move();
                 scene.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.RIGHT)
-                        panzer.vector="R";
+                        panzer.setVector("R");
                     else if (event.getCode() == KeyCode.LEFT)
-                        panzer.vector="L";
+                        panzer.setVector("L");
                     else if (event.getCode() == KeyCode.UP)
-                        panzer.vector="U";
+                        panzer.setVector("U");
                     else if (event.getCode() == KeyCode.DOWN)
-                        panzer.vector="D";
+                        panzer.setVector("D");
 
-                    if (event.getCode() == KeyCode.SPACE)
-                        panzer.shot();
+                    if (event.getCode() == KeyCode.A)
+                        panzer2.setVector("L");
+                    else if (event.getCode() == KeyCode.D)
+                        panzer2.setVector("R");
+                    else if (event.getCode() == KeyCode.W)
+                        panzer2.setVector("U");
+                    else if (event.getCode() == KeyCode.S)
+                        panzer2.setVector("D");
+
+                    if (event.getCode()==KeyCode.ENTER)
+                        panzer.fire(panzer.bullets);
+                    if(event.getCode()==KeyCode.SPACE)
+                        panzer2.fire(panzer2.bullets);
+
+
+
+
+
+
                 });
 
             }

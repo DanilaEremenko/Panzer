@@ -2,63 +2,54 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class Panzer extends Pane {
-    static double speed = 2;
-    private Rectangle bullet;
+    private int speed=2;
+    public ArrayList<PanzerBullet> bullets=new ArrayList<PanzerBullet>();
     private Rectangle body;
-    String vector = "R";
-    javafx.geometry.Point2D pointFire = new javafx.geometry.Point2D(0, 0);
-    public Panzer opponent;
+    public int numberofBullet=0;
+    public int health = 2;
+    public String vector = "R";
+    public Panzer opponent;//Соперник
 
     public Panzer(Color color) {
-        bullet = new Rectangle(12, 14, Color.BLACK);
+        Rectangle gun = new Rectangle(20, 14, Color.BLACK);
         body = new Rectangle(30, 30, color);
-        bullet.setTranslateX(body.getTranslateX() + 30);
-        bullet.setTranslateY(body.getTranslateY() + 7);
-        getChildren().addAll(body, bullet);
-    }
+        gun.setTranslateX(body.getTranslateX() + 30);
+        gun.setTranslateY(body.getTranslateY() + 8);
+        getChildren().addAll(body, gun);
 
-    public void shot() {
-        //pointFire.subtract()
-        //bvector="START";
-        double lastX = bullet.getTranslateX();
-        double lastY = bullet.getTranslateY();
-
-        if (vector == "R") {
-            while (bullet.getTranslateX() < 600 || getBoundsInParent().intersects(opponent.getBoundsInParent()))
-                setTranslateX(getTranslateX() + 1);
-
-            bullet.setTranslateX(lastX);
-            bullet.setTranslateY(lastY);
-            return;
-        }
-
-
-        if (vector == "L")
-            bullet.setTranslateX(bullet.getTranslateX() - 1);
-
-        if (vector == "D")
-            bullet.setTranslateY(bullet.getTranslateY() + 1);
-
-        if (vector == "U")
-            bullet.setTranslateY(bullet.getTranslateY() - 1);
-
-//        bullet.setTranslateX(lastX);
-//        bullet.setTranslateY(lastY);
 
     }
 
+    //Метод ставящий пулю на место стрялющего танка
+    public void fire(ArrayList<PanzerBullet> bullets) {
+        bullets.get(numberofBullet).vector = vector;
+        bullets.get(numberofBullet).setTranslateX(getTranslateX());
+        bullets.get(numberofBullet).setTranslateY(getTranslateY());
+        numberofBullet++;
+        if(numberofBullet==bullets.size())
+            numberofBullet=0;
+
+
+
+    }
+
+
+    //Постоянно работающий метод движения танка
     public void move() {
+        if (health == 0)
+            speed = 0;
 
         if (vector == "R") {
             setTranslateX(getTranslateX() + speed);
             if (getBoundsInParent().intersects(opponent.getBoundsInParent()))
                 setTranslateX(getTranslateX() - speed);
-
         } else if (vector == "L") {
             setTranslateX(getTranslateX() - speed);
             if (getBoundsInParent().intersects(opponent.getBoundsInParent()))
@@ -73,38 +64,33 @@ public class Panzer extends Pane {
                 setTranslateY(getTranslateY() + speed);
         }
 
+        if (getTranslateX() > PanzerGame.sceneWidt + 20)
+            setTranslateX(1);
+        if (getTranslateX() < -20)
+            setTranslateX(PanzerGame.sceneWidt - 20);
+        if (getTranslateY() < -20)
+            setTranslateY(PanzerGame.sceneHeight - 20);
+        if (getTranslateY() > PanzerGame.sceneHeight + 20)
+            setTranslateY(1);
+
+
     }
 
-    public void right() {
-        vector = "R";
-        body.setTranslateX(body.getTranslateX() + 20);
-        bullet.setTranslateX(body.getTranslateX() + 30);
-        bullet.setTranslateY(body.getTranslateY() + 7);
-        if (body.getBoundsInParent().intersects(opponent.getBoundsInParent()))
-            body.setTranslateX(body.getTranslateX() - 20);
 
-
+    //Метод поворачивающий танк
+    public void setVector(String newVector) {
+        if ((vector == "R" && newVector == "L") || (vector == "L" && newVector == "R") || (vector == "U" && newVector == "D") || (vector == "D" && newVector == "U")) {
+            getTransforms().add(new Rotate(180, 0, 0));
+        } else if ((vector == "R" && newVector == "D") || (vector == "D" && newVector == "L") || (vector == "L" && newVector == "U") || (vector == "U" && newVector == "R")) {
+            getTransforms().add(new Rotate(90, 0, 0));
+        } else if ((vector == "R" && newVector == "U") || (vector == "U" && newVector == "L") || (vector == "L" && newVector == "D") || (vector == "D" && newVector == "R")) {
+            getTransforms().add(new Rotate(-90, 0, 0));
+        }
+        vector = newVector;
     }
 
-    public void left() {
-        vector = "L";
-        body.setTranslateX(body.getTranslateX() - 20);
-        bullet.setTranslateX(body.getTranslateX() - 12);
-        bullet.setTranslateY(body.getTranslateY() + 7);
-    }
 
-    public void down() {
-        vector = "D";
-        body.setTranslateY(body.getTranslateY() + 20);
-        bullet.setTranslateX(body.getTranslateX() + 9);
-        bullet.setTranslateY(body.getTranslateY() + 30);
-    }
-
-    public void up() {
-        vector = "U";
-        body.setTranslateY(body.getTranslateY() - 20);
-        bullet.setTranslateX(body.getTranslateX() + 9);
-        bullet.setTranslateY(body.getTranslateY() - 14);
-    }
 
 }
+
+
