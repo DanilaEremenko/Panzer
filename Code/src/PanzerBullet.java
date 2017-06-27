@@ -4,10 +4,10 @@ import javafx.scene.shape.Rectangle;
 
 public class PanzerBullet extends Pane {
     public int speed = 5;
-    public String vector = "R";
+    public String vector = "STOP";
 
     public PanzerBullet() {
-        Rectangle bullet = new Rectangle(10, 10, Color.BLACK);
+        Rectangle bullet = new Rectangle(14, 14, Color.BLACK);
         setTranslateX(-15);
         setTranslateY(-15);
         getChildren().addAll(bullet);
@@ -15,7 +15,10 @@ public class PanzerBullet extends Pane {
     }
 
     public void move(Panzer vrag) {
-        if (vector == "R")
+        if (vector == "STOP") {
+            setTranslateY(-15);
+            setTranslateX(-15);
+        } else if (vector == "R")
             setTranslateX(getTranslateX() + speed);
         else if (vector == "L")
             setTranslateX(getTranslateX() - speed);
@@ -25,9 +28,17 @@ public class PanzerBullet extends Pane {
             setTranslateY(getTranslateY() - speed);
         if (getBoundsInParent().intersects(vrag.getBoundsInParent())) {
             vrag.health--;
-            setTranslateY(-15);
-            setTranslateX(-15);
+            vector = "STOP";
         }
+        //ПОРОФЛИТЬ
+        if (getTranslateX() > PanzerGame.sceneWidt + 20)
+            setTranslateX(1);
+        if (getTranslateX() < -20)
+            setTranslateX(PanzerGame.sceneWidt - 20);
+        if (getTranslateY() < -20)
+            setTranslateY(PanzerGame.sceneHeight - 20);
+        if (getTranslateY() > PanzerGame.sceneHeight + 20)
+            setTranslateY(1);
 
     }
 

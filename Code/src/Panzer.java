@@ -9,13 +9,14 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Panzer extends Pane {
-    private int speed=2;
-    public ArrayList<PanzerBullet> bullets=new ArrayList<PanzerBullet>();
+    private int speed = 2;
+    public ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();
     private Rectangle body;
-    public int numberofBullet=0;
+    public int numberofBullet = 0;
     public int health = 2;
     public String vector = "R";
     public Panzer opponent;//Соперник
+
 
     public Panzer(Color color) {
         Rectangle gun = new Rectangle(20, 14, Color.BLACK);
@@ -30,13 +31,23 @@ public class Panzer extends Pane {
     //Метод ставящий пулю на место стрялющего танка
     public void fire(ArrayList<PanzerBullet> bullets) {
         bullets.get(numberofBullet).vector = vector;
-        bullets.get(numberofBullet).setTranslateX(getTranslateX());
-        bullets.get(numberofBullet).setTranslateY(getTranslateY());
+        if (vector == "R") {
+            bullets.get(numberofBullet).setTranslateX(getTranslateX() + 50);
+            bullets.get(numberofBullet).setTranslateY(getTranslateY() + 8);
+        } else if (vector == "L") {
+            bullets.get(numberofBullet).setTranslateX(getTranslateX() - 60);
+            bullets.get(numberofBullet).setTranslateY(getTranslateY() - 21);
+        } else if (vector == "U") {
+            bullets.get(numberofBullet).setTranslateX(getTranslateX()+8);
+            bullets.get(numberofBullet).setTranslateY(getTranslateY() -60);
+        } else if (vector == "D") {
+            bullets.get(numberofBullet).setTranslateX(getTranslateX() -22);
+            bullets.get(numberofBullet).setTranslateY(getTranslateY()+ 45);
+        }
+
         numberofBullet++;
-        if(numberofBullet==bullets.size())
-            numberofBullet=0;
-
-
+        if (numberofBullet == bullets.size())
+            numberofBullet = 0;
 
     }
 
@@ -88,7 +99,6 @@ public class Panzer extends Pane {
         }
         vector = newVector;
     }
-
 
 
 }
