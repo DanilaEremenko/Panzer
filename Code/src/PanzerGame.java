@@ -6,8 +6,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-
 public class PanzerGame extends Application {
     static int sceneHeight = 700;
     static int sceneWidt = 800;

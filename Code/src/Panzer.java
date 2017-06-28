@@ -3,6 +3,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import java.util.ArrayList;
+
 //Для для создания и управления танками
 public class Panzer extends Pane {
     private int speed = 4;//скорость передвжиения танков
