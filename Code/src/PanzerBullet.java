@@ -2,9 +2,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+//Класс для создания пуль и управления их траекторией
 public class PanzerBullet extends Pane {
-    public int speed = 5;
-    public String vector = "STOP";
+    private int speed = 5;
+    private String vector = "STOP";
 
     public PanzerBullet() {
         Rectangle bullet = new Rectangle(14, 14, Color.BLACK);
@@ -27,7 +28,7 @@ public class PanzerBullet extends Pane {
         else if (vector == "U")
             setTranslateY(getTranslateY() - speed);
         if (getBoundsInParent().intersects(vrag.getBoundsInParent())) {
-            vrag.health--;
+            vrag.setHealth(1);
             vector = "STOP";
         }
 
@@ -47,6 +48,14 @@ public class PanzerBullet extends Pane {
         if (getTranslateY() > PanzerGame.sceneHeight + 20)
             setTranslateY(1);
 
+    }
+
+    public void setVector(String vector){
+        this.vector=vector;
+    }
+
+    public String getVector(){
+        return vector;
     }
 
 

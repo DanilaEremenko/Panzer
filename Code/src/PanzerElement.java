@@ -2,7 +2,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-
+//Класс для создания препеятствий
 public class PanzerElement extends Pane {
     static PanzerElement gorizontal=PanzerElement.generateGorizontal(PanzerGame.sceneWidt);
     static PanzerElement gorizontal2=PanzerElement.generateGorizontal(PanzerGame.sceneWidt);

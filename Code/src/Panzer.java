@@ -1,24 +1,19 @@
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+//Для для создания и управления танками
 public class Panzer extends Pane {
-    private double lastPositionX;
-    private double lastPositionY;
-    private int speed = 2;
+    private int speed = 4;
+    private static int bulletDigit;
+    private Rectangle body;
+    private int numberofBullet = 0;
+    private int health = 2;
+    private String vector = "R";
+    private Panzer opponent;//Соперник
     public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();
     public ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();
-    private Rectangle body;
-    public int numberofBullet = 0;
-    public int health = 2;
-    public String vector = "R";
-    public Panzer opponent;//Соперник
 
 
     public Panzer(Color color) {
@@ -27,13 +22,18 @@ public class Panzer extends Pane {
         gun.setTranslateX(body.getTranslateX() + 30);
         gun.setTranslateY(body.getTranslateY() + 8);
         getChildren().addAll(body, gun);
+        for (int i = 0; i < bulletDigit; i++) {
+            bullets.add(new PanzerBullet());
+            bullets.add(new PanzerBullet());
+
+        }
 
 
     }
 
-    //Метод ставящий пулю на место стрялющего танка
+    //Метод устанавливающий пулю на место стрялющего танка
     public void fire(ArrayList<PanzerBullet> bullets) {
-        bullets.get(numberofBullet).vector = vector;
+        bullets.get(numberofBullet).setVector(vector);
         if (vector == "R") {
             bullets.get(numberofBullet).setTranslateX(getTranslateX() + 50);
             bullets.get(numberofBullet).setTranslateY(getTranslateY() + 8);
@@ -59,8 +59,8 @@ public class Panzer extends Pane {
     public void move() {
         if (health == 0)
             speed = 0;
-        lastPositionX = getTranslateX();
-        lastPositionY = getTranslateY();
+        double lastPositionX = getTranslateX();
+        double lastPositionY = getTranslateY();
 
         if (vector == "R")
             setTranslateX(getTranslateX() + speed);
@@ -96,7 +96,6 @@ public class Panzer extends Pane {
 
 
     //Метод поворачивающий танк
-
     public void setVector(String newVector) {
         if ((vector == "R" && newVector == "L") || (vector == "L" && newVector == "R") || (vector == "U" && newVector == "D") || (vector == "D" && newVector == "U")) {
             getTransforms().add(new Rotate(180, 0, 0));
@@ -107,6 +106,18 @@ public class Panzer extends Pane {
         }
         vector = newVector;
     }
+
+    public void setOpponent(Panzer opponent) {
+        this.opponent = opponent;
+    }
+
+
+    public void setHealth(int damage) {
+        health -= damage;
+
+    }
+
+
 
 
 }
