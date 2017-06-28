@@ -5,7 +5,8 @@ import javafx.scene.shape.Rectangle;
 
 
 public class SpaceRocket extends Pane {
-    public Point2D velocity = new Point2D(0, 0);
+    private Point2D velocity = new Point2D(0, 0);
+    private double speed=10;
     Rectangle rect;
 
     public SpaceRocket() {
@@ -33,7 +34,7 @@ public class SpaceRocket extends Pane {
 
 
     public void go() {
-        setTranslateY(getTranslateY() - 10);
+        setTranslateY(getTranslateY() - speed);
 
         for (SpaceMeteor spaceMeteor : SpaceAdventure.spaceMeteors) {
             if (getTranslateY() == spaceMeteor.getTranslateY() + 20) {
@@ -44,18 +45,10 @@ public class SpaceRocket extends Pane {
                     SpaceAdventure.score = 0;
                     return;
                 } else SpaceAdventure.score++;
-
-
             }
-
-
         }
-
     }
 
-    public void Pow() {
-
-    }
 }
 
 
