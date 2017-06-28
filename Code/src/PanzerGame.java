@@ -7,18 +7,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.security.Key;
-import java.util.ArrayList;
-
 
 public class PanzerGame extends Application {
-    static int sceneHeight = 600;
-    static int sceneWidt = 600;
+    static int sceneHeight = 700;
+    static int sceneWidt = 800;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane root = new Pane();
-        PanzerElement.gorizontal.setTranslateY(sceneHeight-20);
-        PanzerElement.vertical.setTranslateX(sceneWidt-20);
+        PanzerElement.gorizontal.setTranslateY(sceneHeight - 20);
+        PanzerElement.vertical.setTranslateX(sceneWidt - 20);
         Panzer panzer = new Panzer(Color.GREEN);
         panzer.setTranslateX(200);
         panzer.setTranslateY(200);
@@ -26,6 +24,9 @@ public class PanzerGame extends Application {
         panzer2.setTranslateY(200);
         panzer.opponent = panzer2;
         panzer2.opponent = panzer;
+        Panzer.elements.add(PanzerElement.GenerateG(100, 100));
+        Panzer.elements.get(0).setTranslateX(300);
+        Panzer.elements.get(0).setTranslateY(300);
         Panzer.elements.add(PanzerElement.vertical);
         Panzer.elements.add(PanzerElement.vertical2);
         Panzer.elements.add(PanzerElement.gorizontal);
@@ -33,14 +34,15 @@ public class PanzerGame extends Application {
         for (int i = 0; i < 10; i++) {
             panzer.bullets.add(new PanzerBullet());
             panzer2.bullets.add(new PanzerBullet());
-            root.getChildren().addAll(panzer.bullets.get(i),panzer2.bullets.get(i));
-
+            root.getChildren().addAll(panzer.bullets.get(i), panzer2.bullets.get(i));
         }
+        for (PanzerElement element : Panzer.elements)
+            root.getChildren().addAll(element);
+
 
         panzer2.setTranslateX(300);
         root.getChildren().addAll(panzer, panzer2);
-        root.getChildren().addAll(PanzerElement.vertical,PanzerElement.vertical2,PanzerElement.gorizontal,PanzerElement.gorizontal2);
-        Scene scene = new Scene(root, 600, 600);
+        Scene scene = new Scene(root, sceneWidt, sceneHeight);
 
 
         primaryStage.setScene(scene);
@@ -49,11 +51,11 @@ public class PanzerGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                int k=0;
-                for (PanzerBullet bullet:panzer.bullets) {
+                int k = 0;
+                for (PanzerBullet bullet : panzer.bullets) {
                     bullet.move(panzer2);
                 }
-                for (PanzerBullet bullet:panzer2.bullets) {
+                for (PanzerBullet bullet : panzer2.bullets) {
                     bullet.move(panzer);
                 }
                 panzer.move();
@@ -77,14 +79,10 @@ public class PanzerGame extends Application {
                     else if (event.getCode() == KeyCode.S)
                         panzer2.setVector("D");
 
-                    if (event.getCode()==KeyCode.ENTER)
+                    if (event.getCode() == KeyCode.ENTER)
                         panzer.fire(panzer.bullets);
-                    if(event.getCode()==KeyCode.SPACE)
+                    if (event.getCode() == KeyCode.SPACE)
                         panzer2.fire(panzer2.bullets);
-
-
-
-
 
 
                 });
