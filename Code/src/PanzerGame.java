@@ -7,8 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Random;
-
 
 public class PanzerGame extends Application {
     static int sceneHeight = 700;
@@ -33,8 +31,6 @@ public class PanzerGame extends Application {
         Panzer.elements.add(PanzerElement.generateGorizontal(100));
         Panzer.elements.add(PanzerElement.generateVertical(100));
         Panzer.elements.add(PanzerElement.generateGorizontal(100));
-        //Panzer.elements.add(PanzerElement.generateRectangle(60));
-        //Panzer.elements.add(PanzerElement.generateRectangle(60));
 
         Panzer.elements.get(0).setTranslateX(250);//вертикальная
         Panzer.elements.get(0).setTranslateY(130);
@@ -123,7 +119,4 @@ public class PanzerGame extends Application {
     }
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

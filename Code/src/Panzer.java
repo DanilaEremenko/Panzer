@@ -5,25 +5,23 @@ import javafx.scene.transform.Rotate;
 import java.util.ArrayList;
 //Для для создания и управления танками
 public class Panzer extends Pane {
-    private int speed = 4;
-    private static int bulletDigit;
-    private Rectangle body;
-    private int numberofBullet = 0;
-    private int health = 2;
-    private String vector = "R";
+    private int speed = 4;//скорость передвжиения танков
+    private int bulletDigit=20;//Колличество пуль у каждого танка
+    private int numberofBullet = 0;//Пуля на очереди
+    private int health = 2;//Здоровье танка
+    private String vector = "R";//Направление движения танка
     private Panzer opponent;//Соперник
-    public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();
-    public ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();
+    public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();//Список препятствий
+    public ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();//Список патронов
 
 
     public Panzer(Color color) {
         Rectangle gun = new Rectangle(20, 14, Color.BLACK);
-        body = new Rectangle(30, 30, color);
+        Rectangle body = new Rectangle(30, 30, color);
         gun.setTranslateX(body.getTranslateX() + 30);
         gun.setTranslateY(body.getTranslateY() + 8);
         getChildren().addAll(body, gun);
         for (int i = 0; i < bulletDigit; i++) {
-            bullets.add(new PanzerBullet());
             bullets.add(new PanzerBullet());
 
         }

@@ -4,8 +4,8 @@ import javafx.scene.shape.Rectangle;
 
 //Класс для создания пуль и управления их траекторией
 public class PanzerBullet extends Pane {
-    private int speed = 5;
-    private String vector = "STOP";
+    private int speed = 15;//Скорость полета пули
+    private String vector = "STOP";//Направление движения пули
 
     public PanzerBullet() {
         Rectangle bullet = new Rectangle(14, 14, Color.BLACK);
