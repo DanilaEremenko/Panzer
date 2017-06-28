@@ -7,6 +7,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Random;
+
 
 public class PanzerGame extends Application {
     static int sceneHeight = 700;
@@ -18,15 +20,45 @@ public class PanzerGame extends Application {
         PanzerElement.gorizontal.setTranslateY(sceneHeight - 20);
         PanzerElement.vertical.setTranslateX(sceneWidt - 20);
         Panzer panzer = new Panzer(Color.GREEN);
-        panzer.setTranslateX(200);
+        panzer.setTranslateX(100);
         panzer.setTranslateY(200);
         Panzer panzer2 = new Panzer(Color.RED);
-        panzer2.setTranslateY(200);
+        panzer2.setTranslateX(500);
+        panzer2.setTranslateY(600);
         panzer.opponent = panzer2;
         panzer2.opponent = panzer;
-        Panzer.elements.add(PanzerElement.GenerateG(100, 100));
-        Panzer.elements.get(0).setTranslateX(300);
-        Panzer.elements.get(0).setTranslateY(300);
+        Panzer.elements.add(PanzerElement.generateVertical(100));
+        Panzer.elements.add(PanzerElement.generateGorizontal(100));
+        Panzer.elements.add(PanzerElement.generateVertical(100));
+        Panzer.elements.add(PanzerElement.generateGorizontal(100));
+        Panzer.elements.add(PanzerElement.generateVertical(100));
+        Panzer.elements.add(PanzerElement.generateGorizontal(100));
+        Panzer.elements.add(PanzerElement.generateVertical(100));
+        Panzer.elements.add(PanzerElement.generateGorizontal(100));
+        Panzer.elements.add(PanzerElement.generateRectangle(60));
+        Panzer.elements.add(PanzerElement.generateRectangle(60));
+
+        Panzer.elements.get(0).setTranslateX(250);//вертикальная
+        Panzer.elements.get(0).setTranslateY(150);
+        Panzer.elements.get(1).setTranslateX(150);//горизонтальная
+        Panzer.elements.get(1).setTranslateY(250);
+        Panzer.elements.get(2).setTranslateX(500);//вертикальная
+        Panzer.elements.get(2).setTranslateY(150);
+        Panzer.elements.get(3).setTranslateX(520);//горизонтальная
+        Panzer.elements.get(3).setTranslateY(250);
+        Panzer.elements.get(4).setTranslateX(500);//вертикальная
+        Panzer.elements.get(4).setTranslateY(370);
+        Panzer.elements.get(5).setTranslateX(520);//горизонтальная
+        Panzer.elements.get(5).setTranslateY(350);
+        Panzer.elements.get(6).setTranslateX(250);//вертикальная
+        Panzer.elements.get(6).setTranslateY(370);
+        Panzer.elements.get(7).setTranslateX(150);//горизонтальная
+        Panzer.elements.get(7).setTranslateY(350);
+        Panzer.elements.get(8).setTranslateX(new Random().nextInt(sceneHeight));
+        Panzer.elements.get(8).setTranslateY(new Random().nextInt(sceneWidt));
+        Panzer.elements.get(9).setTranslateX(new Random().nextInt(sceneHeight));
+        Panzer.elements.get(9).setTranslateY(new Random().nextInt(sceneWidt));
+
         Panzer.elements.add(PanzerElement.vertical);
         Panzer.elements.add(PanzerElement.vertical2);
         Panzer.elements.add(PanzerElement.gorizontal);

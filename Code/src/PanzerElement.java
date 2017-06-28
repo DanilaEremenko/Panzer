@@ -9,11 +9,10 @@ public class PanzerElement extends Pane {
     static PanzerElement vertical=PanzerElement.generateVertical(PanzerGame.sceneHeight);
     static PanzerElement vertical2=PanzerElement.generateVertical(PanzerGame.sceneHeight);
 
-    public static PanzerElement GenerateG(int width, int height) {
-        Rectangle rect = new Rectangle(width, 30, Color.BLACK);
-        Rectangle rect2 = new Rectangle(30, height,Color.BLACK);
+    public static PanzerElement generateRectangle(int side) {
+        Rectangle rect = new Rectangle(side, side, Color.BLACK);
         PanzerElement element = new PanzerElement();
-        element.getChildren().addAll(rect, rect2);
+        element.getChildren().addAll(rect);
         return element;
     }
 
