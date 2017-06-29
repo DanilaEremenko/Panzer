@@ -84,22 +84,22 @@ public class PanzerGame extends Application {
                 panzer2.move();
                 scene.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.RIGHT)
-                        panzer.setVector("R");
+                        panzer.setVector(Direction.R);
                     else if (event.getCode() == KeyCode.LEFT)
-                        panzer.setVector("L");
+                        panzer.setVector(Direction.L);
                     else if (event.getCode() == KeyCode.UP)
-                        panzer.setVector("U");
+                        panzer.setVector(Direction.U);
                     else if (event.getCode() == KeyCode.DOWN)
-                        panzer.setVector("D");
+                        panzer.setVector(Direction.D);
 
                     if (event.getCode() == KeyCode.A)
-                        panzer2.setVector("L");
+                        panzer2.setVector(Direction.L);
                     else if (event.getCode() == KeyCode.D)
-                        panzer2.setVector("R");
+                        panzer2.setVector(Direction.R);
                     else if (event.getCode() == KeyCode.W)
-                        panzer2.setVector("U");
+                        panzer2.setVector(Direction.U);
                     else if (event.getCode() == KeyCode.S)
-                        panzer2.setVector("D");
+                        panzer2.setVector(Direction.D);
 
                     if (event.getCode() == KeyCode.ENTER)
                         panzer.fire(panzer.bullets);

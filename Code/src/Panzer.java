@@ -2,18 +2,20 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+
 import java.util.ArrayList;
 
 //Для для создания и управления танками
 public class Panzer extends Pane {
     private int speed = 4;//скорость передвжиения танков
-    private int bulletDigit=20;//Колличество пуль у каждого танка
+    private int bulletDigit = 20;//Колличество пуль у каждого танка
     private int numberofBullet = 0;//Пуля на очереди
     private int health = 2;//Здоровье танка
-    private String vector = "R";//Направление движения танка
     private Panzer opponent;//Соперник
+    public Direction vector = Direction.R;
     public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();//Список препятствий
     public ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();//Список патронов
+    //enum Direction{U,L,R,D}
 
 
     public Panzer(Color color) {
@@ -33,16 +35,16 @@ public class Panzer extends Pane {
     //Метод устанавливающий пулю на место стрялющего танка
     public void fire(ArrayList<PanzerBullet> bullets) {
         bullets.get(numberofBullet).setVector(vector);
-        if (vector == "R") {
+        if (vector == Direction.R) {
             bullets.get(numberofBullet).setTranslateX(getTranslateX() + 50);
             bullets.get(numberofBullet).setTranslateY(getTranslateY() + 8);
-        } else if (vector == "L") {
+        } else if (vector == Direction.L) {
             bullets.get(numberofBullet).setTranslateX(getTranslateX() - 60);
             bullets.get(numberofBullet).setTranslateY(getTranslateY() - 21);
-        } else if (vector == "U") {
+        } else if (vector == Direction.U) {
             bullets.get(numberofBullet).setTranslateX(getTranslateX() + 8);
             bullets.get(numberofBullet).setTranslateY(getTranslateY() - 60);
-        } else if (vector == "D") {
+        } else if (vector == Direction.D) {
             bullets.get(numberofBullet).setTranslateX(getTranslateX() - 22);
             bullets.get(numberofBullet).setTranslateY(getTranslateY() + 45);
         }
@@ -61,13 +63,13 @@ public class Panzer extends Pane {
         double lastPositionX = getTranslateX();
         double lastPositionY = getTranslateY();
 
-        if (vector == "R")
+        if (vector == Direction.R)
             setTranslateX(getTranslateX() + speed);
-        else if (vector == "L")
+        else if (vector == Direction.L)
             setTranslateX(getTranslateX() - speed);
-        else if (vector == "D")
+        else if (vector == Direction.D)
             setTranslateY(getTranslateY() + speed);
-        else if (vector == "U")
+        else if (vector == Direction.U)
             setTranslateY(getTranslateY() - speed);
 
         if (getBoundsInParent().intersects(opponent.getBoundsInParent())) {
@@ -93,16 +95,9 @@ public class Panzer extends Pane {
 
     }
 
-
     //Метод поворачивающий танк
-    public void setVector(String newVector) {
-        if ((vector == "R" && newVector == "L") || (vector == "L" && newVector == "R") || (vector == "U" && newVector == "D") || (vector == "D" && newVector == "U")) {
-            getTransforms().add(new Rotate(180, 0, 0));
-        } else if ((vector == "R" && newVector == "D") || (vector == "D" && newVector == "L") || (vector == "L" && newVector == "U") || (vector == "U" && newVector == "R")) {
-            getTransforms().add(new Rotate(90, 0, 0));
-        } else if ((vector == "R" && newVector == "U") || (vector == "U" && newVector == "L") || (vector == "L" && newVector == "D") || (vector == "D" && newVector == "R")) {
-            getTransforms().add(new Rotate(-90, 0, 0));
-        }
+    public void setVector(Direction newVector) {
+        getTransforms().add(new Rotate(vector.getAngle()-newVector.getAngle(), 0, 0));
         vector = newVector;
     }
 
@@ -115,8 +110,6 @@ public class Panzer extends Pane {
         health -= damage;
 
     }
-
-
 
 
 }
