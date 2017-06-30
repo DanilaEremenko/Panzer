@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 //Класс для создания пуль и управления их траекторией
 public class PanzerBullet extends Pane {
     private int speed = 15; //Скорость полета пули
-    private Direction vector = Direction.STOP;//Направление движения пули
+    private PanzerDirection vector = PanzerDirection.STOP;//Направление движения пули
 
     public PanzerBullet() {
         Rectangle bullet = new Rectangle(14, 14, Color.BLACK);
@@ -16,29 +16,29 @@ public class PanzerBullet extends Pane {
     }
 
     public void move(Panzer vrag) {
-        if (vector == Direction.STOP) {
+        if (vector == PanzerDirection.STOP) {
             setTranslateY(-15);
             setTranslateX(-15);
-        } else if (vector == Direction.R)
+        } else if (vector == PanzerDirection.R)
             setTranslateX(getTranslateX() + speed);
-        else if (vector ==Direction.L)
+        else if (vector == PanzerDirection.L)
             setTranslateX(getTranslateX() - speed);
-        else if (vector ==Direction.D)
+        else if (vector == PanzerDirection.D)
             setTranslateY(getTranslateY() + speed);
-        else if (vector == Direction.U)
+        else if (vector == PanzerDirection.U)
             setTranslateY(getTranslateY() - speed);
         if (getBoundsInParent().intersects(vrag.getBoundsInParent())) {
-            vrag.setHealth(1);
-            vector = Direction.STOP;
+            vrag.setHealth(vrag.getHealth()-1);
+            vector = PanzerDirection.STOP;
         }
 
         for (PanzerElement element : Panzer.elements)
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
                 setTranslateX(-15);
                 setTranslateY(-15);
-                vector=Direction.STOP;
+                vector= PanzerDirection.STOP;
             }
-        //ПОРОФЛИТЬ
+        //Такое
         if (getTranslateX() > PanzerGame.sceneWidt + 20)
             setTranslateX(1);
         if (getTranslateX() < -20)
@@ -50,11 +50,11 @@ public class PanzerBullet extends Pane {
 
     }
 
-    public void setVector(Direction vector){
+    public void setVector(PanzerDirection vector){
         this.vector=vector;
     }
 
-    public Direction getVector(){
+    public PanzerDirection getVector(){
         return vector;
     }
 

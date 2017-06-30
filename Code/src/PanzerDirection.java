@@ -1,6 +1,6 @@
-public enum  Direction {U(90),D(270),R(0),L(180),STOP(0);
+public enum PanzerDirection {U(90),D(270),R(0),L(180),STOP(0);
 private int angle;
-Direction(int angle){
+PanzerDirection(int angle){
     this.angle=angle;
 
 }

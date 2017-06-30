@@ -1,4 +1,3 @@
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -53,7 +52,7 @@ public class PanzerGame extends Application {
         Panzer.elements.add(PanzerElement.vertical2);
         Panzer.elements.add(PanzerElement.gorizontal);
         Panzer.elements.add(PanzerElement.gorizontal2);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < Panzer.bulletDigit; i++) {
             panzer.bullets.add(new PanzerBullet());
             panzer2.bullets.add(new PanzerBullet());
             root.getChildren().addAll(panzer.bullets.get(i), panzer2.bullets.get(i));
@@ -84,22 +83,22 @@ public class PanzerGame extends Application {
                 panzer2.move();
                 scene.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.RIGHT)
-                        panzer.setVector(Direction.R);
+                        panzer.setVector(PanzerDirection.R);
                     else if (event.getCode() == KeyCode.LEFT)
-                        panzer.setVector(Direction.L);
+                        panzer.setVector(PanzerDirection.L);
                     else if (event.getCode() == KeyCode.UP)
-                        panzer.setVector(Direction.U);
+                        panzer.setVector(PanzerDirection.U);
                     else if (event.getCode() == KeyCode.DOWN)
-                        panzer.setVector(Direction.D);
+                        panzer.setVector(PanzerDirection.D);
 
                     if (event.getCode() == KeyCode.A)
-                        panzer2.setVector(Direction.L);
+                        panzer2.setVector(PanzerDirection.L);
                     else if (event.getCode() == KeyCode.D)
-                        panzer2.setVector(Direction.R);
+                        panzer2.setVector(PanzerDirection.R);
                     else if (event.getCode() == KeyCode.W)
-                        panzer2.setVector(Direction.U);
+                        panzer2.setVector(PanzerDirection.U);
                     else if (event.getCode() == KeyCode.S)
-                        panzer2.setVector(Direction.D);
+                        panzer2.setVector(PanzerDirection.D);
 
                     if (event.getCode() == KeyCode.ENTER)
                         panzer.fire(panzer.bullets);
