@@ -116,3 +116,23 @@ public class Panzer extends Pane {
 }
 
 
+//Для танка управляемого мышкой
+//    public void setTarget(double x, double y) {
+//        velocity = new javafx.geometry.Point2D(x, y).subtract(getTranslateX(), getTranslateY()).normalize().multiply(5);
+//                double angle = calcAngle(velocity.getX(), velocity.getY());
+//                getTransforms().clear();
+//                getTransforms().add(new Rotate(angle, 0, 0));
+//
+//                }
+//
+//public void moveMouse() {
+//        setTranslateX(getTranslateX() + velocity.getX());
+//        setTranslateY(getTranslateY() + velocity.getY());
+//
+//        }
+//
+//public double calcAngle(double vecX, double vecY) {
+//        double angle = new javafx.geometry.Point2D(vecX, vecY).angle(1, 0);
+//        return vecY > 0 ? angle : -angle;
+//        }
+
