@@ -5,6 +5,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+
 public class PanzerGame extends Application {
     static int sceneHeight = 700;
     static int sceneWidt = 800;
@@ -52,11 +54,10 @@ public class PanzerGame extends Application {
         Panzer.elements.add(PanzerElement.vertical2);
         Panzer.elements.add(PanzerElement.gorizontal);
         Panzer.elements.add(PanzerElement.gorizontal2);
-        for (int i = 0; i < Panzer.bulletDigit; i++) {
-            panzer.bullets.add(new PanzerBullet());
-            panzer2.bullets.add(new PanzerBullet());
+
+        for (int i = 0; i < Panzer.bulletDigit; i++)
             root.getChildren().addAll(panzer.bullets.get(i), panzer2.bullets.get(i));
-        }
+
         for (PanzerElement element : Panzer.elements)
             root.getChildren().addAll(element);
 
@@ -72,15 +73,16 @@ public class PanzerGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                int k = 0;
-                for (PanzerBullet bullet : panzer.bullets) {
+                for (PanzerBullet bullet : panzer.bullets)
                     bullet.move(panzer2);
-                }
-                for (PanzerBullet bullet : panzer2.bullets) {
+
+                for (PanzerBullet bullet : panzer2.bullets)
                     bullet.move(panzer);
-                }
+
                 panzer.move();
                 panzer2.move();
+
+
                 scene.setOnKeyPressed(event -> {
                     if (event.getCode() == KeyCode.RIGHT)
                         panzer.setVector(PanzerDirection.R);
@@ -117,3 +119,12 @@ public class PanzerGame extends Application {
 
 
 }
+
+//Для танка управляемого мышкой в метод handle
+//                panzer2.moveMouse();
+//                scene.setOnMouseMoved(event -> {
+//                    panzer2.setTarget(event.getSceneX(), event.getSceneY());
+//                });
+//                scene.setOnMouseClicked(event -> {
+//                    panzer2.velocity = new Point2D(0, 0);
+//                });

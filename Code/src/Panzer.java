@@ -8,7 +8,7 @@ import java.util.ArrayList;
 //Для для создания и управления танками
 public class Panzer extends Pane {
     private int speed = 4;//скорость передвжиения танков
-    public static int bulletDigit = 20;//Колличество пуль у каждого танка
+    public static int bulletDigit = 30;//Колличество пуль у каждого танка
     private int numberofBullet = 0;//Пуля на очереди
     private int health = 2;//Здоровье танка
     private Panzer opponent;//Соперник
