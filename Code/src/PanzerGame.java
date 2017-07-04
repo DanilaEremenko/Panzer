@@ -20,8 +20,8 @@ public class PanzerGame extends Application {
         Panzer panzer2 = new Panzer(Color.RED);
         panzer2.setTranslateX(500);
         panzer2.setTranslateY(600);
-        panzer.setOpponent(panzer2);
-        panzer2.setOpponent(panzer);
+        panzer.addOpponent(panzer2);
+        panzer2.addOpponent(panzer);
         Panzer.elements.add(PanzerElement.generateVertical(100));
         Panzer.elements.add(PanzerElement.generateGorizontal(100));
         Panzer.elements.add(PanzerElement.generateVertical(100));
@@ -56,7 +56,7 @@ public class PanzerGame extends Application {
         Panzer.elements.add(PanzerElement.gorizontal2);
 
         for (int i = 0; i < Panzer.bulletDigit; i++)
-            root.getChildren().addAll(panzer.bullets.get(i), panzer2.bullets.get(i));
+            root.getChildren().addAll(panzer.getBullets().get(i), panzer2.getBullets().get(i));
 
         for (PanzerElement element : Panzer.elements)
             root.getChildren().addAll(element);
@@ -73,11 +73,11 @@ public class PanzerGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                for (PanzerBullet bullet : panzer.bullets)
-                    bullet.move(panzer2);
+                for (PanzerBullet bullet : panzer.getBullets())
+                    bullet.move(panzer.getOpponents());
 
-                for (PanzerBullet bullet : panzer2.bullets)
-                    bullet.move(panzer);
+                for (PanzerBullet bullet : panzer2.getBullets())
+                    bullet.move(panzer2.getOpponents());
 
                 panzer.move();
                 panzer2.move();
@@ -103,9 +103,9 @@ public class PanzerGame extends Application {
                         panzer2.setVector(PanzerDirection.D);
 
                     if (event.getCode() == KeyCode.ENTER)
-                        panzer.fire(panzer.bullets);
+                        panzer.fire(panzer.getBullets());
                     if (event.getCode() == KeyCode.SPACE)
-                        panzer2.fire(panzer2.bullets);
+                        panzer2.fire(panzer2.getBullets());
 
 
                 });
@@ -115,6 +115,10 @@ public class PanzerGame extends Application {
         };
         timer.start();
 
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
 
