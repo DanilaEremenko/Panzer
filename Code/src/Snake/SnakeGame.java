@@ -58,7 +58,7 @@ public class SnakeGame extends Application {
                 head.setTranslateY(250);
             }
 
-                //ДЛЯ ТЕСТИРОВАНИЯ
+            //ДЛЯ ТЕСТИРОВАНИЯ
             if (event.getCode() == KeyCode.Z) {
                 snakeTails.add(new Snake(snakeTails.get(snakeTails.size() - 1)));
                 root.getChildren().addAll(snakeTails.get(snakeTails.size() - 1));

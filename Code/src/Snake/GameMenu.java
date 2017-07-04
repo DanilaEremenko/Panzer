@@ -55,10 +55,9 @@ public class GameMenu extends Application {
 
         MenuBox menuuBox = new MenuBox(mainMenu);
 
-        String[] s = null;
+
         //НАПИСАТЬ СОБЫТИЕ ДЛЯ КНОПКИ НОВАЯ ИГРА
         newGame.setOnMouseClicked(event -> {
-            SnakeGame.main(s);
 
         });
         options.setOnMouseClicked(event -> menuuBox.setSubMenu(optionsMenu));
@@ -132,7 +131,7 @@ public class GameMenu extends Application {
     }
 
     //Класс хранящий SubMen и меняющий их
-    private static class MenuBox extends Pane {
+    public static class MenuBox extends Pane {
         static SubMenu subMenu;
 
         public MenuBox(SubMenu subMenu) {
@@ -150,6 +149,10 @@ public class GameMenu extends Application {
             getChildren().remove(MenuBox.subMenu);
             MenuBox.subMenu = subMenu;
             getChildren().add(MenuBox.subMenu);
+
+        }
+        public void setRoot(Pane pane){
+            getChildren().remove(MenuBox.subMenu);
 
         }
 

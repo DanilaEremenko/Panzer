@@ -3,7 +3,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-
 public class SpaceRocket extends Pane {
     private Point2D velocity = new Point2D(0, 0);
     private double speed=10;

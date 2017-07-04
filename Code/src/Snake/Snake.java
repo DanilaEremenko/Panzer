@@ -33,7 +33,7 @@ public class Snake extends Pane {
         setTranslateY(snake.getTranslateY());
     }
 
-//КАК ВАРИАНТ,ТОЛЬКО ТОГДА ПРИДЕТСЯ
+    //КАК ВАРИАНТ,ТОЛЬКО ТОГДА ПРИДЕТСЯ
     //Точка в которую движется голова
     public void setTarget(double x, double y) {
         //    velocity = new javafx.geometry.Point2D(x, y).subtract(getTranslateX(), getTranslateY()).normalize().multiply(this.x);
