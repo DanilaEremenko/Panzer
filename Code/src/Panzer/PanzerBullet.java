@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 //Класс для создания пуль и управления их траекторией
 public class PanzerBullet extends Pane {
-    private int speed = 20; //Скорость полета пули
+    private double speed = 20/Panzer.scaley; //Скорость полета пули
     private PanzerDirection vector = PanzerDirection.STOP;//Направление движения пули
-    private static int size = 14;
+    private static double size = 14/Panzer.scaley;
 
     public PanzerBullet() {
         Rectangle bullet = new Rectangle(size, size, Color.BLACK);
@@ -69,7 +69,7 @@ public class PanzerBullet extends Pane {
     }
 
 
-    public static int getSize() {
+    public static double getSize() {
         return size;
     }
 
