@@ -16,7 +16,7 @@ public class PanzerGame extends Application {
     public void start(Stage primaryStage) throws Exception {
         Pane root = new Pane();
 
-        Levels.level2();
+        Levels.level(Levels.LevelNumbers.ONE);
 
         for (int i = 0; i < Panzer.bulletDigit; i++)
             root.getChildren().addAll(Levels.panzer.getBullets().get(i), Levels.panzer2.getBullets().get(i));
