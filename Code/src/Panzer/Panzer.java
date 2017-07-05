@@ -31,7 +31,7 @@ public class Panzer extends Pane {
         setScaleY(scaley);
         setScaleY(scaley);
         for (int i = 0; i < bulletDigit; i++) {
-            bullets.add(new PanzerBullet());
+            bullets.add(new PanzerBullet(this));
 
         }
 
@@ -39,7 +39,7 @@ public class Panzer extends Pane {
     }
 
     //Метод устанавливающий пулю на место стрялющего танка
-    public void fire(ArrayList<PanzerBullet> bullets) {
+    public void fire() {
         bullets.get(numberofBullet).setVector(vector);
         switch (vector) {
             case R:

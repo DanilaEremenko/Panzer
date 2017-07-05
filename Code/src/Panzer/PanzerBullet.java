@@ -9,8 +9,10 @@ public class PanzerBullet extends Pane {
     private double speed = 20/Panzer.scaley; //Скорость полета пули
     private PanzerDirection vector = PanzerDirection.STOP;//Направление движения пули
     private static double size = 14/Panzer.scaley;
+    private Panzer myPanzer;
 
-    public PanzerBullet() {
+    public PanzerBullet(Panzer myPanzer) {
+        this.myPanzer=myPanzer;
         Rectangle bullet = new Rectangle(size, size, Color.BLACK);
         bullet.setArcHeight(50);
         bullet.setArcWidth(50);
@@ -21,7 +23,7 @@ public class PanzerBullet extends Pane {
 //        setLayoutY(50);//Еще пригодится
     }
 
-    public void move(ArrayList<Panzer> opponents) {
+    public void move() {
         switch (vector) {
             case R:
                 setTranslateX(getTranslateX() + speed);
@@ -39,7 +41,7 @@ public class PanzerBullet extends Pane {
                 break;
 
         }
-        for (Panzer opponent : opponents) {
+        for (Panzer opponent : myPanzer.getOpponents()) {
 
             if (getBoundsInParent().intersects(opponent.getBoundsInParent())) {
                 opponent.setHealth(opponent.getHealth() - 1);
@@ -67,6 +69,8 @@ public class PanzerBullet extends Pane {
 
 
     }
+
+
 
 
     public static double getSize() {

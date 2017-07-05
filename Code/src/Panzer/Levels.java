@@ -1,34 +1,35 @@
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+
+
 //Класс для создания и хранения карт
 public class Levels {
 
     enum LevelNumbers {ONE, TWO;}
 
-    static public Panzer panzer;
-    static public Panzer panzer2;
-
+    static ArrayList<Panzer>panzers=new ArrayList<>();
 
     public static void level(LevelNumbers digit) {
         switch (digit) {
             case ONE:
-                panzer = new Panzer(Color.GREEN);
-                panzer.setTranslateX(100);
-                panzer.setTranslateY(200);
-                panzer2 = new Panzer(Color.RED);
-                panzer2.setTranslateX(500);
-                panzer2.setTranslateY(600);
-                panzer.addOpponent(panzer2);
-                panzer2.addOpponent(panzer);
-                Panzer.elements.add(PanzerElement.generateVertical(100));
-                Panzer.elements.add(PanzerElement.generateGorizontal(100));
-                Panzer.elements.add(PanzerElement.generateVertical(100));
-                Panzer.elements.add(PanzerElement.generateGorizontal(100));
-                Panzer.elements.add(PanzerElement.generateVertical(100));
-                Panzer.elements.add(PanzerElement.generateGorizontal(100));
-                Panzer.elements.add(PanzerElement.generateVertical(100));
-                Panzer.elements.add(PanzerElement.generateGorizontal(100));
+                panzers.add(new Panzer(Color.GREEN));
+                panzers.add(new Panzer(Color.RED));
+                panzers.get(0).setTranslateX(100);
+                panzers.get(0).setTranslateY(200);
+                panzers.get(1).setTranslateX(500);
+                panzers.get(1).setTranslateY(600);
+                panzers.get(0).addOpponent(panzers.get(1));
+                panzers.get(1).addOpponent(panzers.get(0));
 
+                Panzer.elements.add(PanzerElement.generateVertical(100));
+                Panzer.elements.add(PanzerElement.generateGorizontal(100));
+                Panzer.elements.add(PanzerElement.generateVertical(100));
+                Panzer.elements.add(PanzerElement.generateGorizontal(100));
+                Panzer.elements.add(PanzerElement.generateVertical(100));
+                Panzer.elements.add(PanzerElement.generateGorizontal(100));
+                Panzer.elements.add(PanzerElement.generateVertical(100));
+                Panzer.elements.add(PanzerElement.generateGorizontal(100));
                 Panzer.elements.get(0).setTranslateX(250);//вертикальная
                 Panzer.elements.get(0).setTranslateY(130);
                 Panzer.elements.get(1).setTranslateX(150);//горизонтальная
@@ -55,14 +56,15 @@ public class Levels {
                 break;
 
             case TWO:
-                panzer = new Panzer(Color.GREEN);
-                panzer.setTranslateX(100);
-                panzer.setTranslateY(200);
-                panzer2 = new Panzer(Color.RED);
-                panzer2.setTranslateX(500);
-                panzer2.setTranslateY(600);
-                panzer.addOpponent(panzer2);
-                panzer2.addOpponent(panzer);
+                panzers.add(new Panzer(Color.GREEN));
+                panzers.add(new Panzer(Color.RED));
+                panzers.get(0).setTranslateX(100);
+                panzers.get(0).setTranslateY(200);
+                panzers.get(1).setTranslateX(500);
+                panzers.get(1).setTranslateY(600);
+                panzers.get(0).addOpponent(panzers.get(1));
+                panzers.get(1).addOpponent(panzers.get(0));
+
                 break;
 
         }
