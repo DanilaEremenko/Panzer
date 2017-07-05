@@ -11,7 +11,8 @@ public class Panzer extends Pane {
     private int wB = 30;
     private int wG = 20;
     private int hG = 14;
-    private int speed = 4;//скорость передвжиения танков
+    public static double scaley=1;
+    private double speed = 4*scaley;//скорость передвжиения танков
     public static int bulletDigit = 30;//Колличество пуль у каждого танка
     private int numberofBullet = 0;//Пуля на очереди
     private int health = 2;//Здоровье танка
@@ -27,6 +28,8 @@ public class Panzer extends Pane {
         gun.setTranslateX(body.getTranslateX() + wB);
         gun.setTranslateY(body.getTranslateY() + (wB - hG) / 2);
         getChildren().addAll(body, gun);
+        setScaleY(scaley);
+        setScaleY(scaley);
         for (int i = 0; i < bulletDigit; i++) {
             bullets.add(new PanzerBullet());
 
@@ -85,6 +88,11 @@ public class Panzer extends Pane {
                 break;
             case U:
                 setTranslateY(getTranslateY() - speed);
+                break;
+            case STOP:
+                break;
+
+
 
         }
 
@@ -120,27 +128,15 @@ public class Panzer extends Pane {
         vector = newVector;
     }
 
-    public void addOpponent(Panzer opponent) {
-        opponents.add(opponent);
-    }
+    public void addOpponent(Panzer opponent) {opponents.add(opponent);}
 
+    public ArrayList<Panzer> getOpponents() {return opponents;}
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setHealth(int health) {this.health = health;}
 
-    }
+    public int getHealth() {return health;}
 
-    public int getHealth() {
-        return health;
-    }
-
-    public ArrayList<Panzer> getOpponents() {
-        return opponents;
-    }
-
-    public ArrayList<PanzerBullet> getBullets() {
-        return bullets;
-    }
+    public ArrayList<PanzerBullet> getBullets() {return bullets;}
 }
 
 
