@@ -80,7 +80,7 @@ public class GameMenu extends Application {
     }
 
     //Класс иконок меню
-    private static class MenuItem extends StackPane {
+    static class MenuItem extends StackPane {
         public MenuItem(String name) {
             Rectangle bg = new Rectangle(300, 40, Color.WHITE);
             bg.setOpacity(0.5);//Прозрачность прямоугольника
@@ -118,7 +118,7 @@ public class GameMenu extends Application {
     }
 
     //Класс хранящий икнонки
-    private static class SubMenu extends VBox {
+    static class SubMenu extends VBox {
         public SubMenu(MenuItem... items) {
             setSpacing(20);//Отступы между элементами меню
             setTranslateY(250);
