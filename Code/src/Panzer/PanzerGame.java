@@ -2,75 +2,75 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.util.logging.Level;
 
 
 public class PanzerGame extends Application {
 
     static int sceneHeight = 700;
     static int sceneWidt = 900;
+    private Levels myLevel;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
 
-        Levels.generateLevel("Code\\src\\LevelOne.txt");
+        myLevel=new Levels("Code\\src\\LevelOne.txt");
 
 
-        primaryStage.setScene(Levels.menu);
+        primaryStage.setScene(myLevel.getMenu());
         primaryStage.show();
-        PanzerMenu.newGame.setOnMouseClicked(event -> primaryStage.setScene(Levels.scene));
+        PanzerMenu.newGame.setOnMouseClicked(event -> primaryStage.setScene(myLevel.getScene()));
         PanzerMenu.exit.setOnMouseClicked(event -> primaryStage.close());
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                for (Panzer panzer : Levels.panzers)
+                for (Panzer panzer : myLevel.getPanzers())
                     for (PanzerBullet bullet : panzer.getBullets())
                         bullet.move();
 
-                for (Panzer panzer : Levels.panzers)
+                for (Panzer panzer : myLevel.getPanzers())
                     panzer.move();
 
 
-                Levels.scene.setOnKeyPressed(event -> {
+                myLevel.getScene().setOnKeyPressed(event -> {
                     switch (event.getCode()) {
 
                         case RIGHT:
-                            Levels.panzers.get(0).setVector(PanzerDirection.R);
+                            myLevel.getPanzers().get(0).setVector(PanzerDirection.R);
                             break;
                         case LEFT:
-                            Levels.panzers.get(0).setVector(PanzerDirection.L);
+                            myLevel.getPanzers().get(0).setVector(PanzerDirection.L);
                             break;
                         case UP:
-                            Levels.panzers.get(0).setVector(PanzerDirection.U);
+                            myLevel.getPanzers().get(0).setVector(PanzerDirection.U);
                             break;
                         case DOWN:
-                            Levels.panzers.get(0).setVector(PanzerDirection.D);
+                            myLevel.getPanzers().get(0).setVector(PanzerDirection.D);
                             break;
                         case ENTER:
-                            Levels.panzers.get(0).fire();
+                            myLevel.getPanzers().get(0).fire();
                             break;
 
                         case A:
-                            Levels.panzers.get(1).setVector(PanzerDirection.L);
+                            myLevel.getPanzers().get(1).setVector(PanzerDirection.L);
                             break;
                         case D:
-                            Levels.panzers.get(1).setVector(PanzerDirection.R);
+                            myLevel.getPanzers().get(1).setVector(PanzerDirection.R);
                             break;
                         case W:
-                            Levels.panzers.get(1).setVector(PanzerDirection.U);
+                            myLevel.getPanzers().get(1).setVector(PanzerDirection.U);
                             break;
                         case S:
-                            Levels.panzers.get(1).setVector(PanzerDirection.D);
+                            myLevel.getPanzers().get(1).setVector(PanzerDirection.D);
                             break;
                         case SPACE:
-                            Levels.panzers.get(1).fire();
+                            myLevel.getPanzers().get(1).fire();
                             break;
 
                         case ESCAPE:
-                            primaryStage.setScene(Levels.menu);
+                            primaryStage.setScene(myLevel.getMenu());
 
                     }
 
