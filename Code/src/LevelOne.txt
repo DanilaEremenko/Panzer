@@ -1,0 +1,28 @@
+Panzer <2>
+VerticalEl <4>
+GorizontalEl <4>
+|
+1PanzTranslateX <100>
+1PanzTransalteY <200>
+2PanzTranslateX <500>
+2PanzTranslateY <600>
+|
+1_Vertical_El_Trans_X <250>
+1_Vertical_El_Trans_Y <130>
+2_Vertical_El_Trans_X <500>
+2_Vertical_El_Trans_Y <130>
+3_Vertical_El_Trans_X <500>
+3_Vertical_El_Trans_Y <390>
+4_Vertical_El_Trans_X <250>
+4_Vertical_El_Trans_Y <390>
+|
+1_Gorizontal_El_Trans_X <150>
+1_Gorizontal_El_Trans_Y <230>
+2_Gorizontal_El_Trans_X <520>
+2_Gorizontal_El_Trans_Y <230>
+3_Gorizontal_El_Trans_X <520>
+3_Gorizontal_El_Trans_Y <370>
+4_Gorizontal_El_Trans_X <150>
+4_Gorizontal_El_Trans_Y <370>
+|
+Ramka<1>
