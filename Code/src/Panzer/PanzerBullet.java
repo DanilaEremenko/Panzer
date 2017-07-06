@@ -51,7 +51,7 @@ public class PanzerBullet extends Pane {
             }
         }
 
-        for (PanzerElement element : Levels.elements)
+        for (PanzerElement element : myPanzer.getMyLevel().getElements())
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
                 setTranslateX(-15);
                 setTranslateY(-15);
@@ -82,9 +82,7 @@ public class PanzerBullet extends Pane {
         this.vector = vector;
     }
 
-    public PanzerDirection getVector() {
-        return vector;
-    }
+
 
 
 }
