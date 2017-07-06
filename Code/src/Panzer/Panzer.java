@@ -11,18 +11,18 @@ public class Panzer extends Pane {
     private int wB = 30;
     private int wG = 20;
     private int hG = 14;
-    public static double scaley = 1;
+    public static double scaley = 1;//Должно хранится в классе Levels
     private double speed = 4 * scaley;//скорость передвжиения танков
-    public static int bulletDigit = 30;//Колличество пуль у каждого танка
+    private static int bulletDigit = 30;//Колличество пуль у каждого танка
     private int numberofBullet = 0;//Пуля на очереди
     private int health = 2;//Здоровье танка
     private ArrayList<Panzer> opponents = new ArrayList<>();//Соперник
     private PanzerDirection vector = PanzerDirection.R;
-    //public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();//Список препятствий
     private ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();//Список патронов
+    private Levels myLevel;
 
 
-    public Panzer(Color color, int X, int Y) {
+    public Panzer(Color color, int X, int Y,Levels level) {
         Rectangle gun = new Rectangle(wG, hG, Color.BLACK);
         Rectangle body = new Rectangle(wB, hB, color);
         gun.setTranslateX(body.getTranslateX() + wB);
@@ -32,6 +32,7 @@ public class Panzer extends Pane {
         setTranslateY(Y);
         setScaleY(scaley);
         setScaleY(scaley);
+        myLevel=level;
         for (int i = 0; i < bulletDigit; i++) {
             bullets.add(new PanzerBullet(this));
 
@@ -104,7 +105,7 @@ public class Panzer extends Pane {
                 setTranslateY(lastPositionY);
             }
         }
-        for (PanzerElement element : Levels.elements)
+        for (PanzerElement element : myLevel.getElements())
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
                 setTranslateX(lastPositionX);
                 setTranslateY(lastPositionY);
@@ -158,6 +159,13 @@ public class Panzer extends Pane {
         return bullets;
     }
 
+    public Levels getMyLevel() {
+        return myLevel;
+    }
+
+    public static int getBulletDigit() {
+        return bulletDigit;
+    }
 }
 
 
