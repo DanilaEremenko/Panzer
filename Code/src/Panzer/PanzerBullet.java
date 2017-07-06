@@ -2,7 +2,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
+
 
 //Класс для создания пуль и управления их траекторией
 public class PanzerBullet extends Pane {
@@ -51,7 +51,7 @@ public class PanzerBullet extends Pane {
             }
         }
 
-        for (PanzerElement element : Panzer.elements)
+        for (PanzerElement element : Levels.elements)
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
                 setTranslateX(-15);
                 setTranslateY(-15);
@@ -66,6 +66,7 @@ public class PanzerBullet extends Pane {
             setTranslateY(PanzerGame.sceneHeight - 20);
         if (getTranslateY() > PanzerGame.sceneHeight + 20)
             setTranslateY(1);
+
 
 
     }
