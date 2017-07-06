@@ -10,6 +10,12 @@ public class Levels {
 
     static ArrayList<Panzer>panzers=new ArrayList<>();
 
+    static public void generate(String fileName){
+
+
+
+    }
+
     public static void level(LevelNumbers digit) {
         switch (digit) {
             case ONE:
