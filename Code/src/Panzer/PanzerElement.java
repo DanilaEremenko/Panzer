@@ -5,10 +5,12 @@ import javafx.scene.shape.Rectangle;
 //Класс для создания препеятствий
 public class PanzerElement extends Pane {
 
-    static PanzerElement gorizontal=PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,0);
-    static PanzerElement gorizontal2=PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,PanzerGame.sceneHeight-20);
-    static PanzerElement vertical=PanzerElement.generateVertical(PanzerGame.sceneHeight,0,0);
-    static PanzerElement vertical2=PanzerElement.generateVertical(PanzerGame.sceneHeight,PanzerGame.sceneWidt-20,0);
+    private static PanzerElement gorizontal=PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,0);
+    private static PanzerElement gorizontal2=PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,PanzerGame.sceneHeight-20);
+    private static PanzerElement vertical=PanzerElement.generateVertical(PanzerGame.sceneHeight,0,0);
+    private static PanzerElement vertical2=PanzerElement.generateVertical(PanzerGame.sceneHeight,PanzerGame.sceneWidt-20,0);
+
+    private PanzerElement(){}
 
     public static PanzerElement generateRectangle(int side) {
         Rectangle rect = new Rectangle(side, side, Color.BLACK);
@@ -35,4 +37,20 @@ public class PanzerElement extends Pane {
         return element;
     }
 
+
+    public static PanzerElement getVertical() {
+        return vertical;
+    }
+
+    public static PanzerElement getVertical2() {
+        return vertical2;
+    }
+
+    public static PanzerElement getGorizontal() {
+        return gorizontal;
+    }
+
+    public static PanzerElement getGorizontal2() {
+        return gorizontal2;
+    }
 }
