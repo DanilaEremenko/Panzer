@@ -11,23 +11,25 @@ public class Panzer extends Pane {
     private int wB = 30;
     private int wG = 20;
     private int hG = 14;
-    public static double scaley=1;
-    private double speed = 4*scaley;//скорость передвжиения танков
+    public static double scaley = 1;
+    private double speed = 4 * scaley;//скорость передвжиения танков
     public static int bulletDigit = 30;//Колличество пуль у каждого танка
     private int numberofBullet = 0;//Пуля на очереди
     private int health = 2;//Здоровье танка
-    private ArrayList<Panzer> opponents=new ArrayList<>();//Соперник
+    private ArrayList<Panzer> opponents = new ArrayList<>();//Соперник
     private PanzerDirection vector = PanzerDirection.R;
-    public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();//Список препятствий
+    //public static ArrayList<PanzerElement> elements = new ArrayList<PanzerElement>();//Список препятствий
     private ArrayList<PanzerBullet> bullets = new ArrayList<PanzerBullet>();//Список патронов
 
 
-    public Panzer(Color color) {
+    public Panzer(Color color, int X, int Y) {
         Rectangle gun = new Rectangle(wG, hG, Color.BLACK);
         Rectangle body = new Rectangle(wB, hB, color);
         gun.setTranslateX(body.getTranslateX() + wB);
         gun.setTranslateY(body.getTranslateY() + (wB - hG) / 2);
         getChildren().addAll(body, gun);
+        setTranslateX(X);
+        setTranslateY(Y);
         setScaleY(scaley);
         setScaleY(scaley);
         for (int i = 0; i < bulletDigit; i++) {
@@ -93,7 +95,6 @@ public class Panzer extends Pane {
                 break;
 
 
-
         }
 
         for (Panzer opponent : opponents) {
@@ -103,7 +104,7 @@ public class Panzer extends Pane {
                 setTranslateY(lastPositionY);
             }
         }
-        for (PanzerElement element : elements)
+        for (PanzerElement element : Levels.elements)
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
                 setTranslateX(lastPositionX);
                 setTranslateY(lastPositionY);
@@ -128,15 +129,35 @@ public class Panzer extends Pane {
         vector = newVector;
     }
 
-    public void addOpponent(Panzer opponent) {opponents.add(opponent);}
+    public void addOpponent(Panzer opponent) {
+        if (opponent != this)
+            opponents.add(opponent);
+    }
 
-    public ArrayList<Panzer> getOpponents() {return opponents;}
+    public void addOpponents(ArrayList<Panzer> opponents) {
+        for (Panzer opponent : opponents)
+            if (opponent != this)
+                this.opponents.add(opponent);
 
-    public void setHealth(int health) {this.health = health;}
 
-    public int getHealth() {return health;}
+    }
 
-    public ArrayList<PanzerBullet> getBullets() {return bullets;}
+    public ArrayList<Panzer> getOpponents() {
+        return opponents;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public ArrayList<PanzerBullet> getBullets() {
+        return bullets;
+    }
+
 }
 
 
