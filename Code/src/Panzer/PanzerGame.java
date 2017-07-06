@@ -1,38 +1,26 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.util.logging.Level;
 
 
 public class PanzerGame extends Application {
+
     static int sceneHeight = 700;
     static int sceneWidt = 900;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Pane root = new Pane();
-
-        Levels.level(Levels.LevelNumbers.ONE);
-
-        for (int i = 0; i < Panzer.bulletDigit; i++)
-            for (Panzer panzer : Levels.panzers)
-                root.getChildren().addAll(panzer.getBullets().get(i));
-
-        for (PanzerElement element : Panzer.elements)
-            root.getChildren().addAll(element);
-
-        for (Panzer panzer : Levels.panzers)
-            root.getChildren().addAll(panzer);
 
 
-        Scene scene = new Scene(root, sceneWidt, sceneHeight);
-        Scene menu = new Scene(PanzerMenu.menuBox, sceneWidt, sceneHeight);
-        primaryStage.setScene(menu);
+        Levels.generateLevel("Code\\src\\LevelOne.txt");
+
+
+        primaryStage.setScene(Levels.menu);
         primaryStage.show();
-        PanzerMenu.newGame.setOnMouseClicked(event -> primaryStage.setScene(scene));
+        PanzerMenu.newGame.setOnMouseClicked(event -> primaryStage.setScene(Levels.scene));
         PanzerMenu.exit.setOnMouseClicked(event -> primaryStage.close());
 
         AnimationTimer timer = new AnimationTimer() {
@@ -46,7 +34,7 @@ public class PanzerGame extends Application {
                     panzer.move();
 
 
-                scene.setOnKeyPressed(event -> {
+                Levels.scene.setOnKeyPressed(event -> {
                     switch (event.getCode()) {
 
                         case RIGHT:
@@ -82,7 +70,7 @@ public class PanzerGame extends Application {
                             break;
 
                         case ESCAPE:
-                            primaryStage.setScene(menu);
+                            primaryStage.setScene(Levels.menu);
 
                     }
 
