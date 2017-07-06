@@ -1,6 +1,7 @@
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -14,13 +15,14 @@ public class Levels {
     //[2] Для координат вертикальных препятствий X и Y чередуются allDigits[0].get[1]-число вертикальных препятствий
     //[3] Для координат горизонтальных препятствий X и Y чередуются allDigits[0].get[2]-число горизонтальных препятствий
     //[4] Для рамки либо 1 либо 0
-    private static ArrayList<Integer>[] allDigits = new ArrayList[5];
-    static ArrayList<Panzer> panzers = new ArrayList<>();
-    static ArrayList<PanzerElement> elements = new ArrayList<>();
-    static Scene scene;
-    static Scene menu;
+    private ArrayList<Integer>[] allDigits = new ArrayList[5];
+    private ArrayList<Panzer> panzers = new ArrayList<>();
+    private ArrayList<PanzerElement> elements = new ArrayList<>();
+    private Scene scene;
+    private Scene menu;
+    private Pane root;
 
-    public static void generateLevel(String fileName) throws IOException {
+    public Levels(String fileName) throws IOException {
         FileReader fileReader = new FileReader(new File(fileName));
         for (int i = 0; i < allDigits.length; i++)
             allDigits[i] = new ArrayList<Integer>();
@@ -51,7 +53,7 @@ public class Levels {
 
         int numberCoordinate = 0;
         for (i = 0; i < allDigits[0].get(0); i++) {
-            panzers.add(new Panzer(Color.GREEN, allDigits[1].get(numberCoordinate), allDigits[1].get(numberCoordinate + 1)));
+            panzers.add(new Panzer(Color.GREEN, allDigits[1].get(numberCoordinate), allDigits[1].get(numberCoordinate + 1), this));
             numberCoordinate += 2;
 
         }
@@ -70,25 +72,26 @@ public class Levels {
             numberCoordinate += 2;
         }
 
-        if (allDigits[4].get(0) == 1) {
-            elements.add(PanzerElement.gorizontal);
-            elements.add(PanzerElement.gorizontal2);
-            elements.add(PanzerElement.vertical);
-            elements.add(PanzerElement.vertical2);
+        if (allDigits[4].get(0) == 1){
+            elements.add(PanzerElement.getGorizontal());
+            elements.add(PanzerElement.getGorizontal2());
+            elements.add(PanzerElement.getVertical());
+            elements.add(PanzerElement.getVertical2());
         }
 
 
 
-        Pane root = new Pane();
 
-        for (i = 0; i < Panzer.bulletDigit; i++)
-            for (Panzer panzer : Levels.panzers)
+        root = new Pane();
+
+        for (i = 0; i < Panzer.getBulletDigit(); i++)
+            for (Panzer panzer : panzers)
                 root.getChildren().addAll(panzer.getBullets().get(i));
 
-        for (PanzerElement element : Levels.elements)
+        for (PanzerElement element : elements)
             root.getChildren().addAll(element);
 
-        for (Panzer panzer : Levels.panzers)
+        for (Panzer panzer : panzers)
             root.getChildren().addAll(panzer);
 
 
@@ -96,7 +99,22 @@ public class Levels {
         menu = new Scene(PanzerMenu.menuBox, PanzerGame.sceneWidt, PanzerGame.sceneHeight);
 
 
+    }
 
+    public Scene getMenu() {
+        return menu;
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public ArrayList<PanzerElement> getElements() {
+        return elements;
+    }
+
+    public ArrayList<Panzer> getPanzers() {
+        return panzers;
     }
 
 
