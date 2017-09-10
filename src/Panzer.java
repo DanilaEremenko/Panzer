@@ -22,7 +22,7 @@ public class Panzer extends Pane {
     private Levels myLevel;
 
 
-    public Panzer(Color color, int X, int Y,Levels level) {
+    public Panzer(Color color, int X, int Y, Levels level) {
         Rectangle gun = new Rectangle(wG, hG, Color.BLACK);
         Rectangle body = new Rectangle(wB, hB, color);
         gun.setTranslateX(body.getTranslateX() + wB);
@@ -32,7 +32,7 @@ public class Panzer extends Pane {
         setTranslateY(Y);
         setScaleY(scaley);
         setScaleY(scaley);
-        myLevel=level;
+        myLevel = level;
         for (int i = 0; i < bulletDigit; i++) {
             bullets.add(new PanzerBullet(this));
 
@@ -51,12 +51,11 @@ public class Panzer extends Pane {
                 break;
             case L:
                 bullets.get(numberofBullet).setTranslateX(getTranslateX() - PanzerBullet.getSize());
-                bullets.get(numberofBullet).setTranslateY(getTranslateY() - (hB + hG) / 2);
+                bullets.get(numberofBullet).setTranslateY(getTranslateY() + hG / 2);
                 break;
             case D:
-                bullets.get(numberofBullet).setTranslateX(getTranslateX() - (hB + hG) / 2
-                );
-                bullets.get(numberofBullet).setTranslateY(getTranslateY() + (wG + wB) / 2);
+                bullets.get(numberofBullet).setTranslateX(getTranslateX() + hG / 2);
+                bullets.get(numberofBullet).setTranslateY(getTranslateY());
                 break;
             case U:
                 bullets.get(numberofBullet).setTranslateX(getTranslateX() + (hB - hG) / 2);
@@ -126,7 +125,7 @@ public class Panzer extends Pane {
 
     //Метод поворачивающий танк
     public void setVector(PanzerDirection newVector) {
-        getTransforms().add(new Rotate(vector.getAngle() - newVector.getAngle(), 0, 0));
+        getTransforms().add(new Rotate(vector.getAngle() - newVector.getAngle(), wB / 2, hB / 2));
         vector = newVector;
     }
 
