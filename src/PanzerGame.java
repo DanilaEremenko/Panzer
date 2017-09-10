@@ -3,7 +3,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 
-
 public class PanzerGame extends Application {
 
     static int sceneHeight = 700;
@@ -15,7 +14,7 @@ public class PanzerGame extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
-        myLevel=new Levels("Code\\src\\LevelOne.txt");
+        myLevel = new Levels("levels/LevelOne.txt");
 
 
         primaryStage.setScene(myLevel.getMenu());

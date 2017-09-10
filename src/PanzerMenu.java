@@ -15,16 +15,11 @@ import javafx.util.Duration;
 
 public class PanzerMenu {
 
-    static MenuItem newGame=new MenuItem("Battle");
-    static MenuItem options=new MenuItem("Options");
-    static MenuItem exit=new MenuItem("Exit");
-    static SubMenu mainMenu=new SubMenu(newGame,options,exit);
-    static MenuBox menuBox=new MenuBox(mainMenu);
-
-
-
-
-
+    static MenuItem newGame = new MenuItem("Battle");
+    static MenuItem options = new MenuItem("Options");
+    static MenuItem exit = new MenuItem("Exit");
+    static SubMenu mainMenu = new SubMenu(newGame, options, exit);
+    static MenuBox menuBox = new MenuBox(mainMenu);
 
 
     //Класс иконок меню
@@ -88,16 +83,14 @@ public class PanzerMenu {
         SubMenu mainMenu = new SubMenu(newGame, options, exitGame);
 
 
-
         public MenuBox(SubMenu subMenu) {
-            ImageView imageView=new ImageView(new Image("menu.png"));
+            ImageView imageView = new ImageView(new Image("file:rsc/menu.png"));
             imageView.setFitHeight(PanzerGame.sceneHeight);
             imageView.setFitWidth(PanzerGame.sceneWidt);
             MenuBox.subMenu = subMenu;
             setVisible(true);
             subMenu.setAlignment(Pos.TOP_CENTER);
-            getChildren().addAll(imageView,subMenu);
-
+            getChildren().addAll(imageView, subMenu);
         }
 
         //Метод для перехода из одного меню в другое
@@ -114,7 +107,6 @@ public class PanzerMenu {
         }
 
     }
-
 
 
 }
