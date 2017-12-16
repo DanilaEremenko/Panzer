@@ -16,7 +16,7 @@ public class Levels {
     //[3] Для координат горизонтальных препятствий X и Y чередуются allDigits[0].get[2]-число горизонтальных препятствий
     //[4] Для рамки либо 1 либо 0
     private ArrayList<Integer>[] allDigits = new ArrayList[5];
-    private ArrayList<Panzer> panzers = new ArrayList<>();
+    private ArrayList<GraphicPanzer> graphicPanzers = new ArrayList<>();
     private ArrayList<PanzerElement> elements = new ArrayList<>();
     private Scene scene;
     private Scene menu;
@@ -53,12 +53,12 @@ public class Levels {
 
         int numberCoordinate = 0;
         for (i = 0; i < allDigits[0].get(0); i++) {
-            panzers.add(new Panzer(Color.GREEN, allDigits[1].get(numberCoordinate), allDigits[1].get(numberCoordinate + 1), this));
+            graphicPanzers.add(new GraphicPanzer(Color.GREEN, allDigits[1].get(numberCoordinate), allDigits[1].get(numberCoordinate + 1), this));
             numberCoordinate += 2;
 
         }
-        for (Panzer panzer : panzers) {
-            panzer.addOpponents(panzers);
+        for (GraphicPanzer graphicPanzer : graphicPanzers) {
+            graphicPanzer.addOpponents(graphicPanzers);
 
         }
         numberCoordinate = 0;
@@ -84,15 +84,15 @@ public class Levels {
 
         root = new Pane();
 
-        for (i = 0; i < Panzer.getBulletDigit(); i++)
-            for (Panzer panzer : panzers)
-                root.getChildren().addAll(panzer.getBullets().get(i));
+        for (i = 0; i < GraphicPanzer.getBulletDigit(); i++)
+            for (GraphicPanzer graphicPanzer : graphicPanzers)
+                root.getChildren().addAll(graphicPanzer.getBullets().get(i));
 
         for (PanzerElement element : elements)
             root.getChildren().addAll(element);
 
-        for (Panzer panzer : panzers)
-            root.getChildren().addAll(panzer);
+        for (GraphicPanzer graphicPanzer : graphicPanzers)
+            root.getChildren().addAll(graphicPanzer);
 
 
         scene = new Scene(root, PanzerGame.sceneWidt, PanzerGame.sceneHeight);
@@ -113,8 +113,8 @@ public class Levels {
         return elements;
     }
 
-    public ArrayList<Panzer> getPanzers() {
-        return panzers;
+    public ArrayList<GraphicPanzer> getGraphicPanzers() {
+        return graphicPanzers;
     }
 
 

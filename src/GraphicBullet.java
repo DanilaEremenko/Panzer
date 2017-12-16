@@ -5,14 +5,11 @@ import javafx.scene.shape.Rectangle;
 
 
 //Класс для создания пуль и управления их траекторией
-public class PanzerBullet extends Pane {
-    private double speed = 20/Panzer.scaley; //Скорость полета пули
-    private PanzerDirection vector = PanzerDirection.STOP;//Направление движения пули
-    private static double size = 14/Panzer.scaley;
-    private Panzer myPanzer;
+public class GraphicBullet extends Pane {
+    private GraphicPanzer myGraphicPanzer;
 
-    public PanzerBullet(Panzer myPanzer) {
-        this.myPanzer=myPanzer;
+    public GraphicBullet(GraphicPanzer myGraphicPanzer) {
+        this.myGraphicPanzer = myGraphicPanzer;
         Rectangle bullet = new Rectangle(size, size, Color.BLACK);
         bullet.setArcHeight(50);
         bullet.setArcWidth(50);
@@ -41,7 +38,7 @@ public class PanzerBullet extends Pane {
                 break;
 
         }
-        for (Panzer opponent : myPanzer.getOpponents()) {
+        for (GraphicPanzer opponent : myGraphicPanzer.getOpponents()) {
 
             if (getBoundsInParent().intersects(opponent.getBoundsInParent())) {
                 opponent.setHealth(opponent.getHealth() - 1);
@@ -51,7 +48,7 @@ public class PanzerBullet extends Pane {
             }
         }
 
-        for (PanzerElement element : myPanzer.getMyLevel().getElements())
+        for (PanzerElement element : myGraphicPanzer.getMyLevel().getElements())
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
                 setTranslateX(-15);
                 setTranslateY(-15);
@@ -70,9 +67,6 @@ public class PanzerBullet extends Pane {
 
 
     }
-
-
-
 
     public static double getSize() {
         return size;
