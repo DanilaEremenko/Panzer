@@ -11,21 +11,46 @@ public class Levels {
 
 
     //[0] Для колличества танков, вертикальных ограждений и горизонтальных ограждений
-    //[1] Для координат танков,сначала X и Y чередуются allDigits[0].get[0]-число танков
-    //[2] Для координат вертикальных препятствий X и Y чередуются allDigits[0].get[1]-число вертикальных препятствий
-    //[3] Для координат горизонтальных препятствий X и Y чередуются allDigits[0].get[2]-число горизонтальных препятствий
+    //[1] Для координат танков,сначала X и Y чередуются identificationDigits[0].get[0]-число танков
+    //[2] Для координат вертикальных препятствий X и Y чередуются identificationDigits[0].get[1]-число вертикальных препятствий
+    //[3] Для координат горизонтальных препятствий X и Y чередуются identificationDigits[0].get[2]-число горизонтальных препятствий
     //[4] Для рамки либо 1 либо 0
-    private ArrayList<Integer>[] allDigits = new ArrayList[5];
-    private ArrayList<GraphicPanzer> graphicPanzers = new ArrayList<>();
-    private ArrayList<PanzerElement> elements = new ArrayList<>();
+    private ArrayList<Integer>[] identificationDigits = new ArrayList[5];//Собирается при парсе
+    private ArrayList<LogicPanzer> firstPanzers = new ArrayList<>();
+    private ArrayList<LogicPanzer> secondPanzers = new ArrayList<>();
+    private ArrayList<GraphicPanzer> graphicPanzers = new ArrayList<>();//Графические отображения танкова
+    private ArrayList<PanzerElement> elements = new ArrayList<>();//Ограждения
     private Scene scene;
     private Scene menu;
     private Pane root;
 
+//____________________________________________________________________________________________________________________________________
+    //К
+    //О
+    //Н
+    //С
+    //Т
+    //Р
+    //У
+    //К
+    //Т
+    //О
+    //Р
+
+
     public Levels(String fileName) throws IOException {
+
+
+        parsingInformation(fileName);
+
+        identification();
+
+    }
+
+    private void parsingInformation(String fileName) throws IOException {
         FileReader fileReader = new FileReader(new File(fileName));
-        for (int i = 0; i < allDigits.length; i++)
-            allDigits[i] = new ArrayList<Integer>();
+        for (int i = 0; i < identificationDigits.length; i++)
+            identificationDigits[i] = new ArrayList<Integer>();
         int c;
         int digit = 0;
         int i = 0;//Идентификатор листа который заполняем
@@ -33,7 +58,7 @@ public class Levels {
         while ((c = fileReader.read()) != -1) {
             while (pars) {
                 if ((char) c == '>') {
-                    allDigits[i].add(digit);
+                    identificationDigits[i].add(digit);
                     pars = false;
                     digit = 0;
                     break;
@@ -50,43 +75,96 @@ public class Levels {
 
         }
 
+    }
 
+    private void identification() {
+
+        //СОЗДАНИЕ ТАНКОВ
+        //!
+        //!
+        //!
+        //ПЕРЕД ПЕРВЫМ ЗАПУСКОМ НОРМАЛЬНО РАССТАВИТЬ ИНДЕКСЫ
         int numberCoordinate = 0;
-        for (i = 0; i < allDigits[0].get(0); i++) {
-            graphicPanzers.add(new GraphicPanzer(Color.GREEN, allDigits[1].get(numberCoordinate), allDigits[1].get(numberCoordinate + 1), this));
+        firstPanzers.add(LogicPanzer.LightPanzer());
+        secondPanzers.add(LogicPanzer.LightPanzer());
+        firstPanzers.get(0).setTranslate(identificationDigits[1].get(numberCoordinate),
+                identificationDigits[1].get(numberCoordinate + 1));
+        secondPanzers.get(0).setTranslate(identificationDigits[1].get(numberCoordinate),
+                identificationDigits[1].get(numberCoordinate + 1));
+
+        graphicPanzers.add(new GraphicPanzer(firstPanzers.get(0), Color.GREEN));
+        graphicPanzers.add(new GraphicPanzer(secondPanzers.get(0), Color.RED));
+
+        //ИДЕНТЕФИКАЦИЯ КОМАНД
+        for (LogicPanzer firstPanzer : firstPanzers)
+            firstPanzer.setOpponents(secondPanzers);
+
+        for (LogicPanzer secondPanzer : secondPanzers)
+            secondPanzer.setOpponents(firstPanzers);
+
+
+        //СОЗДАНИЯ И РАССТАНОВКА ПРЕПЯТСТВИЙ
+        numberCoordinate = 0;
+        for (int i = 0; i < identificationDigits[0].get(1); i++) {
+            elements.add(PanzerElement.generateVertical(100, identificationDigits[2].get(numberCoordinate), identificationDigits[2].get(numberCoordinate + 1)));
             numberCoordinate += 2;
-
-        }
-        for (GraphicPanzer graphicPanzer : graphicPanzers) {
-            graphicPanzer.addOpponents(graphicPanzers);
-
         }
         numberCoordinate = 0;
-        for (i = 0; i < allDigits[0].get(1); i++) {
-            elements.add(PanzerElement.generateVertical(100, allDigits[2].get(numberCoordinate), allDigits[2].get(numberCoordinate + 1)));
-            numberCoordinate += 2;
-        }
-        numberCoordinate = 0;
-        for (i = 0; i < allDigits[0].get(2); i++) {
-            elements.add(PanzerElement.generateGorizontal(100, allDigits[3].get(numberCoordinate), allDigits[3].get(numberCoordinate + 1)));
+        for (int i = 0; i < identificationDigits[0].get(2); i++) {
+            elements.add(PanzerElement.generateGorizontal(100, identificationDigits[3].get(numberCoordinate), identificationDigits[3].get(numberCoordinate + 1)));
             numberCoordinate += 2;
         }
 
-        if (allDigits[4].get(0) == 1){
+        if (identificationDigits[4].get(0) == 1) {
             elements.add(PanzerElement.getGorizontal());
             elements.add(PanzerElement.getGorizontal2());
             elements.add(PanzerElement.getVertical());
             elements.add(PanzerElement.getVertical2());
         }
 
+        graphicPanzers.get(0).setOnKeyPressed(event -> {
+            switch (event.getCode()) {
 
+                case RIGHT:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.R);
+                    break;
+                case LEFT:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.L);
+                    break;
+                case DOWN:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.D);
+                    break;
+                case UP:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.U);
+                    break;
+
+            }
+        });
+        graphicPanzers.get(1).setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+
+                case D:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.R);
+                    break;
+                case A:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.L);
+                    break;
+                case S:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.D);
+                    break;
+                case W:
+                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.U);
+                    break;
+            }
+        });
 
 
         root = new Pane();
+        //ИДЕНТИФИКАЦИЯ ГРАФИЧЕСКИХ ПУЛЬ
 
-        for (i = 0; i < GraphicPanzer.getBulletDigit(); i++)
-            for (GraphicPanzer graphicPanzer : graphicPanzers)
-                root.getChildren().addAll(graphicPanzer.getBullets().get(i));
+        for (GraphicPanzer graphicPanzer : graphicPanzers)
+            root.getChildren().addAll(graphicPanzer.getBullets());
+
 
         for (PanzerElement element : elements)
             root.getChildren().addAll(element);
@@ -98,8 +176,17 @@ public class Levels {
         scene = new Scene(root, PanzerGame.sceneWidt, PanzerGame.sceneHeight);
         menu = new Scene(PanzerMenu.menuBox, PanzerGame.sceneWidt, PanzerGame.sceneHeight);
 
-
     }
+
+//____________________________________________________________________________________________________________________________________
+
+    //Г
+    //Е
+    //Т
+    //Е
+    //Р
+    //Ы
+
 
     public Scene getMenu() {
         return menu;
@@ -117,5 +204,5 @@ public class Levels {
         return graphicPanzers;
     }
 
-
+//____________________________________________________________________________________________________________________________________
 }

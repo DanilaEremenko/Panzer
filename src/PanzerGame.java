@@ -33,47 +33,6 @@ public class PanzerGame extends Application {
                     panzer.move();
 
 
-                myLevel.getScene().setOnKeyPressed(event -> {
-                    switch (event.getCode()) {
-
-                        case RIGHT:
-                            myLevel.getGraphicPanzers().get(0).setVector(PanzerDirection.R);
-                            break;
-                        case LEFT:
-                            myLevel.getGraphicPanzers().get(0).setVector(PanzerDirection.L);
-                            break;
-                        case UP:
-                            myLevel.getGraphicPanzers().get(0).setVector(PanzerDirection.U);
-                            break;
-                        case DOWN:
-                            myLevel.getGraphicPanzers().get(0).setVector(PanzerDirection.D);
-                            break;
-                        case ENTER:
-                            myLevel.getGraphicPanzers().get(0).fire();
-                            break;
-
-                        case A:
-                            myLevel.getGraphicPanzers().get(1).setVector(PanzerDirection.L);
-                            break;
-                        case D:
-                            myLevel.getGraphicPanzers().get(1).setVector(PanzerDirection.R);
-                            break;
-                        case W:
-                            myLevel.getGraphicPanzers().get(1).setVector(PanzerDirection.U);
-                            break;
-                        case S:
-                            myLevel.getGraphicPanzers().get(1).setVector(PanzerDirection.D);
-                            break;
-                        case SPACE:
-                            myLevel.getGraphicPanzers().get(1).fire();
-                            break;
-
-                        case ESCAPE:
-                            primaryStage.setScene(myLevel.getMenu());
-
-                    }
-
-                });
 
             }
 
@@ -89,11 +48,3 @@ public class PanzerGame extends Application {
 
 }
 
-//Для танка управляемого мышкой в метод handle
-//                panzer2.moveMouse();
-//                scene.setOnMouseMoved(event -> {
-//                    panzer2.setTarget(event.getSceneX(), event.getSceneY());
-//                });
-//                scene.setOnMouseClicked(event -> {
-//                    panzer2.velocity = new Point2D(0, 0);
-//                });

@@ -1,4 +1,4 @@
-GraphicPanzer <2>
+PanzerDigit <2>
 VerticalEl <4>
 GorizontalEl <4>
 |
