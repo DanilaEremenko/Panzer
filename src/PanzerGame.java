@@ -25,16 +25,19 @@ public class PanzerGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                myLevel.getFirstPanzers().get(0).move();
-                myLevel.getSecondPanzers().get(0).move();
+                for (LogicPanzer logicPanzer : myLevel.getLogicPanzers()) {
+                    logicPanzer.move();
+                    for (LogicBullet logicBullet : logicPanzer.getBullets())
+                        logicBullet.move();
+                }
+
+
                 for (GraphicPanzer panzer : myLevel.getGraphicPanzers())
                     for (GraphicBullet bullet : panzer.getBullets())
                         bullet.move();
 
                 for (GraphicPanzer panzer : myLevel.getGraphicPanzers())
                     panzer.move();
-
-
 
 
             }

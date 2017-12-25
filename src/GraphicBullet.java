@@ -3,7 +3,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-
 //Класс для создания пуль и управления их траекторией
 public class GraphicBullet extends Pane {
     private LogicBullet logicBullet;
@@ -61,33 +60,21 @@ public class GraphicBullet extends Pane {
     public void move() {
         setTranslateX(logicBullet.getTranslateX());
         setTranslateY(logicBullet.getTranslateY());
-//        for (GraphicPanzer opponent : myGraphicPanzer.getOpponents()) {
-//
-//            if (getBoundsInParent().intersects(opponent.getBoundsInParent())) {
-//                opponent.setHealth(opponent.getHealth() - 1);
-//                setTranslateX(-15);
-//                setTranslateY(-15);
-//                vector = PanzerDirection.STOP;
-//            }
-//        }
-//
-//        for (PanzerElement element : myGraphicPanzer.getMyLevel().getElements())
-//            if (getBoundsInParent().intersects(element.getBoundsInParent())) {
-//                setTranslateX(-15);
-//                setTranslateY(-15);
-//                vector = PanzerDirection.STOP;
-//            }
-//        //Такое
-//        if (getTranslateX() > PanzerGame.sceneWidt + 20)
-//            setTranslateX(1);
-//        if (getTranslateX() < -20)
-//            setTranslateX(PanzerGame.sceneWidt - 20);
-//        if (getTranslateY() < -20)
-//            setTranslateY(PanzerGame.sceneHeight - 20);
-//        if (getTranslateY() > PanzerGame.sceneHeight + 20)
-//            setTranslateY(1);
-//
-//
+        for (GraphicPanzer opponent : logicBullet.getLogicPanzer().getMyLevel().getGraphicPanzers()) {
+            if (getBoundsInParent().intersects(opponent.getBoundsInParent()) && opponent.getLogicPanzer() != logicBullet.getLogicPanzer()) {
+                opponent.getLogicPanzer().takeDamage(logicBullet);
+                setTranslateX(-15);
+                setTranslateY(-15);
+                logicBullet.setVector(PanzerDirection.STOP);
+            }
+        }
+
+        for (PanzerElement element : logicBullet.getLogicPanzer().getMyLevel().getElements())
+            if (getBoundsInParent().intersects(element.getBoundsInParent())) {
+                setTranslateX(-15);
+                setTranslateY(-15);
+                logicBullet.setVector(PanzerDirection.STOP);
+            }
 
     }
 

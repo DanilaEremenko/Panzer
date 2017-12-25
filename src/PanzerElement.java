@@ -5,10 +5,10 @@ import javafx.scene.shape.Rectangle;
 //Класс для создания препеятствий
 public class PanzerElement extends Pane {
 
-    private static PanzerElement gorizontal=PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,0);
-    private static PanzerElement gorizontal2=PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,PanzerGame.sceneHeight-20);
-    private static PanzerElement vertical=PanzerElement.generateVertical(PanzerGame.sceneHeight,0,0);
-    private static PanzerElement vertical2=PanzerElement.generateVertical(PanzerGame.sceneHeight,PanzerGame.sceneWidt-20,0);
+    private static PanzerElement UP_GORIZONTAL =PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,0);
+    private static PanzerElement DOWN_GORIZONTAL =PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,PanzerGame.sceneHeight-20);
+    private static PanzerElement LEFT_VERTICAL =PanzerElement.generateVertical(PanzerGame.sceneHeight,0,0);
+    private static PanzerElement RIGHT_VERTICAL =PanzerElement.generateVertical(PanzerGame.sceneHeight,PanzerGame.sceneWidt-20,0);
 
     private PanzerElement(){}
 
@@ -38,19 +38,19 @@ public class PanzerElement extends Pane {
     }
 
 
-    public static PanzerElement getVertical() {
-        return vertical;
+    public static PanzerElement getLeftVertical() {
+        return LEFT_VERTICAL;
     }
 
-    public static PanzerElement getVertical2() {
-        return vertical2;
+    public static PanzerElement getRightVertical() {
+        return RIGHT_VERTICAL;
     }
 
-    public static PanzerElement getGorizontal() {
-        return gorizontal;
+    public static PanzerElement getUpGorizontal() {
+        return UP_GORIZONTAL;
     }
 
-    public static PanzerElement getGorizontal2() {
-        return gorizontal2;
+    public static PanzerElement getDownGorizontal() {
+        return DOWN_GORIZONTAL;
     }
 }

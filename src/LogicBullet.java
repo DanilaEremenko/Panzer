@@ -1,4 +1,5 @@
 public class LogicBullet {
+    private LogicPanzer logicPanzer;
     private double translateX;
     private double translateY;
     private double speed; //Скорость полета пули
@@ -23,8 +24,9 @@ public class LogicBullet {
     private LogicBullet() {
     }
 
-    static LogicBullet LightBullet() {
+    static LogicBullet LightBullet(LogicPanzer logicPanzer) {
         LogicBullet logicBullet = new LogicBullet();
+        logicBullet.logicPanzer = logicPanzer;
         logicBullet.speed = 20;
         logicBullet.size = 14;
         logicBullet.damage = 1;
@@ -33,17 +35,6 @@ public class LogicBullet {
     }
 //____________________________________________________________________________________________________________________________________
 
-    //М
-    //Е
-    //Т
-    //О
-    //Д
-    //Ы
-
-    //Д
-    //Л
-    //Я
-
     //Д
     //В
     //И
@@ -51,26 +42,34 @@ public class LogicBullet {
     //Е
     //Н
     //И
-    //Я
-
-    void move(PanzerDirection vector) {
-        this.vector = vector;
-
-        switch (vector) {
-            case R:
-                setTranslate(getTranslateX() + speed, getTranslateY());
-                break;
-            case L:
-                setTranslate(getTranslateX() - speed, getTranslateY());
-                break;
-            case D:
-                setTranslate(getTranslateX(), getTranslateY() + speed);
-                break;
-            case U:
-                setTranslate(getTranslateX(), getTranslateY() - speed);
-        }
+    //E
 
 
+    void fire() {
+        setTranslate(logicPanzer.getTranslateX(), logicPanzer.getTranslateY());
+        setVector(logicPanzer.getVector());
+    }
+
+    void move() {
+
+
+            switch (vector) {
+                case R:
+                    setTranslate(getTranslateX() + speed, getTranslateY());
+                    break;
+                case L:
+                    setTranslate(getTranslateX() - speed, getTranslateY());
+                    break;
+                case D:
+                    setTranslate(getTranslateX(), getTranslateY() + speed);
+                    break;
+                case U:
+                    setTranslate(getTranslateX(), getTranslateY() - speed);
+                    break;
+                case STOP:
+                    setTranslate(-15, -15);
+                    break;
+            }
     }
 
 
@@ -82,6 +81,12 @@ public class LogicBullet {
     //Е
     //Р
     //Ы
+
+
+    public void setVector(PanzerDirection vector) {
+        this.vector = vector;
+    }
+
 
     private void setTranslate(double translateX, double translateY) {
         this.translateX = translateX;
@@ -97,10 +102,6 @@ public class LogicBullet {
     //Е
     //Р
     //Ы
-
-    public double getSpeed() {
-        return speed;
-    }
 
     public double getSize() {
         return size;
@@ -120,6 +121,10 @@ public class LogicBullet {
 
     public double getTranslateY() {
         return translateY;
+    }
+
+    public LogicPanzer getLogicPanzer() {
+        return logicPanzer;
     }
 
 //____________________________________________________________________________________________________________________________________

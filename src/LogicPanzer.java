@@ -11,12 +11,11 @@ public class LogicPanzer {
     private int hightGun;//Высота пушки
     private double speed;//скорость передвжиения танков
     private LogicBullet bullets[];//Массив пуль
-    private int health;//Здоровье танка
     private int numberofBullet = 0;//Пуля на очереди
+    private int health;//Здоровье танка
     private ArrayList<LogicPanzer> opponents = new ArrayList<>();//Соперник
     private PanzerDirection vector = PanzerDirection.R;
     private double angleOfTurn = 0;
-    private boolean shouldTurn = false;
     private Level myLevel;
     private ArrayList<LogicPanzer> opponentsPanzers;
 
@@ -46,7 +45,7 @@ public class LogicPanzer {
         logicPanzer.health = 2;
         LogicBullet bullets[] = new LogicBullet[20];
         for (int i = 0; i < bullets.length; i++)
-            bullets[i] = LogicBullet.LightBullet();
+            bullets[i] = LogicBullet.LightBullet(logicPanzer);
 
         logicPanzer.bullets = bullets;
 
@@ -56,14 +55,6 @@ public class LogicPanzer {
     }
 
 //____________________________________________________________________________________________________________________________________
-
-    //М
-    //Е
-    //Т
-    //О
-    //Д
-    //Ы
-
     //Д
     //Л
     //Я
@@ -77,12 +68,22 @@ public class LogicPanzer {
 
 
     void move(PanzerDirection vector) {
+        if (health <= 0)
+            return;
+        angleOfTurn = this.vector.getAngle() - vector.getAngle();
+        this.vector = vector;
+        commonMove();
+    }
+
+    void move() {
+        if (health <= 0)
+            return;
+        commonMove();
+    }
+
+    private void commonMove() {
         lastTranslateX = translateX;
         lastTranslateY = translateY;
-        angleOfTurn = this.vector.getAngle() - vector.getAngle();
-        shouldTurn = true;
-        this.vector = vector;
-
         switch (vector) {
             case R:
                 setTranslate(getTranslateX() + speed, getTranslateY());
@@ -99,22 +100,14 @@ public class LogicPanzer {
 
     }
 
-    void move() {
-        lastTranslateX = translateX;
-        lastTranslateY = translateY;
-        switch (vector) {
-            case R:
-                setTranslate(getTranslateX() + speed, getTranslateY());
-                break;
-            case L:
-                setTranslate(getTranslateX() - speed, getTranslateY());
-                break;
-            case D:
-                setTranslate(getTranslateX(), getTranslateY() + speed);
-                break;
-            case U:
-                setTranslate(getTranslateX(), getTranslateY() - speed);
-        }
+    void fire() {
+        if (health <= 0)
+            return;
+        bullets[numberofBullet].fire();
+        if (numberofBullet < bullets.length - 1)
+            numberofBullet++;
+        else numberofBullet = 0;
+
 
     }
 
@@ -142,24 +135,20 @@ public class LogicPanzer {
         this.translateY = translateY;
     }
 
-    public void setShouldTurn(boolean shouldTurn) {
-        this.shouldTurn = shouldTurn;
-    }
 
     public void setMyLevel(Level myLevel) {
         this.myLevel = myLevel;
     }
 
-    public void setVector(PanzerDirection vector) {
-        this.vector = vector;
+    public void setAngleOfTurn(double angleOfTurn) {
+        this.angleOfTurn = angleOfTurn;
     }
 
-    public void setOpponents(ArrayList<LogicPanzer> opponents) {
-        this.opponents = opponents;
-
+    void addOpponent(LogicPanzer logicPanzer) {
+        opponents.add(logicPanzer);
     }
-//____________________________________________________________________________________________________________________________________
 
+    //____________________________________________________________________________________________________________________________________
     //Г
     //Е
     //Т
@@ -206,9 +195,6 @@ public class LogicPanzer {
         return angleOfTurn;
     }
 
-    public boolean isShouldTurn() {
-        return shouldTurn;
-    }
 
     public Level getMyLevel() {
         return myLevel;

@@ -10,18 +10,17 @@ import java.util.ArrayList;
 public class Level {
 
 
+
     //[0] Для колличества танков, вертикальных ограждений и горизонтальных ограждений
     //[1] Для координат танков,сначала X и Y чередуются identificationDigits[0].get[0]-число танков
     //[2] Для координат вертикальных препятствий X и Y чередуются identificationDigits[0].get[1]-число вертикальных препятствий
     //[3] Для координат горизонтальных препятствий X и Y чередуются identificationDigits[0].get[2]-число горизонтальных препятствий
     //[4] Для рамки либо 1 либо 0
     private ArrayList<Integer>[] identificationDigits = new ArrayList[5];//Собирается при парсе
-    private ArrayList<LogicPanzer> firstPanzers = new ArrayList<>();
-    private ArrayList<LogicPanzer> secondPanzers = new ArrayList<>();
+    private ArrayList<LogicPanzer> logicPanzers = new ArrayList<>();
     private ArrayList<GraphicPanzer> graphicPanzers = new ArrayList<>();//Графические отображения танкова
     private ArrayList<PanzerElement> elements = new ArrayList<>();//Ограждения
     private Scene scene;
-    private Pane menu;
     private Pane gameRoot;
 
 //____________________________________________________________________________________________________________________________________
@@ -38,7 +37,7 @@ public class Level {
     //Р
 
 
-    public Level(String fileName) throws IOException {
+    Level(String fileName) throws IOException {
 
 
         parsingInformation(fileName);
@@ -84,23 +83,26 @@ public class Level {
         //!
         //!
         //ПЕРЕД ПЕРВЫМ ЗАПУСКОМ НОРМАЛЬНО РАССТАВИТЬ ИНДЕКСЫ
-        firstPanzers.add(LogicPanzer.LightPanzer());
-        secondPanzers.add(LogicPanzer.LightPanzer());
-        firstPanzers.get(0).setTranslate(identificationDigits[1].get(0),
+        logicPanzers.add(LogicPanzer.LightPanzer());
+        logicPanzers.add(LogicPanzer.LightPanzer());
+        logicPanzers.get(0).setTranslate(identificationDigits[1].get(0),
                 identificationDigits[1].get(1));
-        secondPanzers.get(0).setTranslate(identificationDigits[1].get(2),
+        logicPanzers.get(1).setTranslate(identificationDigits[1].get(2),
                 identificationDigits[1].get(3));
 
-        graphicPanzers.add(new GraphicPanzer(firstPanzers.get(0), Color.GREEN,this));
-        graphicPanzers.add(new GraphicPanzer(secondPanzers.get(0), Color.RED,this));
+        logicPanzers.get(0).setMyLevel(this);
+        logicPanzers.get(1).setMyLevel(this);
+        graphicPanzers.add(new GraphicPanzer(logicPanzers.get(0), Color.GREEN, this));
+        graphicPanzers.add(new GraphicPanzer(logicPanzers.get(1), Color.RED, this));
+
 
         //ИДЕНТЕФИКАЦИЯ КОМАНД
-        for (LogicPanzer firstPanzer : firstPanzers)
-            firstPanzer.setOpponents(secondPanzers);
+        for (LogicPanzer logicPanzer1 : logicPanzers)
+            for (LogicPanzer logicPanzer2 : logicPanzers) {
+                if (logicPanzer1 != logicPanzer2)
+                    logicPanzer1.addOpponent(logicPanzer2);
 
-        for (LogicPanzer secondPanzer : secondPanzers)
-            secondPanzer.setOpponents(firstPanzers);
-
+            }
 
         //СОЗДАНИЯ И РАССТАНОВКА ПРЕПЯТСТВИЙ
         int numberCoordinate = 0;
@@ -115,10 +117,10 @@ public class Level {
         }
 
         if (identificationDigits[4].get(0) == 1) {
-            elements.add(PanzerElement.getGorizontal());
-            elements.add(PanzerElement.getGorizontal2());
-            elements.add(PanzerElement.getVertical());
-            elements.add(PanzerElement.getVertical2());
+            elements.add(PanzerElement.getUpGorizontal());
+            elements.add(PanzerElement.getDownGorizontal());
+            elements.add(PanzerElement.getLeftVertical());
+            elements.add(PanzerElement.getRightVertical());
         }
 
         graphicPanzers.get(0).setOnKeyPressed(event -> {
@@ -176,6 +178,8 @@ public class Level {
 
     }
 
+
+    //Установка кнопок управления от сцены
     private void identificateButtons() {
 
         scene.setOnKeyPressed(event -> {
@@ -194,7 +198,7 @@ public class Level {
                     graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.D);
                     break;
                 case ENTER:
-                    //myLevel.getGraphicPanzers().get(0).fire();
+                    logicPanzers.get(0).fire();
                     break;
 
                 case A:
@@ -210,6 +214,7 @@ public class Level {
                     graphicPanzers.get(1).getLogicPanzer().move(PanzerDirection.D);
                     break;
                 case SPACE:
+                    logicPanzers.get(1).fire();
                     break;
 
             }
@@ -220,7 +225,6 @@ public class Level {
 
 
 //____________________________________________________________________________________________________________________________________
-
     //Г
     //Е
     //Т
@@ -241,12 +245,9 @@ public class Level {
         return graphicPanzers;
     }
 
-    public ArrayList<LogicPanzer> getFirstPanzers() {
-        return firstPanzers;
+    public ArrayList<LogicPanzer> getLogicPanzers() {
+        return logicPanzers;
     }
 
-    public ArrayList<LogicPanzer> getSecondPanzers() {
-        return secondPanzers;
-    }
 //____________________________________________________________________________________________________________________________________
 }

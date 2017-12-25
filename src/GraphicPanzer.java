@@ -47,18 +47,6 @@ public class GraphicPanzer extends Pane {
     }
 
 //____________________________________________________________________________________________________________________________________
-
-    //М
-    //Е
-    //Т
-    //О
-    //Д
-    //Ы
-
-    //Д
-    //Л
-    //Я
-
     //Д
     //В
     //И
@@ -66,11 +54,12 @@ public class GraphicPanzer extends Pane {
     //Е
     //Н
     //И
-    //Я
+    //E
 
 
     //Постоянно работающий метод движения танка
     public void move() {
+
         transformPanzer();
         setTranslateX(logicPanzer.getTranslateX());
         setTranslateY(logicPanzer.getTranslateY());
@@ -93,15 +82,14 @@ public class GraphicPanzer extends Pane {
 
     //Метод поворачивающий танк
     private void transformPanzer() {
-        if (logicPanzer.isShouldTurn()) {
+
             getTransforms().add(new Rotate(logicPanzer.getAngleOfTurn(),
                     logicPanzer.getWidthBody() / 2,
                     logicPanzer.getHightBody() / 2));
-            logicPanzer.setShouldTurn(false);
-        }
+            logicPanzer.setAngleOfTurn(0);
+
     }
 //____________________________________________________________________________________________________________________________________
-
     //Г
     //Е
     //Т
@@ -116,6 +104,7 @@ public class GraphicPanzer extends Pane {
     public GraphicBullet[] getBullets() {
         return bullets;
     }
+//____________________________________________________________________________________________________________________________________
 }
 
 
