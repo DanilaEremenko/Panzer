@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 //Класс, в котором запускается игра
 public class PanzerGame extends Application {
 
-    static int sceneHeight = 700;
+    static int sceneHeight = 800;
     static int sceneWidt = 900;
     private Level myLevel;
 

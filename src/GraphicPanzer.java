@@ -1,3 +1,4 @@
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -5,6 +6,7 @@ import javafx.scene.transform.Rotate;
 
 //Графическое отображение танка
 public class GraphicPanzer extends Pane {
+    private HealthLabel healthLabel;
     private LogicPanzer logicPanzer;//Танк, который отрисовывается
     private GraphicBullet[] bullets;//Массив графических пуль
     private Level level;
@@ -23,11 +25,13 @@ public class GraphicPanzer extends Pane {
 
 
     public GraphicPanzer(LogicPanzer logicPanzer, Color color, Level level) {
+
         this.level = level;
         this.logicPanzer = logicPanzer;
         makeBody(color);
         setTranslateX(logicPanzer.getTranslateX());
         setTranslateY(logicPanzer.getTranslateY());
+        healthLabel = new HealthLabel(this, 10, 10);
 
         bullets = new GraphicBullet[logicPanzer.getBullets().length];
         for (int i = 0; i < bullets.length; i++)
@@ -60,6 +64,10 @@ public class GraphicPanzer extends Pane {
     //Постоянно работающий метод движения танка
     public void move() {
 
+        if (logicPanzer.isNeedDraw()) {
+            healthLabel.update();
+            logicPanzer.setNeedDraw(false);
+        }
         transformPanzer();
         setTranslateX(logicPanzer.getTranslateX());
         setTranslateY(logicPanzer.getTranslateY());
@@ -79,14 +87,18 @@ public class GraphicPanzer extends Pane {
                 logicPanzer.comeBackIfCanNotMove();
     }
 
+    void setTranslateLabel(double x,double y){
+        healthLabel.setTranslateX(x);
+        healthLabel.setTranslateY(y);
+    }
 
     //Метод поворачивающий танк
     private void transformPanzer() {
 
-            getTransforms().add(new Rotate(logicPanzer.getAngleOfTurn(),
-                    logicPanzer.getWidthBody() / 2,
-                    logicPanzer.getHightBody() / 2));
-            logicPanzer.setAngleOfTurn(0);
+        getTransforms().add(new Rotate(logicPanzer.getAngleOfTurn(),
+                logicPanzer.getWidthBody() / 2,
+                logicPanzer.getHightBody() / 2));
+        logicPanzer.setAngleOfTurn(0);
 
     }
 //____________________________________________________________________________________________________________________________________
@@ -104,7 +116,12 @@ public class GraphicPanzer extends Pane {
     public GraphicBullet[] getBullets() {
         return bullets;
     }
-//____________________________________________________________________________________________________________________________________
+
+    public HealthLabel getHealthLabel() {
+        return healthLabel;
+    }
+
+    //____________________________________________________________________________________________________________________________________
 }
 
 

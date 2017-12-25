@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 //Класс для создания препеятствий
 public class PanzerElement extends Pane {
 
-    private static PanzerElement UP_GORIZONTAL =PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,0);
+    private static PanzerElement UP_GORIZONTAL =PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,100);
     private static PanzerElement DOWN_GORIZONTAL =PanzerElement.generateGorizontal(PanzerGame.sceneWidt,0,PanzerGame.sceneHeight-20);
     private static PanzerElement LEFT_VERTICAL =PanzerElement.generateVertical(PanzerGame.sceneHeight,0,0);
     private static PanzerElement RIGHT_VERTICAL =PanzerElement.generateVertical(PanzerGame.sceneHeight,PanzerGame.sceneWidt-20,0);

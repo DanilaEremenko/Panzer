@@ -1,6 +1,7 @@
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 //Класс, который считывает информацию из текстового файла и записывает себе в поля
 //Здесь хранятся все переменные нужные для игры
 public class Level {
-
 
 
     //[0] Для колличества танков, вертикальных ограждений и горизонтальных ограждений
@@ -85,19 +85,25 @@ public class Level {
         //!
         //!
         //ПЕРЕД ПЕРВЫМ ЗАПУСКОМ НОРМАЛЬНО РАССТАВИТЬ ИНДЕКСЫ
-        logicPanzers.add(LogicPanzer.HeavyPanzer());
+        logicPanzers.add(LogicPanzer.LightPanzer());
+        logicPanzers.add(LogicPanzer.LightPanzer());
         logicPanzers.add(LogicPanzer.LightPanzer());
         logicPanzers.get(0).setTranslate(identificationDigits[1].get(0),
                 identificationDigits[1].get(1));
         logicPanzers.get(1).setTranslate(identificationDigits[1].get(2),
                 identificationDigits[1].get(3));
+        logicPanzers.get(2).setTranslate(identificationDigits[1].get(4),
+                identificationDigits[1].get(5));
 
-        logicPanzers.get(0).setMyLevel(this);
-        logicPanzers.get(1).setMyLevel(this);
+        for (LogicPanzer logicPanzer : logicPanzers)
+            logicPanzer.setMyLevel(this);
+
         graphicPanzers.add(new GraphicPanzer(logicPanzers.get(0), Color.GREEN, this));
+        graphicPanzers.get(0).setTranslateLabel(10, 100);
         graphicPanzers.add(new GraphicPanzer(logicPanzers.get(1), Color.RED, this));
-
-
+        graphicPanzers.get(1).setTranslateLabel(10, 200);
+        graphicPanzers.add(new GraphicPanzer(logicPanzers.get(2), Color.BLUE, this));
+        graphicPanzers.get(2).setTranslateLabel(10, 300);
         //ИДЕНТЕФИКАЦИЯ КОМАНД
         for (LogicPanzer logicPanzer1 : logicPanzers)
             for (LogicPanzer logicPanzer2 : logicPanzers) {
@@ -173,6 +179,9 @@ public class Level {
 
         gameRoot.getChildren().addAll(graphicPanzers);
 
+        for (GraphicPanzer graphicPanzer : graphicPanzers)
+            gameRoot.getChildren().add(graphicPanzer.getHealthLabel());
+
 
         scene = new Scene(gameRoot, PanzerGame.sceneWidt, PanzerGame.sceneHeight);
 
@@ -214,9 +223,31 @@ public class Level {
                 case S:
                     graphicPanzers.get(1).getLogicPanzer().move(PanzerDirection.D);
                     break;
-                case SPACE:
+                case R:
                     logicPanzers.get(1).fire();
                     break;
+
+                case H:
+                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.D);
+                    break;
+                case G:
+                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.L);
+                    break;
+                case J:
+                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.R);
+                    break;
+                case Y:
+                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.U);
+                    break;
+                case I:
+                    logicPanzers.get(2).fire();
+                    break;
+
+                case M:
+                    for (LogicPanzer logicPanzer : logicPanzers)
+                        logicPanzer.reload();
+                    break;
+
 
             }
 
@@ -224,6 +255,16 @@ public class Level {
 
     }
 
+    private void reload() {
+        int number = 0;
+        for (GraphicPanzer graphicPanzer : graphicPanzers) {
+            graphicPanzer.setTranslateX(identificationDigits[1].get(number));
+            number++;
+            graphicPanzer.setTranslateY(identificationDigits[1].get(number));
+        }
+
+
+    }
 
 //____________________________________________________________________________________________________________________________________
     //Г
@@ -249,6 +290,7 @@ public class Level {
     public ArrayList<LogicPanzer> getLogicPanzers() {
         return logicPanzers;
     }
+
 
 //____________________________________________________________________________________________________________________________________
 }
