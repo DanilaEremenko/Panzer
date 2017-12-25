@@ -7,6 +7,7 @@ import javafx.scene.transform.Rotate;
 public class GraphicPanzer extends Pane {
     private LogicPanzer logicPanzer;
     private GraphicBullet[] bullets;
+    private Level level;
 //____________________________________________________________________________________________________________________________________
     //К
     //О
@@ -21,7 +22,8 @@ public class GraphicPanzer extends Pane {
     //Р
 
 
-    public GraphicPanzer(LogicPanzer logicPanzer, Color color) {
+    public GraphicPanzer(LogicPanzer logicPanzer, Color color, Level level) {
+        this.level = level;
         this.logicPanzer = logicPanzer;
         makeBody(color);
         setTranslateX(logicPanzer.getTranslateX());
@@ -36,7 +38,7 @@ public class GraphicPanzer extends Pane {
 
     private void makeBody(Color color) {
         Rectangle gun = new Rectangle(logicPanzer.getWidthGun(), logicPanzer.getHightGun(), Color.BLACK);
-        Rectangle body = new Rectangle(logicPanzer.getWidthGun(), logicPanzer.getHightBody(), color);
+        Rectangle body = new Rectangle(logicPanzer.getWidthBody(), logicPanzer.getHightBody(), color);
         gun.setTranslateX(body.getTranslateX() + logicPanzer.getWidthBody());
         gun.setTranslateY(body.getTranslateY() + (logicPanzer.getWidthBody() - logicPanzer.getHightGun()) / 2);
         getChildren().addAll(body, gun);
@@ -69,19 +71,34 @@ public class GraphicPanzer extends Pane {
 
     //Постоянно работающий метод движения танка
     public void move() {
-        setVector(logicPanzer.getVector());
+        transformPanzer();
         setTranslateX(logicPanzer.getTranslateX());
         setTranslateY(logicPanzer.getTranslateY());
+        checkArea();
 
+
+    }
+
+    //ПРОВЕРКА ТОГО, ЧТО ТАНК МОЖЕТ ЕХАТЬ
+    private void checkArea() {
+        for (PanzerElement element : level.getElements())
+            if (getBoundsInParent().intersects(element.getBoundsInParent()))
+                logicPanzer.comeBackIfCanNotMove();
+
+        for (GraphicPanzer graphicPanzer : level.getGraphicPanzers())
+            if (getBoundsInParent().intersects(graphicPanzer.getBoundsInParent()) && graphicPanzer != this)
+                logicPanzer.comeBackIfCanNotMove();
     }
 
 
     //Метод поворачивающий танк
-    private void setVector(PanzerDirection vector) {
-        getTransforms().add(new Rotate(logicPanzer.getVector().getAngle() - vector.getAngle(),
-                logicPanzer.getWidthBody() / 2,
-                logicPanzer.getHightBody() / 2));
-        logicPanzer.setVector(vector);
+    private void transformPanzer() {
+        if (logicPanzer.isShouldTurn()) {
+            getTransforms().add(new Rotate(logicPanzer.getAngleOfTurn(),
+                    logicPanzer.getWidthBody() / 2,
+                    logicPanzer.getHightBody() / 2));
+            logicPanzer.setShouldTurn(false);
+        }
     }
 //____________________________________________________________________________________________________________________________________
 

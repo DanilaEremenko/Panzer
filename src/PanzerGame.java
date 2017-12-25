@@ -7,17 +7,17 @@ public class PanzerGame extends Application {
 
     static int sceneHeight = 700;
     static int sceneWidt = 900;
-    private Levels myLevel;
+    private Level myLevel;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
 
-        myLevel = new Levels("levels/LevelOne.txt");
+        myLevel = new Level("levels/LevelOne.txt");
 
 
-        primaryStage.setScene(myLevel.getMenu());
+        primaryStage.setScene(myLevel.getScene());
         primaryStage.show();
         PanzerMenu.newGame.setOnMouseClicked(event -> primaryStage.setScene(myLevel.getScene()));
         PanzerMenu.exit.setOnMouseClicked(event -> primaryStage.close());
@@ -25,12 +25,15 @@ public class PanzerGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                myLevel.getFirstPanzers().get(0).move();
+                myLevel.getSecondPanzers().get(0).move();
                 for (GraphicPanzer panzer : myLevel.getGraphicPanzers())
                     for (GraphicBullet bullet : panzer.getBullets())
                         bullet.move();
 
                 for (GraphicPanzer panzer : myLevel.getGraphicPanzers())
                     panzer.move();
+
 
 
 

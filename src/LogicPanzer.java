@@ -1,21 +1,24 @@
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class LogicPanzer {
     private double translateX;
     private double translateY;
-    private int hightBody = 30;//Высота тела
-    private int widthBody = 30;//Ширина тела
-    private int widthGun = 20;//Ширина пушки
-    private int hightGun = 14;//Высота пушки
+    private double lastTranslateX;
+    private double lastTranslateY;
+    private int hightBody;//Высота тела
+    private int widthBody;//Ширина тела
+    private int widthGun;//Ширина пушки
+    private int hightGun;//Высота пушки
     private double speed;//скорость передвжиения танков
     private LogicBullet bullets[];//Массив пуль
     private int health;//Здоровье танка
     private int numberofBullet = 0;//Пуля на очереди
     private ArrayList<LogicPanzer> opponents = new ArrayList<>();//Соперник
     private PanzerDirection vector = PanzerDirection.R;
-    private Levels myLevel;
-    private ArrayList<LogicPanzer>opponentsPanzers;
+    private double angleOfTurn = 0;
+    private boolean shouldTurn = false;
+    private Level myLevel;
+    private ArrayList<LogicPanzer> opponentsPanzers;
 
 //____________________________________________________________________________________________________________________________________
     //К
@@ -35,6 +38,10 @@ public class LogicPanzer {
 
     static LogicPanzer LightPanzer() {
         LogicPanzer logicPanzer = new LogicPanzer();
+        logicPanzer.hightBody = 30;
+        logicPanzer.widthBody = 30;
+        logicPanzer.widthGun = 20;
+        logicPanzer.hightGun = 14;
         logicPanzer.speed = 5;
         logicPanzer.health = 2;
         LogicBullet bullets[] = new LogicBullet[20];
@@ -68,7 +75,12 @@ public class LogicPanzer {
     //О
     //К
 
+
     void move(PanzerDirection vector) {
+        lastTranslateX = translateX;
+        lastTranslateY = translateY;
+        angleOfTurn = this.vector.getAngle() - vector.getAngle();
+        shouldTurn = true;
         this.vector = vector;
 
         switch (vector) {
@@ -85,6 +97,31 @@ public class LogicPanzer {
                 setTranslate(getTranslateX(), getTranslateY() - speed);
         }
 
+    }
+
+    void move() {
+        lastTranslateX = translateX;
+        lastTranslateY = translateY;
+        switch (vector) {
+            case R:
+                setTranslate(getTranslateX() + speed, getTranslateY());
+                break;
+            case L:
+                setTranslate(getTranslateX() - speed, getTranslateY());
+                break;
+            case D:
+                setTranslate(getTranslateX(), getTranslateY() + speed);
+                break;
+            case U:
+                setTranslate(getTranslateX(), getTranslateY() - speed);
+        }
+
+    }
+
+    //НЕ ДАЕТ ТАНКУ ПРОЕЗЖАТЬ СКВОЗЬ ПРЕПЯТСТВИЯ И ДРУГИЕ ТАНКИ
+    void comeBackIfCanNotMove() {
+        translateX = lastTranslateX;
+        translateY = lastTranslateY;
     }
 
     void takeDamage(LogicBullet logicBullet) {
@@ -105,7 +142,11 @@ public class LogicPanzer {
         this.translateY = translateY;
     }
 
-    public void setMyLevel(Levels myLevel) {
+    public void setShouldTurn(boolean shouldTurn) {
+        this.shouldTurn = shouldTurn;
+    }
+
+    public void setMyLevel(Level myLevel) {
         this.myLevel = myLevel;
     }
 
@@ -113,8 +154,8 @@ public class LogicPanzer {
         this.vector = vector;
     }
 
-    public void setOpponents(ArrayList<LogicPanzer>opponents){
-        this.opponents=opponents;
+    public void setOpponents(ArrayList<LogicPanzer> opponents) {
+        this.opponents = opponents;
 
     }
 //____________________________________________________________________________________________________________________________________
@@ -161,9 +202,18 @@ public class LogicPanzer {
         return vector;
     }
 
-    public Levels getMyLevel() {
+    public double getAngleOfTurn() {
+        return angleOfTurn;
+    }
+
+    public boolean isShouldTurn() {
+        return shouldTurn;
+    }
+
+    public Level getMyLevel() {
         return myLevel;
     }
+
 
     public LogicBullet[] getBullets() {
         return bullets;
