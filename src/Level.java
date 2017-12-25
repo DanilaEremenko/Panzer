@@ -1,12 +1,12 @@
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
 import java.io.*;
 import java.util.ArrayList;
 
 
-//Класс для создания и хранения карт
+//Класс, который считывает информацию из текстового файла и записывает себе в поля
+//Здесь хранятся все переменные нужные для игры
 public class Level {
 
 
@@ -17,7 +17,7 @@ public class Level {
     //[3] Для координат горизонтальных препятствий X и Y чередуются identificationDigits[0].get[2]-число горизонтальных препятствий
     //[4] Для рамки либо 1 либо 0
     private ArrayList<Integer>[] identificationDigits = new ArrayList[5];//Собирается при парсе
-    private ArrayList<LogicPanzer> logicPanzers = new ArrayList<>();
+    private ArrayList<LogicPanzer> logicPanzers = new ArrayList<>();//Логические отображения танков
     private ArrayList<GraphicPanzer> graphicPanzers = new ArrayList<>();//Графические отображения танкова
     private ArrayList<PanzerElement> elements = new ArrayList<>();//Ограждения
     private Scene scene;
@@ -46,6 +46,7 @@ public class Level {
 
     }
 
+    //Считывания информции из текстовго файла
     private void parsingInformation(String fileName) throws IOException {
         FileReader fileReader = new FileReader(new File(fileName));
         for (int i = 0; i < identificationDigits.length; i++)
@@ -76,6 +77,7 @@ public class Level {
 
     }
 
+    //Вызывается после того, как вся информация из текстовго файла считана
     private void identification() {
 
         //СОЗДАНИЕ ТАНКОВ
@@ -83,7 +85,7 @@ public class Level {
         //!
         //!
         //ПЕРЕД ПЕРВЫМ ЗАПУСКОМ НОРМАЛЬНО РАССТАВИТЬ ИНДЕКСЫ
-        logicPanzers.add(LogicPanzer.LightPanzer());
+        logicPanzers.add(LogicPanzer.HeavyPanzer());
         logicPanzers.add(LogicPanzer.LightPanzer());
         logicPanzers.get(0).setTranslate(identificationDigits[1].get(0),
                 identificationDigits[1].get(1));
@@ -177,7 +179,6 @@ public class Level {
         identificateButtons();
 
     }
-
 
     //Установка кнопок управления от сцены
     private void identificateButtons() {

@@ -10,6 +10,7 @@ public class PanzerElement extends Pane {
     private static PanzerElement LEFT_VERTICAL =PanzerElement.generateVertical(PanzerGame.sceneHeight,0,0);
     private static PanzerElement RIGHT_VERTICAL =PanzerElement.generateVertical(PanzerGame.sceneHeight,PanzerGame.sceneWidt-20,0);
 
+
     private PanzerElement(){}
 
     public static PanzerElement generateRectangle(int side) {

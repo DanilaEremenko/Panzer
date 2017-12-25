@@ -13,6 +13,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+
+//Пока что убрал
 public class PanzerMenu {
 
     static MenuItem newGame = new MenuItem("Battle");

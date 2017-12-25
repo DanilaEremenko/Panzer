@@ -2,7 +2,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-
+//Класс, в котором запускается игра
 public class PanzerGame extends Application {
 
     static int sceneHeight = 700;
@@ -16,12 +16,10 @@ public class PanzerGame extends Application {
 
         myLevel = new Level("levels/LevelOne.txt");
 
-
         primaryStage.setScene(myLevel.getScene());
         primaryStage.show();
-        PanzerMenu.newGame.setOnMouseClicked(event -> primaryStage.setScene(myLevel.getScene()));
-        PanzerMenu.exit.setOnMouseClicked(event -> primaryStage.close());
 
+        //Постоянно вызывающийся метод
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {

@@ -1,10 +1,11 @@
+//Логическое отображение пули
 public class LogicBullet {
-    private LogicPanzer logicPanzer;
+    private LogicPanzer logicPanzer;//Танк, которому принадлежит пуля
     private double translateX;
     private double translateY;
     private double speed; //Скорость полета пули
     private double size;//Размер пули
-    private double damage;
+    private double damage;//Урон, который пуля наносит
     private PanzerDirection vector = PanzerDirection.STOP;//Направление движения пули
 
 //____________________________________________________________________________________________________________________________________
@@ -24,12 +25,24 @@ public class LogicBullet {
     private LogicBullet() {
     }
 
+    //Статические методы генерации пуль
+
     static LogicBullet LightBullet(LogicPanzer logicPanzer) {
         LogicBullet logicBullet = new LogicBullet();
         logicBullet.logicPanzer = logicPanzer;
         logicBullet.speed = 20;
         logicBullet.size = 14;
         logicBullet.damage = 1;
+        return logicBullet;
+
+    }
+
+    static LogicBullet HeavyBullet(LogicPanzer logicPanzer){
+        LogicBullet logicBullet = new LogicBullet();
+        logicBullet.logicPanzer = logicPanzer;
+        logicBullet.speed = 20;
+        logicBullet.size = 24;
+        logicBullet.damage = 3;
         return logicBullet;
 
     }
@@ -45,11 +58,15 @@ public class LogicBullet {
     //E
 
 
+    //Устанавливает пулю в текущее местанахождение танка
+    //И запускает
+    //Вызвается в Panzers.fire()
     void fire() {
         setTranslate(logicPanzer.getTranslateX(), logicPanzer.getTranslateY());
         setVector(logicPanzer.getVector());
     }
 
+    //Изменяет координаты пулю в зависимости от значения поля vector
     void move() {
 
 
@@ -74,7 +91,6 @@ public class LogicBullet {
 
 
 //____________________________________________________________________________________________________________________________________
-
     //C
     //Е
     //Т
@@ -95,7 +111,6 @@ public class LogicBullet {
 
 
 //____________________________________________________________________________________________________________________________________
-
     //Г
     //Е
     //Т
@@ -105,10 +120,6 @@ public class LogicBullet {
 
     public double getSize() {
         return size;
-    }
-
-    public PanzerDirection getVector() {
-        return vector;
     }
 
     public double getDamage() {

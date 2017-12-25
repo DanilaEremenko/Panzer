@@ -3,10 +3,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
-//Для для создания и управления танками
+//Графическое отображение танка
 public class GraphicPanzer extends Pane {
-    private LogicPanzer logicPanzer;
-    private GraphicBullet[] bullets;
+    private LogicPanzer logicPanzer;//Танк, который отрисовывается
+    private GraphicBullet[] bullets;//Массив графических пуль
     private Level level;
 //____________________________________________________________________________________________________________________________________
     //К
@@ -68,7 +68,7 @@ public class GraphicPanzer extends Pane {
 
     }
 
-    //ПРОВЕРКА ТОГО, ЧТО ТАНК МОЖЕТ ЕХАТЬ
+    //Проверка того, что танк может ехать
     private void checkArea() {
         for (PanzerElement element : level.getElements())
             if (getBoundsInParent().intersects(element.getBoundsInParent()))

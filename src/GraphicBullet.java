@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 
 //Класс для создания пуль и управления их траекторией
 public class GraphicBullet extends Pane {
-    private LogicBullet logicBullet;
+    private LogicBullet logicBullet;//Пуля, которая отрисовывается
 //____________________________________________________________________________________________________________________________________
     //К
     //О
@@ -36,14 +36,6 @@ public class GraphicBullet extends Pane {
 
     }
 //____________________________________________________________________________________________________________________________________
-
-    //М
-    //Е
-    //Т
-    //О
-    //Д
-    //Ы
-
     //Д
     //Л
     //Я
@@ -57,6 +49,8 @@ public class GraphicBullet extends Pane {
     //И
     //Я
 
+    //Отрисовывает пулю
+    //Вызывается в AnimationTimer-e
     public void move() {
         setTranslateX(logicBullet.getTranslateX());
         setTranslateY(logicBullet.getTranslateY());

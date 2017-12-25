@@ -1,23 +1,26 @@
 import java.util.ArrayList;
 
 public class LogicPanzer {
+    //Текущие координаты
     private double translateX;
     private double translateY;
-    private double lastTranslateX;
-    private double lastTranslateY;
+    //
+    private double lastTranslateX;//Предыдущеие координаты
+    private double lastTranslateY;//Нужны чтобы не проезжать сквозь препятствия
+    //
     private int hightBody;//Высота тела
     private int widthBody;//Ширина тела
     private int widthGun;//Ширина пушки
     private int hightGun;//Высота пушки
-    private double speed;//скорость передвжиения танков
-    private LogicBullet bullets[];//Массив пуль
+    private double speed;//Скорость передвжиения танков
+    private LogicBullet bullets[];//Массив пуль танка
     private int numberofBullet = 0;//Пуля на очереди
     private int health;//Здоровье танка
-    private ArrayList<LogicPanzer> opponents = new ArrayList<>();//Соперник
-    private PanzerDirection vector = PanzerDirection.R;
-    private double angleOfTurn = 0;
+    private ArrayList<LogicPanzer> opponents = new ArrayList<>();//Список соперников
+    private PanzerDirection vector = PanzerDirection.R;//Направление, в котором движется танк
+    private double angleOfTurn = 0;//Угол поворта.Нужен для отрисовки при поворотах
     private Level myLevel;
-    private ArrayList<LogicPanzer> opponentsPanzers;
+
 
 //____________________________________________________________________________________________________________________________________
     //К
@@ -34,6 +37,8 @@ public class LogicPanzer {
 
     private LogicPanzer() {
     }
+
+    //Статические методы генерации для танков
 
     static LogicPanzer LightPanzer() {
         LogicPanzer logicPanzer = new LogicPanzer();
@@ -54,6 +59,25 @@ public class LogicPanzer {
 
     }
 
+    static LogicPanzer HeavyPanzer(){
+        LogicPanzer logicPanzer = new LogicPanzer();
+        logicPanzer.hightBody = 50;
+        logicPanzer.widthBody = 50;
+        logicPanzer.widthGun = 30;
+        logicPanzer.hightGun = 24;
+        logicPanzer.speed = 2;
+        logicPanzer.health = 4;
+        LogicBullet bullets[] = new LogicBullet[20];
+        for (int i = 0; i < bullets.length; i++)
+            bullets[i] = LogicBullet.HeavyBullet(logicPanzer);
+
+        logicPanzer.bullets = bullets;
+
+        return logicPanzer;
+
+    }
+
+
 //____________________________________________________________________________________________________________________________________
     //Д
     //Л
@@ -66,7 +90,7 @@ public class LogicPanzer {
     //О
     //К
 
-
+    //Передвижение для кнопок
     void move(PanzerDirection vector) {
         if (health <= 0)
             return;
@@ -75,12 +99,14 @@ public class LogicPanzer {
         commonMove();
     }
 
+    //Передвижение для AnimationTimer
     void move() {
         if (health <= 0)
             return;
         commonMove();
     }
 
+    //Общая часть из двух верхних move
     private void commonMove() {
         lastTranslateX = translateX;
         lastTranslateY = translateY;
@@ -100,6 +126,7 @@ public class LogicPanzer {
 
     }
 
+    //Стрельба
     void fire() {
         if (health <= 0)
             return;
@@ -117,6 +144,7 @@ public class LogicPanzer {
         translateY = lastTranslateY;
     }
 
+    //Получание урона
     void takeDamage(LogicBullet logicBullet) {
         health -= logicBullet.getDamage();
     }
@@ -155,6 +183,7 @@ public class LogicPanzer {
     //Е
     //Р
     //Ы
+
     public int getHightBody() {
         return hightBody;
     }
@@ -169,22 +198,6 @@ public class LogicPanzer {
 
     public int getHightGun() {
         return hightGun;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public int getNumberofBullet() {
-        return numberofBullet;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public ArrayList<LogicPanzer> getOpponents() {
-        return opponents;
     }
 
     public PanzerDirection getVector() {
