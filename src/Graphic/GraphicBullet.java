@@ -1,7 +1,10 @@
+package Graphic;
+
+import Logic.LogicBullet;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
+import Logic.*;
 
 //Класс для создания пуль и управления их траекторией
 public class GraphicBullet extends Pane {
@@ -63,7 +66,7 @@ public class GraphicBullet extends Pane {
             }
         }
 
-        for (PanzerElement element : logicBullet.getLogicPanzer().getMyLevel().getElements())
+        for (GraphicPanzer.PanzerElement element : logicBullet.getLogicPanzer().getMyLevel().getElements())
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
                 setTranslateX(-15);
                 setTranslateY(-15);

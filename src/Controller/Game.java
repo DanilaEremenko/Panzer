@@ -1,12 +1,19 @@
+package Controller;
+
+import Controller.Level;
+import Graphic.GraphicBullet;
+import Graphic.GraphicPanzer;
+import Logic.LogicBullet;
+import Logic.LogicPanzer;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 //Класс, в котором запускается игра
-public class PanzerGame extends Application {
+public class Game extends Application {
 
-    static int sceneHeight = 800;
-    static int sceneWidt = 900;
+    public static int sceneHeight = 800;
+    public static int sceneWidt = 900;
     private Level myLevel;
 
 
@@ -14,7 +21,7 @@ public class PanzerGame extends Application {
     public void start(Stage primaryStage) throws Exception {
 
 
-        myLevel = new Level("levels/LevelOne.txt");
+        myLevel = new Level("levels/LevelTwo.txt");
 
         primaryStage.setScene(myLevel.getScene());
         primaryStage.show();

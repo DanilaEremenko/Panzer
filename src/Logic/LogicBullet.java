@@ -1,3 +1,9 @@
+package Logic;
+
+import Graphic.PanzerDirection;
+
+import static Graphic.PanzerDirection.*;
+
 //Логическое отображение пули
 public class LogicBullet {
     private LogicPanzer logicPanzer;//Танк, которому принадлежит пуля
@@ -6,7 +12,7 @@ public class LogicBullet {
     private double speed; //Скорость полета пули
     private double size;//Размер пули
     private double damage;//Урон, который пуля наносит
-    private PanzerDirection vector = PanzerDirection.STOP;//Направление движения пули
+    private PanzerDirection vector = STOP;//Направление движения пули
 
 //____________________________________________________________________________________________________________________________________
     //К
@@ -67,7 +73,7 @@ public class LogicBullet {
     }
 
     //Изменяет координаты пулю в зависимости от значения поля vector
-    void move() {
+    public void move() {
 
 
             switch (vector) {

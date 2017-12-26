@@ -1,5 +1,6 @@
-import javafx.animation.Animation;
-import javafx.animation.FillTransition;
+package Graphic;
+
+import Controller.Game;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,7 +12,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 
 //Пока что убрал
@@ -87,8 +87,8 @@ public class PanzerMenu {
 
         public MenuBox(SubMenu subMenu) {
             ImageView imageView = new ImageView(new Image("file:rsc/menu.png"));
-            imageView.setFitHeight(PanzerGame.sceneHeight);
-            imageView.setFitWidth(PanzerGame.sceneWidt);
+            imageView.setFitHeight(Game.sceneHeight);
+            imageView.setFitWidth(Game.sceneWidt);
             MenuBox.subMenu = subMenu;
             setVisible(true);
             subMenu.setAlignment(Pos.TOP_CENTER);

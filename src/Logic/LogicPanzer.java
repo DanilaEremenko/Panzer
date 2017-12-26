@@ -1,5 +1,11 @@
+package Logic;
+
+import Controller.Level;
+import Graphic.PanzerDirection;
+
 import java.util.ArrayList;
-import java.util.TimerTask;
+
+import static Graphic.PanzerDirection.*;
 
 public class LogicPanzer {
 
@@ -20,7 +26,7 @@ public class LogicPanzer {
     private int numberofBullet = 0;//Пуля на очереди
     private int health;//Здоровье танка
     private ArrayList<LogicPanzer> opponents = new ArrayList<>();//Список соперников
-    private PanzerDirection vector = PanzerDirection.R;//Направление, в котором движется танк
+    private PanzerDirection vector = R;//Направление, в котором движется танк
     private double angleOfTurn = 0;//Угол поворта.Нужен для отрисовки при поворотах
     private Level myLevel;
     private boolean needDraw = false;
@@ -44,7 +50,7 @@ public class LogicPanzer {
 
     //Статические методы генерации для танков
 
-    static LogicPanzer LightPanzer() {
+    public static LogicPanzer LightPanzer() {
         LogicPanzer logicPanzer = new LogicPanzer();
         logicPanzer.hightBody = 30;
         logicPanzer.widthBody = 30;
@@ -64,7 +70,7 @@ public class LogicPanzer {
 
     }
 
-    static LogicPanzer HeavyPanzer() {
+    public static LogicPanzer HeavyPanzer() {
         LogicPanzer logicPanzer = new LogicPanzer();
         logicPanzer.hightBody = 50;
         logicPanzer.widthBody = 50;
@@ -97,7 +103,7 @@ public class LogicPanzer {
     //К
 
     //Передвижение для кнопок
-    void move(PanzerDirection vector) {
+    public void move(PanzerDirection vector) {
         if (health <= 0)
             return;
         angleOfTurn = this.vector.getAngle() - vector.getAngle();
@@ -106,7 +112,7 @@ public class LogicPanzer {
     }
 
     //Передвижение для AnimationTimer
-    void move() {
+    public void move() {
         if (health <= 0)
             return;
         commonMove();
@@ -133,7 +139,7 @@ public class LogicPanzer {
     }
 
     //Стрельба
-    void fire() {
+    public void fire() {
         if (health <= 0)
             return;
         if (numberofBullet < bullets.length - 1) {
@@ -145,18 +151,18 @@ public class LogicPanzer {
     }
 
     //НЕ ДАЕТ ТАНКУ ПРОЕЗЖАТЬ СКВОЗЬ ПРЕПЯТСТВИЯ И ДРУГИЕ ТАНКИ
-    void comeBackIfCanNotMove() {
+    public void comeBackIfCanNotMove() {
         translateX = lastTranslateX;
         translateY = lastTranslateY;
     }
 
     //Получание урона
-    void takeDamage(LogicBullet logicBullet) {
+    public void takeDamage(LogicBullet logicBullet) {
         health -= logicBullet.getDamage();
         needDraw = true;
     }
 
-    void reload() {
+    public void reload() {
         health = defaultHealth;
         numberofBullet = 0;
     }
@@ -189,7 +195,7 @@ public class LogicPanzer {
     }
 
 
-    void addOpponent(LogicPanzer logicPanzer) {
+    public void addOpponent(LogicPanzer logicPanzer) {
         opponents.add(logicPanzer);
     }
 

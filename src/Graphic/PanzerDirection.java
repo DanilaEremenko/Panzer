@@ -1,3 +1,5 @@
+package Graphic;
+
 //Направление, в котором движется танк
 public enum PanzerDirection {U(90),D(270),R(0),L(180),STOP(0);
 private int angle;

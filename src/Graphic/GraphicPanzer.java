@@ -1,8 +1,12 @@
-import javafx.scene.control.Label;
+package Graphic;
+
+import Controller.Game;
+import Controller.Level;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
+import Logic.*;
 
 //Графическое отображение танка
 public class GraphicPanzer extends Pane {
@@ -87,7 +91,7 @@ public class GraphicPanzer extends Pane {
                 logicPanzer.comeBackIfCanNotMove();
     }
 
-    void setTranslateLabel(double x,double y){
+    public void setTranslateLabel(double x, double y){
         healthLabel.setTranslateX(x);
         healthLabel.setTranslateY(y);
     }
@@ -122,6 +126,60 @@ public class GraphicPanzer extends Pane {
     }
 
     //____________________________________________________________________________________________________________________________________
+
+    //Класс для создания препеятствий
+    public static class PanzerElement extends Pane {
+
+        private static PanzerElement UP_GORIZONTAL = PanzerElement.generateGorizontal(Game.sceneWidt,0,100);
+        private static PanzerElement DOWN_GORIZONTAL = PanzerElement.generateGorizontal(Game.sceneWidt,0, Game.sceneHeight-20);
+        private static PanzerElement LEFT_VERTICAL = PanzerElement.generateVertical(Game.sceneHeight,0,0);
+        private static PanzerElement RIGHT_VERTICAL = PanzerElement.generateVertical(Game.sceneHeight, Game.sceneWidt-20,0);
+
+
+        private PanzerElement(){}
+
+        public static PanzerElement generateRectangle(int side) {
+            Rectangle rect = new Rectangle(side, side, Color.BLACK);
+            PanzerElement element = new PanzerElement();
+            element.getChildren().addAll(rect);
+            return element;
+        }
+
+        public static PanzerElement generateVertical(int height, int X, int Y) {
+            Rectangle rect = new Rectangle(20, height,Color.BLACK);
+            PanzerElement element = new PanzerElement();
+            element.getChildren().addAll(rect);
+            element.setTranslateX(X);
+            element.setTranslateY(Y);
+            return element;
+        }
+
+        public static PanzerElement generateGorizontal(int width, int X, int Y) {
+            Rectangle rect = new Rectangle(width, 20,Color.BLACK);
+            PanzerElement element = new PanzerElement();
+            element.getChildren().addAll(rect);
+            element.setTranslateX(X);
+            element.setTranslateY(Y);
+            return element;
+        }
+
+
+        public static PanzerElement getLeftVertical() {
+            return LEFT_VERTICAL;
+        }
+
+        public static PanzerElement getRightVertical() {
+            return RIGHT_VERTICAL;
+        }
+
+        public static PanzerElement getUpGorizontal() {
+            return UP_GORIZONTAL;
+        }
+
+        public static PanzerElement getDownGorizontal() {
+            return DOWN_GORIZONTAL;
+        }
+    }
 }
 
 

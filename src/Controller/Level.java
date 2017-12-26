@@ -1,3 +1,8 @@
+package Controller;
+
+import Graphic.GraphicPanzer;
+import Graphic.PanzerDirection;
+import Logic.LogicPanzer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -19,7 +24,7 @@ public class Level {
     private ArrayList<Integer>[] identificationDigits = new ArrayList[5];//Собирается при парсе
     private ArrayList<LogicPanzer> logicPanzers = new ArrayList<>();//Логические отображения танков
     private ArrayList<GraphicPanzer> graphicPanzers = new ArrayList<>();//Графические отображения танкова
-    private ArrayList<PanzerElement> elements = new ArrayList<>();//Ограждения
+    private ArrayList<GraphicPanzer.PanzerElement> elements = new ArrayList<>();//Ограждения
     private Scene scene;
     private Pane gameRoot;
 
@@ -46,7 +51,7 @@ public class Level {
 
     }
 
-    //Считывания информции из текстовго файла
+
     private void parsingInformation(String fileName) throws IOException {
         FileReader fileReader = new FileReader(new File(fileName));
         for (int i = 0; i < identificationDigits.length; i++)
@@ -77,16 +82,29 @@ public class Level {
 
     }
 
+
     //Вызывается после того, как вся информация из текстовго файла считана
     private void identification() {
 
         //СОЗДАНИЕ ТАНКОВ
-        //!
-        //!
-        //!
-        //ПЕРЕД ПЕРВЫМ ЗАПУСКОМ НОРМАЛЬНО РАССТАВИТЬ ИНДЕКСЫ
+        panzerCreating();
+
+        //СОЗДАНИЯ И РАССТАНОВКА ПРЕПЯТСТВИЙ
+        areaCreating();
+
+
+        //ДОБАВЛЕНИЕ ГРАФИЧЕСКИХ ЭЛЕМЕНТОВ НА ПАНЕЛЬ
+        addGraphicElements();
+
+        //ИДЕНТЕФИКАЦИЯ КНОПОК ДЛЯ УПРАВЛЕНИЯ ТАНКАМИ
+        identificationButtons();
+
+    }
+
+    //СОЗДАНИЕ ТАНКОВ
+    private void panzerCreating() {
         logicPanzers.add(LogicPanzer.LightPanzer());
-        logicPanzers.add(LogicPanzer.LightPanzer());
+        logicPanzers.add(LogicPanzer.HeavyPanzer());
         logicPanzers.add(LogicPanzer.LightPanzer());
         logicPanzers.get(0).setTranslate(identificationDigits[1].get(0),
                 identificationDigits[1].get(1));
@@ -105,72 +123,47 @@ public class Level {
         graphicPanzers.add(new GraphicPanzer(logicPanzers.get(2), Color.BLUE, this));
         graphicPanzers.get(2).setTranslateLabel(10, 300);
         //ИДЕНТЕФИКАЦИЯ КОМАНД
-        for (LogicPanzer logicPanzer1 : logicPanzers)
-            for (LogicPanzer logicPanzer2 : logicPanzers) {
-                if (logicPanzer1 != logicPanzer2)
-                    logicPanzer1.addOpponent(logicPanzer2);
+//        for (Logic.LogicPanzer logicPanzer1 : logicPanzers)
+//            for (Logic.LogicPanzer logicPanzer2 : logicPanzers) {
+//                if (logicPanzer1 != logicPanzer2)
+//                    logicPanzer1.addOpponent(logicPanzer2);
 
-            }
+//            }
 
-        //СОЗДАНИЯ И РАССТАНОВКА ПРЕПЯТСТВИЙ
-        int numberCoordinate = 0;
-        for (int i = 0; i < identificationDigits[0].get(1); i++) {
-            elements.add(PanzerElement.generateVertical(100, identificationDigits[2].get(numberCoordinate), identificationDigits[2].get(numberCoordinate + 1)));
-            numberCoordinate += 2;
+        logicPanzers.get(0).addOpponent(logicPanzers.get(1));
+        logicPanzers.get(2).addOpponent(logicPanzers.get(1));
+        logicPanzers.get(1).addOpponent(logicPanzers.get(0));
+        logicPanzers.get(1).addOpponent(logicPanzers.get(2));
+
+    }
+
+    //РАССТАНОВКА ПРЕПЯТСТВИЙ
+    private void areaCreating() {
+        for (int i = 0; i < identificationDigits[2].size() - 1; ) {
+            elements.add(GraphicPanzer.PanzerElement.generateVertical(100, identificationDigits[2].get(i),
+                    identificationDigits[2].get(i + 1)));
+            i += 2;
         }
-        numberCoordinate = 0;
-        for (int i = 0; i < identificationDigits[0].get(2); i++) {
-            elements.add(PanzerElement.generateGorizontal(100, identificationDigits[3].get(numberCoordinate), identificationDigits[3].get(numberCoordinate + 1)));
-            numberCoordinate += 2;
+        //Горизонтальные
+        for (int i = 0; i < identificationDigits[3].size() - 1; ) {
+            elements.add(GraphicPanzer.PanzerElement.generateGorizontal(100, identificationDigits[3].get(i), identificationDigits[3].get(i + 1)));
+            i += 2;
         }
 
         if (identificationDigits[4].get(0) == 1) {
-            elements.add(PanzerElement.getUpGorizontal());
-            elements.add(PanzerElement.getDownGorizontal());
-            elements.add(PanzerElement.getLeftVertical());
-            elements.add(PanzerElement.getRightVertical());
+            elements.add(GraphicPanzer.PanzerElement.getUpGorizontal());
+            elements.add(GraphicPanzer.PanzerElement.getDownGorizontal());
+            elements.add(GraphicPanzer.PanzerElement.getLeftVertical());
+            elements.add(GraphicPanzer.PanzerElement.getRightVertical());
         }
 
-        graphicPanzers.get(0).setOnKeyPressed(event -> {
-            switch (event.getCode()) {
 
-                case RIGHT:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.R);
-                    break;
-                case LEFT:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.L);
-                    break;
-                case DOWN:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.D);
-                    break;
-                case UP:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.U);
-                    break;
+    }
 
-            }
-        });
-        graphicPanzers.get(1).setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-
-                case D:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.R);
-                    break;
-                case A:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.L);
-                    break;
-                case S:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.D);
-                    break;
-                case W:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.U);
-                    break;
-            }
-        });
-
-
+    //ДОБАВЛЕНИЕ ГРАФИЧЕСКИХ ЭЛЕМЕНТОВ В gameRoot
+    private void addGraphicElements() {
         gameRoot = new Pane();
 
-        //ИДЕНТИФИКАЦИЯ ГРАФИЧЕСКИХ ПУЛЬ
         for (GraphicPanzer graphicPanzer : graphicPanzers)
             gameRoot.getChildren().addAll(graphicPanzer.getBullets());
 
@@ -183,14 +176,12 @@ public class Level {
             gameRoot.getChildren().add(graphicPanzer.getHealthLabel());
 
 
-        scene = new Scene(gameRoot, PanzerGame.sceneWidt, PanzerGame.sceneHeight);
-
-        identificateButtons();
+        scene = new Scene(gameRoot, Game.sceneWidt, Game.sceneHeight);
 
     }
 
-    //Установка кнопок управления от сцены
-    private void identificateButtons() {
+    //УСТАНОВКА КНОПОК УПРАВЛЕНИЯ
+    private void identificationButtons() {
 
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
@@ -244,6 +235,7 @@ public class Level {
                     break;
 
                 case M:
+                    reload();
                     for (LogicPanzer logicPanzer : logicPanzers)
                         logicPanzer.reload();
                     break;
@@ -255,6 +247,7 @@ public class Level {
 
     }
 
+    //ВОЗВРАТ ТАНКОВ НА ИСХОДНЫЕ ПОЗИЦИИ
     private void reload() {
         int number = 0;
         for (GraphicPanzer graphicPanzer : graphicPanzers) {
@@ -279,7 +272,7 @@ public class Level {
         return scene;
     }
 
-    public ArrayList<PanzerElement> getElements() {
+    public ArrayList<GraphicPanzer.PanzerElement> getElements() {
         return elements;
     }
 
