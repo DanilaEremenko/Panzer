@@ -90,7 +90,7 @@ public class LogicBullet {
                     setTranslate(getTranslateX(), getTranslateY() - speed);
                     break;
                 case STOP:
-                    setTranslate(-15, -15);
+                    setTranslate(-1500, -1500);
                     break;
             }
     }
