@@ -15,16 +15,23 @@ import java.util.ArrayList;
 //Здесь хранятся все переменные нужные для игры
 public class Level {
 
+    private int panzerDigit;//Колличество танков
+    private int[] panzerType;//Типы танков
+    private int verticalEl;//Колличество вертикальных элементонв
+    private int gorizontalEl;//Колличество горизонтальных элементов
+    private int[] translatePanzersX;//Начальные координаты танков по оси X
+    private int[] translatePanzersY;//Начальные координаты танков по оси Y
+    private int[] teamOne;//TODO
+    private int[] teamTwo;//TODO
+    private int[] translateVerticalX;//Координаты вертикальных препятствий по X
+    private int[] translateVerticalY;//Координаты вертикальных препятствий по Y
+    private int[] translateGorizontalX;//Координаты горизонтальных препятствий по X
+    private int[] translateGorizontalY;//Координаты горизонтальных препятствий по Y
+    private int ramka;//Наличие рамки
 
-    //[0] Для колличества танков, вертикальных ограждений и горизонтальных ограждений
-    //[1] Для координат танков,сначала X и Y чередуются identificationDigits[0].get[0]-число танков
-    //[2] Для координат вертикальных препятствий X и Y чередуются identificationDigits[0].get[1]-число вертикальных препятствий
-    //[3] Для координат горизонтальных препятствий X и Y чередуются identificationDigits[0].get[2]-число горизонтальных препятствий
-    //[4] Для рамки либо 1 либо 0
-    private ArrayList<Integer>[] identificationDigits = new ArrayList[5];//Собирается при парсе
-    private ArrayList<LogicPanzer> logicPanzers = new ArrayList<>();//Логические отображения танков
-    private ArrayList<GraphicPanzer> graphicPanzers = new ArrayList<>();//Графические отображения танкова
-    private ArrayList<GraphicPanzer.PanzerElement> elements = new ArrayList<>();//Ограждения
+    private LogicPanzer logicPanzers[];//Логические отображения танков
+    private GraphicPanzer graphicPanzers[];//Графические отображения танкова
+    private ArrayList<GraphicPanzer.PanzerElement> elements;//Ограждения
     private Scene scene;
     private Pane gameRoot;
 
@@ -52,34 +59,73 @@ public class Level {
     }
 
 
+    //Считывание информации об уровне из текстового файла
     private void parsingInformation(String fileName) throws IOException {
         FileReader fileReader = new FileReader(new File(fileName));
-        for (int i = 0; i < identificationDigits.length; i++)
-            identificationDigits[i] = new ArrayList<Integer>();
-        int c;
-        int digit = 0;
-        int i = 0;//Идентификатор листа который заполняем
-        boolean pars = false;
-        while ((c = fileReader.read()) != -1) {
-            while (pars) {
-                if ((char) c == '>') {
-                    identificationDigits[i].add(digit);
-                    pars = false;
-                    digit = 0;
-                    break;
-                }
-                digit = digit * 10 + Character.getNumericValue(c);
-                c = fileReader.read();
-            }
-            if ((char) c == '<')
-                pars = true;
+        int c = 0;
 
-            if ((char) c == '|')
-                i++;
 
+        //Считываем число танков
+        panzerDigit = findParametr(fileReader, c);
+        panzerType = new int[panzerDigit];
+
+        //Считываем типы танков
+        for (int i = 0; i < panzerType.length; i++)
+            panzerType[i] = findParametr(fileReader, c);
+
+
+        //Считываем число вертикальных препятствий
+        verticalEl = findParametr(fileReader, c);
+
+        //Считываем число горизонтальных препятствий
+
+        gorizontalEl = findParametr(fileReader, c);
+
+
+        //Считываем координаты танков
+        translatePanzersX = new int[panzerDigit];
+        translatePanzersY = new int[panzerDigit];
+        for (int i = 0; i < panzerDigit; i++) {
+            translatePanzersX[i] = findParametr(fileReader, c);
+            translatePanzersY[i] = findParametr(fileReader, c);
+        }
+
+
+        //Считываем координаты вертикальных препятствий
+        translateVerticalX = new int[verticalEl];
+        translateVerticalY = new int[verticalEl];
+        for (int i = 0; i < verticalEl; i++) {
+            translateVerticalX[i] = findParametr(fileReader, c);
+            translateVerticalY[i] = findParametr(fileReader, c);
+        }
+
+
+        //Считываем координаты горизонтальных препятствий
+        translateGorizontalX = new int[gorizontalEl];
+        translateGorizontalY = new int[gorizontalEl];
+        for (int i = 0; i < verticalEl; i++) {
+            translateGorizontalX[i] = findParametr(fileReader, c);
+            translateGorizontalY[i] = findParametr(fileReader, c);
 
         }
 
+        ramka = findParametr(fileReader, c);
+
+
+    }
+
+    //Используется в parsingInformation
+    private int findParametr(FileReader fileReader, int c) throws IOException {
+        int parametr = 0;
+
+        do c = fileReader.read();
+        while (c != '<');
+
+        while ((c = fileReader.read()) != '>')
+            parametr = parametr * 10 + Character.getNumericValue(c);
+
+
+        return parametr;
     }
 
 
@@ -103,25 +149,40 @@ public class Level {
 
     //СОЗДАНИЕ ТАНКОВ
     private void panzerCreating() {
-        logicPanzers.add(LogicPanzer.LightPanzer());
-        logicPanzers.add(LogicPanzer.HeavyPanzer());
-        logicPanzers.add(LogicPanzer.LightPanzer());
-        logicPanzers.get(0).setTranslate(identificationDigits[1].get(0),
-                identificationDigits[1].get(1));
-        logicPanzers.get(1).setTranslate(identificationDigits[1].get(2),
-                identificationDigits[1].get(3));
-        logicPanzers.get(2).setTranslate(identificationDigits[1].get(4),
-                identificationDigits[1].get(5));
+
+        //Инициализация танков
+        logicPanzers = new LogicPanzer[panzerDigit];
+        graphicPanzers = new GraphicPanzer[panzerDigit];
+        for (int i = 0; i < panzerDigit; i++) {
+
+            switch (panzerType[i]) {
+                case 0:
+                    logicPanzers[i] = LogicPanzer.LightPanzer();
+                    break;
+                case 1:
+                    logicPanzers[i] = LogicPanzer.HeavyPanzer();
+                    break;
+            }
+
+        }
+
+
+        //Установка кооодинат и инициализация графических танков
+        for (int i = 0; i < panzerDigit; i++) {
+            logicPanzers[i].setTranslate(translatePanzersX[i], translatePanzersY[i]);
+            graphicPanzers[i] = new GraphicPanzer(logicPanzers[i], Color.RED, this);
+        }
 
         for (LogicPanzer logicPanzer : logicPanzers)
             logicPanzer.setMyLevel(this);
 
-        graphicPanzers.add(new GraphicPanzer(logicPanzers.get(0), Color.GREEN, this));
-        graphicPanzers.get(0).setTranslateLabel(10, 100);
-        graphicPanzers.add(new GraphicPanzer(logicPanzers.get(1), Color.RED, this));
-        graphicPanzers.get(1).setTranslateLabel(10, 200);
-        graphicPanzers.add(new GraphicPanzer(logicPanzers.get(2), Color.BLUE, this));
-        graphicPanzers.get(2).setTranslateLabel(10, 300);
+
+        //TODO
+        graphicPanzers[0].setTranslateLabel(50, 0);
+        graphicPanzers[1].setTranslateLabel(50, 30);
+
+
+        //TODO
         //ИДЕНТЕФИКАЦИЯ КОМАНД
 //        for (Logic.LogicPanzer logicPanzer1 : logicPanzers)
 //            for (Logic.LogicPanzer logicPanzer2 : logicPanzers) {
@@ -130,27 +191,25 @@ public class Level {
 
 //            }
 
-        logicPanzers.get(0).addOpponent(logicPanzers.get(1));
-        logicPanzers.get(2).addOpponent(logicPanzers.get(1));
-        logicPanzers.get(1).addOpponent(logicPanzers.get(0));
-        logicPanzers.get(1).addOpponent(logicPanzers.get(2));
-
+        //TODO
+        logicPanzers[0].addOpponent(logicPanzers[1]);
+        logicPanzers[1].addOpponent(logicPanzers[0]);
     }
 
     //РАССТАНОВКА ПРЕПЯТСТВИЙ
     private void areaCreating() {
-        for (int i = 0; i < identificationDigits[2].size() - 1; ) {
-            elements.add(GraphicPanzer.PanzerElement.generateVertical(100, identificationDigits[2].get(i),
-                    identificationDigits[2].get(i + 1)));
-            i += 2;
-        }
-        //Горизонтальные
-        for (int i = 0; i < identificationDigits[3].size() - 1; ) {
-            elements.add(GraphicPanzer.PanzerElement.generateGorizontal(100, identificationDigits[3].get(i), identificationDigits[3].get(i + 1)));
-            i += 2;
-        }
+        elements = new ArrayList<>();
+        //Создание вертикальныз элементов
+        for (int i = 0; i < verticalEl; i++)
+            elements.add(GraphicPanzer.PanzerElement.generateVertical(100, translateVerticalX[i], translateVerticalY[i]));
 
-        if (identificationDigits[4].get(0) == 1) {
+
+        //Создание горизонтальных элементов
+        for (int i = 0; i < gorizontalEl; i++)
+            elements.add(GraphicPanzer.PanzerElement.generateGorizontal(100, translateGorizontalX[i], translateGorizontalY[i]));
+
+
+        if (ramka == 1) {
             elements.add(GraphicPanzer.PanzerElement.getUpGorizontal());
             elements.add(GraphicPanzer.PanzerElement.getDownGorizontal());
             elements.add(GraphicPanzer.PanzerElement.getLeftVertical());
@@ -184,54 +243,56 @@ public class Level {
     private void identificationButtons() {
 
         scene.setOnKeyPressed(event -> {
+
             switch (event.getCode()) {
 
                 case RIGHT:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.R);
+                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.R);
                     break;
                 case LEFT:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.L);
+                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.L);
                     break;
                 case UP:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.U);
+                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.U);
                     break;
                 case DOWN:
-                    graphicPanzers.get(0).getLogicPanzer().move(PanzerDirection.D);
+                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.D);
                     break;
                 case ENTER:
-                    logicPanzers.get(0).fire();
+                    logicPanzers[0].fire();
                     break;
 
                 case A:
-                    graphicPanzers.get(1).getLogicPanzer().move(PanzerDirection.L);
+                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.L);
                     break;
                 case D:
-                    graphicPanzers.get(1).getLogicPanzer().move(PanzerDirection.R);
+                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.R);
                     break;
                 case W:
-                    graphicPanzers.get(1).getLogicPanzer().move(PanzerDirection.U);
+                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.U);
                     break;
                 case S:
-                    graphicPanzers.get(1).getLogicPanzer().move(PanzerDirection.D);
+                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.D);
                     break;
                 case R:
-                    logicPanzers.get(1).fire();
+                    logicPanzers[1].fire();
                     break;
 
+
                 case H:
-                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.D);
+                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.D);
                     break;
                 case G:
-                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.L);
+                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.L);
                     break;
                 case J:
-                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.R);
+                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.R);
                     break;
                 case Y:
-                    graphicPanzers.get(2).getLogicPanzer().move(PanzerDirection.U);
+                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.U);
                     break;
                 case I:
-                    logicPanzers.get(2).fire();
+                    logicPanzers[2].fire();
                     break;
 
                 case M:
@@ -250,10 +311,10 @@ public class Level {
     //ВОЗВРАТ ТАНКОВ НА ИСХОДНЫЕ ПОЗИЦИИ
     private void reload() {
         int number = 0;
-        for (GraphicPanzer graphicPanzer : graphicPanzers) {
-            graphicPanzer.setTranslateX(identificationDigits[1].get(number));
+        for (LogicPanzer logicPanzer : logicPanzers) {
+            logicPanzer.setTranslate(translatePanzersX[number], translatePanzersY[number]);
             number++;
-            graphicPanzer.setTranslateY(identificationDigits[1].get(number));
+
         }
 
 
@@ -276,14 +337,12 @@ public class Level {
         return elements;
     }
 
-    public ArrayList<GraphicPanzer> getGraphicPanzers() {
-        return graphicPanzers;
-    }
-
-    public ArrayList<LogicPanzer> getLogicPanzers() {
+    public LogicPanzer[] getLogicPanzers() {
         return logicPanzers;
     }
 
-
-//____________________________________________________________________________________________________________________________________
+    public GraphicPanzer[] getGraphicPanzers() {
+        return graphicPanzers;
+    }
+    //____________________________________________________________________________________________________________________________________
 }

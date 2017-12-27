@@ -1,4 +1,5 @@
 PanzerDigit <2>
+PanzerTypes<0><1>
 VerticalEl <4>
 GorizontalEl <4>
 |
@@ -6,8 +7,6 @@ GorizontalEl <4>
 1PanzTransalteY <200>
 2PanzTranslateX <500>
 2PanzTranslateY <600>
-3PanzerTranslateX <300>
-3PanzerTranslateY <400>
 |
 1_Vertical_El_Trans_X <250>
 1_Vertical_El_Trans_Y <130>

@@ -1,0 +1,13 @@
+PanzerDigit <3>
+PanzerTypes<0><0><0>
+VerticalEl <0>
+GorizontalEl <0>
+|
+1PanzTranslateX <100>
+1PanzTransalteY <200>
+2PanzTranslateX <500>
+2PanzTranslateY <600>
+3PanzerTranslateX <300>
+3PanzerTranslateY <400>
+|
+Ramka<1>
