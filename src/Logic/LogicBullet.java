@@ -68,7 +68,7 @@ public class LogicBullet {
     //И запускает
     //Вызвается в Panzers.fire()
     void fire() {
-        setTranslate(logicPanzer.getTranslateX(), logicPanzer.getTranslateY());
+        setTranslate(logicPanzer.getTranslateX() + logicPanzer.getWidthBody() / 2 - size / 2, logicPanzer.getTranslateY() + logicPanzer.getWidthBody() / 2 - size / 2);
         setVector(logicPanzer.getVector());
     }
 
