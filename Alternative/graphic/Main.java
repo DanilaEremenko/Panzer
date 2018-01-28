@@ -18,7 +18,7 @@ import units.PanzerType;
 import java.util.ArrayList;
 import java.util.List;
 
-class BulletView extends Circle{
+class BulletView extends Circle {
     Bullet bullet;
 
     BulletView(Bullet bullet) {
@@ -89,8 +89,8 @@ public class Main extends Application {
                 }
                 player.move();
                 rectangle.setRotate(player.getRotationDegrees());
-                rectangle.setTranslateX(player.getPoint().x);
-                rectangle.setTranslateY(player.getPoint().y);
+                rectangle.setTranslateX(player.getPoint().x - rectangle.getWidth() / 2);
+                rectangle.setTranslateY(player.getPoint().y - rectangle.getHeight() / 2);
             }
         };
         animationTimer.start();
