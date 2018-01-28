@@ -15,7 +15,7 @@ public class Bullet {
         this.vector = vector;
         this.player = player;
         this.damage = damage;
-        vector.setLength(vector.getLength() + 2);
+        vector.setLength(vector.getLength() + 5);
     }
 
     public void move() {
