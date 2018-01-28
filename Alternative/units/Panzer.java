@@ -33,15 +33,6 @@ public class Panzer {
         if (collar != 0) collar--;
     }
 
-//    public void setAcceleration(int acceleration) {
-//        int newSpeed = maxSpeed += acceleration;
-//        if (Math.abs(newSpeed) <= maxSpeed) maxSpeed = newSpeed;
-//    }
-
-//    public void setSpeed(int maxSpeed) {
-//        if (Math.abs(maxSpeed) <= maxSpeed) this.maxSpeed = maxSpeed;
-//    }
-
     public int getHealth() {
         return health;
     }
@@ -49,10 +40,6 @@ public class Panzer {
     public int getCollar() {
         return collar;
     }
-
-//    public int getSpeed() {
-//        return maxSpeed;
-//    }
 
     public int getDamage() {
         return damage;
