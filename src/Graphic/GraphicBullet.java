@@ -4,10 +4,9 @@ import Logic.LogicBullet;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import Logic.*;
 
 //Класс для создания пуль и управления их траекторией
-public class GraphicBullet extends Pane {
+public class GraphicBullet extends Pane implements GraphicElement {
     private LogicBullet logicBullet;//Пуля, которая отрисовывается
 //____________________________________________________________________________________________________________________________________
     //К
@@ -52,25 +51,22 @@ public class GraphicBullet extends Pane {
     //И
     //Я
 
-    //Отрисовывает пулю
-    //Вызывается в AnimationTimer-e
-    public void move() {
+    @Override
+    public void drawing() {
         setTranslateX(logicBullet.getTranslateX());
         setTranslateY(logicBullet.getTranslateY());
         for (GraphicPanzer opponent : logicBullet.getLogicPanzer().getMyLevel().getGraphicPanzers()) {
             if (getBoundsInParent().intersects(opponent.getBoundsInParent()) && opponent.getLogicPanzer() != logicBullet.getLogicPanzer()) {
                 opponent.getLogicPanzer().takeDamage(logicBullet);
-                setTranslateX(-15);
-                setTranslateY(-15);
-                logicBullet.setVector(PanzerDirection.STOP);
+                logicBullet.setOnDefaultPosition();
+                logicBullet.setCurrentSpeed(0);
             }
         }
 
-        for (GraphicPanzer.PanzerElement element : logicBullet.getLogicPanzer().getMyLevel().getElements())
+        for (GraphicObstacles element : logicBullet.getLogicPanzer().getMyLevel().getObstacles())
             if (getBoundsInParent().intersects(element.getBoundsInParent())) {
-                setTranslateX(-15);
-                setTranslateY(-15);
-                logicBullet.setVector(PanzerDirection.STOP);
+                logicBullet.setOnDefaultPosition();
+                logicBullet.setCurrentSpeed(0);
             }
 
     }

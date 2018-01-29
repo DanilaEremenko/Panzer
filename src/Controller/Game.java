@@ -1,6 +1,5 @@
 package Controller;
 
-import Controller.Level;
 import Graphic.GraphicBullet;
 import Graphic.GraphicPanzer;
 import Logic.LogicBullet;
@@ -38,11 +37,11 @@ public class Game extends Application {
 
 
                 for (GraphicPanzer panzer : myLevel.getGraphicPanzers())
-                    for (GraphicBullet bullet : panzer.getBullets())
-                        bullet.move();
+                    for (GraphicBullet graphicBullet: panzer.getBullets())
+                        graphicBullet.drawing();
 
-                for (GraphicPanzer panzer : myLevel.getGraphicPanzers())
-                    panzer.move();
+                for (GraphicPanzer graphicPanzer: myLevel.getGraphicPanzers())
+                    graphicPanzer.drawing();
 
 
             }

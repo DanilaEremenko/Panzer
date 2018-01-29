@@ -65,7 +65,6 @@ public class Main extends Application {
                     break;
                 case D:
                     player.rotate(Math.PI / 20);
-                    System.out.println(player.getRotationDegrees());
                     break;
                 case A:
                     player.rotate(-Math.PI / 20);

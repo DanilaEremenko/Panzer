@@ -1,7 +1,7 @@
 package Controller;
 
+import Graphic.GraphicObstacles;
 import Graphic.GraphicPanzer;
-import Graphic.PanzerDirection;
 import Logic.LogicPanzer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -31,7 +31,7 @@ public class Level {
 
     private LogicPanzer logicPanzers[];//Логические отображения танков
     private GraphicPanzer graphicPanzers[];//Графические отображения танкова
-    private ArrayList<GraphicPanzer.PanzerElement> elements;//Ограждения
+    private ArrayList<GraphicObstacles> obstacles;//Ограждения
     private Scene scene;
     private Pane gameRoot;
 
@@ -152,7 +152,7 @@ public class Level {
 
         //Инициализация танков
         logicPanzers = new LogicPanzer[panzerDigit];
-        graphicPanzers = new GraphicPanzer[panzerDigit];
+        graphicPanzers = new GraphicPanzer [panzerDigit];
         for (int i = 0; i < panzerDigit; i++) {
 
             switch (panzerType[i]) {
@@ -170,7 +170,7 @@ public class Level {
         //Установка кооодинат и инициализация графических танков
         for (int i = 0; i < panzerDigit; i++) {
             logicPanzers[i].setTranslate(translatePanzersX[i], translatePanzersY[i]);
-            graphicPanzers[i] = new GraphicPanzer(logicPanzers[i], Color.RED, this);
+            graphicPanzers[i] = new GraphicPanzer (logicPanzers[i], Color.RED, this);
         }
 
         for (LogicPanzer logicPanzer : logicPanzers)
@@ -198,22 +198,22 @@ public class Level {
 
     //РАССТАНОВКА ПРЕПЯТСТВИЙ
     private void areaCreating() {
-        elements = new ArrayList<>();
+        obstacles = new ArrayList<>();
         //Создание вертикальныз элементов
         for (int i = 0; i < verticalEl; i++)
-            elements.add(GraphicPanzer.PanzerElement.generateVertical(100, translateVerticalX[i], translateVerticalY[i]));
+            obstacles.add(GraphicObstacles.generateVertical(100, translateVerticalX[i], translateVerticalY[i]));
 
 
         //Создание горизонтальных элементов
         for (int i = 0; i < gorizontalEl; i++)
-            elements.add(GraphicPanzer.PanzerElement.generateGorizontal(100, translateGorizontalX[i], translateGorizontalY[i]));
+            obstacles.add(GraphicObstacles.generateGorizontal(100, translateGorizontalX[i], translateGorizontalY[i]));
 
 
         if (ramka == 1) {
-            elements.add(GraphicPanzer.PanzerElement.getUpGorizontal());
-            elements.add(GraphicPanzer.PanzerElement.getDownGorizontal());
-            elements.add(GraphicPanzer.PanzerElement.getLeftVertical());
-            elements.add(GraphicPanzer.PanzerElement.getRightVertical());
+            obstacles.add(GraphicObstacles.getUpGorizontal());
+            obstacles.add(GraphicObstacles.getDownGorizontal());
+            obstacles.add(GraphicObstacles.getLeftVertical());
+            obstacles.add(GraphicObstacles.getRightVertical());
         }
 
 
@@ -223,15 +223,15 @@ public class Level {
     private void addGraphicElements() {
         gameRoot = new Pane();
 
-        for (GraphicPanzer graphicPanzer : graphicPanzers)
+        for ( GraphicPanzer graphicPanzer : graphicPanzers)
             gameRoot.getChildren().addAll(graphicPanzer.getBullets());
 
 
-        gameRoot.getChildren().addAll(elements);
+        gameRoot.getChildren().addAll(obstacles);
 
         gameRoot.getChildren().addAll(graphicPanzers);
 
-        for (GraphicPanzer graphicPanzer : graphicPanzers)
+        for ( GraphicPanzer graphicPanzer : graphicPanzers)
             gameRoot.getChildren().add(graphicPanzer.getHealthLabel());
 
 
@@ -247,53 +247,62 @@ public class Level {
             switch (event.getCode()) {
 
                 case RIGHT:
-                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.R);
+                    logicPanzers[0].rotate(Math.PI / 20);
+                    graphicPanzers[0].transformPanzer(Math.PI/20);
                     break;
                 case LEFT:
-                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.L);
+                    logicPanzers[0].rotate(-Math.PI / 20);
+                    graphicPanzers[0].transformPanzer(-Math.PI/20);
                     break;
                 case UP:
-                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.U);
+                    logicPanzers[0].accelerate();
                     break;
                 case DOWN:
-                    graphicPanzers[0].getLogicPanzer().move(PanzerDirection.D);
+                    logicPanzers[0].backAccelerate();
                     break;
                 case ENTER:
                     logicPanzers[0].fire();
                     break;
 
-                case A:
-                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.L);
-                    break;
+
                 case D:
-                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.R);
+                    logicPanzers[1].rotate(Math.PI / 20);
+                    graphicPanzers[1].transformPanzer(Math.PI / 20);
+                    break;
+                case A:
+                    logicPanzers[1].rotate(-Math.PI / 20);
+                    graphicPanzers[1].transformPanzer(-Math.PI/20);
                     break;
                 case W:
-                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.U);
+                    logicPanzers[1].accelerate();
                     break;
                 case S:
-                    graphicPanzers[1].getLogicPanzer().move(PanzerDirection.D);
+                    logicPanzers[1].backAccelerate();
                     break;
                 case R:
                     logicPanzers[1].fire();
                     break;
 
 
+
+
                 case H:
-                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.D);
+                    logicPanzers[2].rotate(Math.PI / 20);
                     break;
                 case G:
-                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.L);
+                    logicPanzers[2].rotate(-Math.PI / 20);
                     break;
                 case J:
-                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.R);
+                    logicPanzers[2].accelerate();
                     break;
                 case Y:
-                    graphicPanzers[2].getLogicPanzer().move(PanzerDirection.U);
+                    logicPanzers[2].backAccelerate();
                     break;
                 case I:
                     logicPanzers[2].fire();
                     break;
+
+
 
                 case M:
                     reload();
@@ -333,8 +342,8 @@ public class Level {
         return scene;
     }
 
-    public ArrayList<GraphicPanzer.PanzerElement> getElements() {
-        return elements;
+    public ArrayList<GraphicObstacles> getObstacles() {
+        return obstacles;
     }
 
     public LogicPanzer[] getLogicPanzers() {

@@ -1,35 +1,37 @@
 package Logic;
 
 import Controller.Level;
-import Graphic.PanzerDirection;
 
 import java.util.ArrayList;
 
-import static Graphic.PanzerDirection.*;
+public class LogicPanzer implements LogicElement {
 
-public class LogicPanzer {
-
-    private int defaultHealth;
-    //Текущие координаты
     private double translateX;
     private double translateY;
-    //
+
     private double lastTranslateX;//Предыдущеие координаты
     private double lastTranslateY;//Нужны чтобы не проезжать сквозь препятствия
-    //
+
+    private Level myLevel;
+
+    private int defaultHealth;//Максимальное здоровье танка
+    private int currentHealth;//текущее здоровье танка
+
+    private double angleOfMove = 0;//Угол по которому едет танка в полярной системе координат
+    private double currentSpeed;//текущая скорость передвжиения танков
+    private double maxSpeed;//максимальная скорость передвижения танков
+    private double acceleration;//Ускорение танка
+
+    private LogicBullet bullets[];//Массив пуль танка
+    private int numberofBullet = 0;//Пуля на очереди
+    private ArrayList<LogicPanzer> opponents = new ArrayList<>();//Список соперников
+
     private int hightBody;//Высота тела
     private int widthBody;//Ширина тела
     private int widthGun;//Ширина пушки
     private int hightGun;//Высота пушки
-    private double speed;//Скорость передвжиения танков
-    private LogicBullet bullets[];//Массив пуль танка
-    private int numberofBullet = 0;//Пуля на очереди
-    private int health;//Здоровье танка
-    private ArrayList<LogicPanzer> opponents = new ArrayList<>();//Список соперников
-    private PanzerDirection vector = R;//Направление, в котором движется танк
-    private double angleOfTurn = 0;//Угол поворта.Нужен для отрисовки при поворотах
-    private Level myLevel;
-    private boolean needDraw = false;
+
+    private boolean needDraw = false;//необходимость отрисовки метки со здоровьем
 
 
 //____________________________________________________________________________________________________________________________________
@@ -56,14 +58,17 @@ public class LogicPanzer {
         logicPanzer.widthBody = 30;
         logicPanzer.widthGun = 20;
         logicPanzer.hightGun = 14;
-        logicPanzer.speed = 5;
-        logicPanzer.health = 2;
+        logicPanzer.currentSpeed = 0;
+        logicPanzer.maxSpeed = 5;
+        logicPanzer.acceleration = 0.25;
+        logicPanzer.currentHealth = 2;
         logicPanzer.defaultHealth = 2;
-        LogicBullet bullets[] = new LogicBullet[10];
-        for (int i = 0; i < bullets.length; i++)
-            bullets[i] = LogicBullet.LightBullet(logicPanzer);
+        logicPanzer.bullets = new LogicBullet[10];
+        for (int i = 0; i < logicPanzer.bullets.length; i++) {
+            logicPanzer.bullets[i] = LogicBullet.LightBullet(logicPanzer);
+            logicPanzer.bullets[i].setOnDefaultPosition();
+        }
 
-        logicPanzer.bullets = bullets;
 
         return logicPanzer;
 
@@ -76,14 +81,16 @@ public class LogicPanzer {
         logicPanzer.widthBody = 50;
         logicPanzer.widthGun = 30;
         logicPanzer.hightGun = 24;
-        logicPanzer.speed = 2;
-        logicPanzer.health = 4;
+        logicPanzer.currentSpeed = 0;
+        logicPanzer.maxSpeed = 2;
+        logicPanzer.acceleration = 0.1;
+        logicPanzer.currentHealth = 4;
         logicPanzer.defaultHealth = 4;
-        LogicBullet bullets[] = new LogicBullet[10];
-        for (int i = 0; i < bullets.length; i++)
-            bullets[i] = LogicBullet.HeavyBullet(logicPanzer);
-
-        logicPanzer.bullets = bullets;
+        logicPanzer.bullets = new LogicBullet[10];
+        for (int i = 0; i < logicPanzer.bullets.length; i++) {
+            logicPanzer.bullets[i] = LogicBullet.HeavyBullet(logicPanzer);
+            logicPanzer.bullets[i].setOnDefaultPosition();
+        }
 
         return logicPanzer;
 
@@ -91,29 +98,33 @@ public class LogicPanzer {
 
 
 //____________________________________________________________________________________________________________________________________
-    //Д
-    //Л
-    //Я
 
-    //К
-    //Н
-    //О
-    //П
-    //О
-    //К
 
-    //Передвижение для кнопок
-    public void move(PanzerDirection vector) {
-        if (health <= 0)
+    //Поворот
+    public void rotate(double angleOfTurn) {
+        if (currentHealth <= 0)
             return;
-        angleOfTurn = this.vector.getAngle() - vector.getAngle();
-        this.vector = vector;
+        angleOfMove = (angleOfMove + angleOfTurn) % (2 * Math.PI);
+        setNeedDraw(true);
         commonMove();
     }
 
+    //Ускорение
+    public void accelerate() {
+        if (currentSpeed <= maxSpeed)
+            currentSpeed += acceleration;
+    }
+
+    //Езда назад
+    public void backAccelerate() {
+        if (currentSpeed >= -maxSpeed)
+            currentSpeed -= acceleration;
+    }
+
+    @Override
     //Передвижение для AnimationTimer
     public void move() {
-        if (health <= 0)
+        if (currentHealth <= 0)
             return;
         commonMove();
     }
@@ -122,25 +133,13 @@ public class LogicPanzer {
     private void commonMove() {
         lastTranslateX = translateX;
         lastTranslateY = translateY;
-        switch (vector) {
-            case R:
-                setTranslate(getTranslateX() + speed, getTranslateY());
-                break;
-            case L:
-                setTranslate(getTranslateX() - speed, getTranslateY());
-                break;
-            case D:
-                setTranslate(getTranslateX(), getTranslateY() + speed);
-                break;
-            case U:
-                setTranslate(getTranslateX(), getTranslateY() - speed);
-        }
-
+        setTranslate(getTranslateX() + Math.cos(angleOfMove) * currentSpeed,
+                getTranslateY() + Math.sin(angleOfMove) * currentSpeed);
     }
 
     //Стрельба
     public void fire() {
-        if (health <= 0)
+        if (currentHealth <= 0)
             return;
         if (numberofBullet < bullets.length - 1) {
             bullets[numberofBullet].fire();
@@ -158,12 +157,12 @@ public class LogicPanzer {
 
     //Получание урона
     public void takeDamage(LogicBullet logicBullet) {
-        health -= logicBullet.getDamage();
+        currentHealth -= logicBullet.getDamage();
         needDraw = true;
     }
 
     public void reload() {
-        health = defaultHealth;
+        currentHealth = defaultHealth;
         numberofBullet = 0;
     }
 
@@ -190,16 +189,12 @@ public class LogicPanzer {
         this.myLevel = myLevel;
     }
 
-    public void setAngleOfTurn(double angleOfTurn) {
-        this.angleOfTurn = angleOfTurn;
-    }
-
 
     public void addOpponent(LogicPanzer logicPanzer) {
         opponents.add(logicPanzer);
     }
 
-    //____________________________________________________________________________________________________________________________________
+//____________________________________________________________________________________________________________________________________
     //Г
     //Е
     //Т
@@ -223,21 +218,13 @@ public class LogicPanzer {
         return hightGun;
     }
 
-    public PanzerDirection getVector() {
-        return vector;
-    }
-
-    public double getAngleOfTurn() {
-        return angleOfTurn;
-    }
-
 
     public Level getMyLevel() {
         return myLevel;
     }
 
-    public int getHealth() {
-        return health;
+    public int getCurrentHealth() {
+        return currentHealth;
     }
 
     public LogicBullet[] getBullets() {
@@ -256,11 +243,11 @@ public class LogicPanzer {
         return needDraw;
     }
 
-
-    public int getDefaultHealth() {
-        return defaultHealth;
+    public double getAngleOfMove() {
+        return angleOfMove;
     }
 
-    //____________________________________________________________________________________________________________________________________
+
+//____________________________________________________________________________________________________________________________________
 
 }

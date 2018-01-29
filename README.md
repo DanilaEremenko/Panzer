@@ -1,4 +1,4 @@
-(Graphic.GraphicPanzer,Graphic.GraphicBullet,Graphic.GraphicPanzer.PanzerElement,Controller.Game,Graphic.PanzerDirection)-танчики 1 на 1.При обнулении поля health танк перестает двигаться.Основной проект.
+(Graphic.GraphicPanzer,Graphic.GraphicBullet,Graphic.GraphicPanzer.GraphicObstacles,Controller.Game,Graphic.PanzerDirection)-танчики 1 на 1.При обнулении поля health танк перестает двигаться.Основной проект.
 
 (Snake,SnakeGame,SnakeGIft)-Классическая змейка.
 

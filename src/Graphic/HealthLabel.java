@@ -1,6 +1,6 @@
 package Graphic;
 
-import Graphic.GraphicPanzer;
+
 import javafx.scene.control.Label;
 
 public class HealthLabel extends Label {
@@ -10,10 +10,10 @@ public class HealthLabel extends Label {
         this.graphicPanzer=graphicPanzer;
         setTranslateX(x);
         setTranslateY(y);
-        setText(""+graphicPanzer.getLogicPanzer().getHealth());
+        setText(""+graphicPanzer.getLogicPanzer().getCurrentHealth());
     }
 
     void update(){
-        setText(""+graphicPanzer.getLogicPanzer().getHealth());
+        setText(""+graphicPanzer.getLogicPanzer().getCurrentHealth());
     }
 }

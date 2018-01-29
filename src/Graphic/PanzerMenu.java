@@ -14,7 +14,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 
-//Пока что убрал
+//TODO
 public class PanzerMenu {
 
     static MenuItem newGame = new MenuItem("Battle");
