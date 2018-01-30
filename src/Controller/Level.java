@@ -49,7 +49,7 @@ public class Level {
     //Р
 
 
-    Level(String fileName) throws IOException {
+    public Level(String fileName) throws IOException {
 
 
         parsingInformation(fileName);
