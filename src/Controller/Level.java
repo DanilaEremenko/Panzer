@@ -1,14 +1,19 @@
 package Controller;
 
+
 import Graphic.GraphicObstacles;
 import Graphic.GraphicPanzer;
 import Logic.LogicPanzer;
+import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import Controller.*;
 
 import java.io.*;
 import java.util.ArrayList;
+
 
 
 //Класс, который считывает информацию из текстового файла и записывает себе в поля
@@ -36,6 +41,45 @@ public class Level {
     private int sceneHeight;
     private Scene scene;
     private Pane gameRoot;
+    //TODO
+    private final MultiplePressedKeysEventHandler keyHandler =
+            new MultiplePressedKeysEventHandler(new MultiplePressedKeysEventHandler.MultiKeyEventHandler() {
+
+                public void handle(MultiplePressedKeysEventHandler.MultiKeyEvent ke) {
+
+                    if (ke.isPressed(KeyCode.LEFT) && ke.isPressed(KeyCode.UP)) {
+                        logicPanzers[0].rotate(-Math.PI / 20);
+                        graphicPanzers[0].transformPanzer(-Math.PI/20);
+                        logicPanzers[0].accelerate();
+                    }
+                    if (ke.isPressed(KeyCode.RIGHT)  && ke.isPressed(KeyCode.UP)) {
+                        logicPanzers[0].rotate(Math.PI / 20);
+                        graphicPanzers[0].transformPanzer(Math.PI/20);
+                        logicPanzers[0].accelerate();
+                    }
+                    if (ke.isPressed(KeyCode.RIGHT) && ke.isPressed(KeyCode.ENTER)) {
+                        logicPanzers[0].rotate(Math.PI / 20);
+                        graphicPanzers[0].transformPanzer(Math.PI/20);
+                        logicPanzers[0].fire();
+                    }
+
+                    if (ke.isPressed(KeyCode.LEFT) && ke.isPressed(KeyCode.ENTER)) {
+                        logicPanzers[0].rotate(-Math.PI / 20);
+                        graphicPanzers[0].transformPanzer(-Math.PI/20);
+                        logicPanzers[0].fire();
+                    }
+                    if (ke.isPressed(KeyCode.DOWN) && ke.isPressed(KeyCode.ENTER)) {
+                        logicPanzers[0].backAccelerate();
+                        logicPanzers[0].fire();
+                    }
+                    if (ke.isPressed(KeyCode.UP) && ke.isPressed(KeyCode.ENTER)) {
+                        logicPanzers[0].accelerate();
+                        logicPanzers[0].fire();
+                    }
+                }
+            });
+
+
 
 //____________________________________________________________________________________________________________________________________
     //К
@@ -235,6 +279,9 @@ public class Level {
 
         scene.setOnKeyPressed(event -> {
 
+            //TODO
+            keyHandler.handle(event);
+
             switch (event.getCode()) {
 
                 case RIGHT:
@@ -307,6 +354,7 @@ public class Level {
         });
 
     }
+
 
     //ВОЗВРАТ ТАНКОВ НА ИСХОДНЫЕ ПОЗИЦИИ
     private void reload() {
