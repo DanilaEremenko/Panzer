@@ -94,8 +94,6 @@ public class Server implements ActionListener {
         action();
     }
 
-    //TODO
-    //НЕТ ДВИЖЕНИЯ ПО ОСИ OY
     private void action() {
         List<PanzerPos> panzerPoses = new ArrayList<>();
         List<BulletPos> bulletPoses = new ArrayList<>();
@@ -167,9 +165,11 @@ public class Server implements ActionListener {
                     }
                     switch (rotate) {
                         case -1:
+                            panzer.rotate(-Math.PI / 20);
                             gPanzer.transformPanzer(-Math.PI / 20);
                             break;
                         case 1:
+                            panzer.rotate(Math.PI / 20);
                             gPanzer.transformPanzer(Math.PI / 20);
                             break;
                     }
