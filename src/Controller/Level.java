@@ -176,12 +176,6 @@ public class Level {
         for (LogicPanzer logicPanzer : logicPanzers)
             logicPanzer.setMyLevel(this);
 
-
-        //TODO
-        graphicPanzers[0].setTranslateLabel(50, 0);
-        graphicPanzers[1].setTranslateLabel(50, 30);
-
-
         //TODO
         //ИДЕНТЕФИКАЦИЯ КОМАНД
 //        for (Logic.LogicPanzer logicPanzer1 : logicPanzers)
@@ -230,10 +224,6 @@ public class Level {
         gameRoot.getChildren().addAll(obstacles);
 
         gameRoot.getChildren().addAll(graphicPanzers);
-
-        for ( GraphicPanzer graphicPanzer : graphicPanzers)
-            gameRoot.getChildren().add(graphicPanzer.getHealthLabel());
-
 
         scene = new Scene(gameRoot, Game.sceneWidt, Game.sceneHeight);
 

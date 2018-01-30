@@ -9,7 +9,6 @@ import Logic.*;
 
 //Графическое отображение танка
 public class GraphicPanzer extends Pane implements GraphicElement {
-    private HealthLabel healthLabel;
     private LogicPanzer logicPanzer;//Танк, который отрисовывается
     private GraphicBullet[] bullets;//Массив графических пуль
     private Level level;
@@ -34,7 +33,6 @@ public class GraphicPanzer extends Pane implements GraphicElement {
         makeBody(color);
         setTranslateX(logicPanzer.getTranslateX());
         setTranslateY(logicPanzer.getTranslateY());
-        healthLabel = new HealthLabel(this, 10, 10);
 
         bullets = new GraphicBullet[logicPanzer.getBullets().length];
         for (int i = 0; i < bullets.length; i++)
@@ -67,7 +65,6 @@ public class GraphicPanzer extends Pane implements GraphicElement {
     @Override
     public void drawing() {
         if (logicPanzer.isNeedDraw()) {
-            healthLabel.update();
             logicPanzer.setNeedDraw(false);
         }
         setTranslateX(logicPanzer.getTranslateX());
@@ -86,11 +83,6 @@ public class GraphicPanzer extends Pane implements GraphicElement {
                 logicPanzer.comeBackIfCanNotMove();
     }
 
-    //TODO
-    public void setTranslateLabel(double x, double y) {
-        healthLabel.setTranslateX(x);
-        healthLabel.setTranslateY(y);
-    }
 
     //Метод поворачивающий танк
     public void transformPanzer(double angle) {
@@ -115,9 +107,6 @@ public class GraphicPanzer extends Pane implements GraphicElement {
         return bullets;
     }
 
-    public HealthLabel getHealthLabel() {
-        return healthLabel;
-    }
 
 //____________________________________________________________________________________________________________________________________
 
