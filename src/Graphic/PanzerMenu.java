@@ -87,8 +87,8 @@ public class PanzerMenu {
 
         public MenuBox(SubMenu subMenu) {
             ImageView imageView = new ImageView(new Image("file:rsc/menu.png"));
-            imageView.setFitHeight(Game.sceneHeight);
-            imageView.setFitWidth(Game.sceneWidt);
+            //imageView.setFitHeight(sceneHeight);
+            //imageView.setFitWidth(sceneWidt);
             MenuBox.subMenu = subMenu;
             setVisible(true);
             subMenu.setAlignment(Pos.TOP_CENTER);

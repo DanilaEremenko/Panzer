@@ -27,3 +27,6 @@ GorizontalEl <4>
 4_Gorizontal_El_Trans_Y <370>
 |
 Ramka<1>
+|
+SceneWidth <800>
+SceneHeght <800>

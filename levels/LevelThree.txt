@@ -11,3 +11,6 @@ GorizontalEl <0>
 3PanzerTranslateY <400>
 |
 Ramka<1>
+|
+SceneWidth <800>
+SceneHeght <800>

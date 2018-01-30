@@ -32,6 +32,8 @@ public class Level {
     private LogicPanzer logicPanzers[];//Логические отображения танков
     private GraphicPanzer graphicPanzers[];//Графические отображения танкова
     private ArrayList<GraphicObstacles> obstacles;//Ограждения
+    private int sceneWidt;
+    private int sceneHeight;
     private Scene scene;
     private Pane gameRoot;
 
@@ -58,7 +60,7 @@ public class Level {
 
     }
 
-
+//________________________________________________________________________________________________________________________________________
     //Считывание информации об уровне из текстового файла
     private void parsingInformation(String fileName) throws IOException {
         FileReader fileReader = new FileReader(new File(fileName));
@@ -67,9 +69,10 @@ public class Level {
 
         //Считываем число танков
         panzerDigit = findParametr(fileReader, c);
-        panzerType = new int[panzerDigit];
+
 
         //Считываем типы танков
+        panzerType = new int[panzerDigit];
         for (int i = 0; i < panzerType.length; i++)
             panzerType[i] = findParametr(fileReader, c);
 
@@ -78,9 +81,7 @@ public class Level {
         verticalEl = findParametr(fileReader, c);
 
         //Считываем число горизонтальных препятствий
-
         gorizontalEl = findParametr(fileReader, c);
-
 
         //Считываем координаты танков
         translatePanzersX = new int[panzerDigit];
@@ -90,7 +91,6 @@ public class Level {
             translatePanzersY[i] = findParametr(fileReader, c);
         }
 
-
         //Считываем координаты вертикальных препятствий
         translateVerticalX = new int[verticalEl];
         translateVerticalY = new int[verticalEl];
@@ -98,7 +98,6 @@ public class Level {
             translateVerticalX[i] = findParametr(fileReader, c);
             translateVerticalY[i] = findParametr(fileReader, c);
         }
-
 
         //Считываем координаты горизонтальных препятствий
         translateGorizontalX = new int[gorizontalEl];
@@ -111,6 +110,8 @@ public class Level {
 
         ramka = findParametr(fileReader, c);
 
+        sceneWidt=findParametr(fileReader,c);
+        sceneHeight=findParametr(fileReader,c);
 
     }
 
@@ -127,7 +128,7 @@ public class Level {
 
         return parametr;
     }
-
+//________________________________________________________________________________________________________________________________________
 
     //Вызывается после того, как вся информация из текстовго файла считана
     private void identification() {
@@ -204,10 +205,10 @@ public class Level {
 
 
         if (ramka == 1) {
-            obstacles.add(GraphicObstacles.getUpGorizontal());
-            obstacles.add(GraphicObstacles.getDownGorizontal());
-            obstacles.add(GraphicObstacles.getLeftVertical());
-            obstacles.add(GraphicObstacles.getRightVertical());
+            obstacles.add(GraphicObstacles.getUpGorizontal(sceneWidt,sceneHeight));
+            obstacles.add(GraphicObstacles.getDownGorizontal(sceneWidt,sceneHeight));
+            obstacles.add(GraphicObstacles.getLeftVertical(sceneWidt,sceneHeight));
+            obstacles.add(GraphicObstacles.getRightVertical(sceneWidt,sceneHeight));
         }
 
 
@@ -225,7 +226,7 @@ public class Level {
 
         gameRoot.getChildren().addAll(graphicPanzers);
 
-        scene = new Scene(gameRoot, Game.sceneWidt, Game.sceneHeight);
+        scene = new Scene(gameRoot, sceneWidt, sceneHeight);
 
     }
 
@@ -343,5 +344,5 @@ public class Level {
     public GraphicPanzer[] getGraphicPanzers() {
         return graphicPanzers;
     }
-    //____________________________________________________________________________________________________________________________________
+//____________________________________________________________________________________________________________________________________
 }
