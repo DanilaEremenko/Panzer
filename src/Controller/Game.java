@@ -35,13 +35,11 @@ public class Game extends Application {
                         logicBullet.move();
                 }
 
-
-                for (GraphicPanzer panzer : myLevel.getGraphicPanzers())
-                    for (GraphicBullet graphicBullet: panzer.getBullets())
+                for (GraphicPanzer panzer : myLevel.getGraphicPanzers()) {
+                    panzer.drawing();
+                    for (GraphicBullet graphicBullet : panzer.getBullets())
                         graphicBullet.drawing();
-
-                for (GraphicPanzer graphicPanzer: myLevel.getGraphicPanzers())
-                    graphicPanzer.drawing();
+                }
 
 
             }
