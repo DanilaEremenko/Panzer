@@ -15,6 +15,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,7 +39,7 @@ import java.util.concurrent.Executors;
  * _____состояния карты.
  */
 
-public class Server implements ActionListener{
+public class Server implements ActionListener {
 
     private Socket firstPlayer;
     private String firstPlayerName;
@@ -46,6 +48,11 @@ public class Server implements ActionListener{
     private Socket secondPlayer;
     private String secondPlayerName;
     private BufferedWriter bw2;
+
+    private CompletableFuture<Boolean> firstPlayerReady;
+    private CompletableFuture<Boolean> secondPlayerReady;
+
+    private Timer timer;
 
     private ServerSocket serverSocket;
 
@@ -57,6 +64,8 @@ public class Server implements ActionListener{
     private Level level;
 
     Server() throws IOException {
+        firstPlayerReady = new CompletableFuture<>();
+        secondPlayerReady = new CompletableFuture<>();
         level = new Level("levels/" + mapName + ".txt");
         pool = Executors.newFixedThreadPool(2);
         gson = new Gson();
@@ -68,7 +77,15 @@ public class Server implements ActionListener{
         //Подключение клиентов
         connect();
         //Запуск игры
-        Timer timer = new Timer(100, this);
+        try {
+            firstPlayerReady.get();
+            secondPlayerReady.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        timer = new Timer(100, this);
         timer.start();
     }
 
@@ -77,6 +94,8 @@ public class Server implements ActionListener{
         action();
     }
 
+    //TODO
+    //НЕТ ДВИЖЕНИЯ ПО ОСИ OY
     private void action() {
         List<PanzerPos> panzerPoses = new ArrayList<>();
         List<BulletPos> bulletPoses = new ArrayList<>();
@@ -122,14 +141,16 @@ public class Server implements ActionListener{
                 String line = br.readLine();
                 firstPlayerName = line.replace("\"", "");
                 System.out.println("First player name: " + firstPlayerName);
+                firstPlayerReady.complete(true);
+                secondPlayerReady.get();
                 //Здесь читаем действия игрока в бесконечном цикле
                 LogicPanzer panzer = level.getLogicPanzers()[0];
                 GraphicPanzer gPanzer = level.getGraphicPanzers()[0];
                 Action action;
                 while (true) {
                     String message = br.readLine();
+                    if (message == null) continue;
                     action = gson.fromJson(message, Action.class);
-
                     System.out.println(message);
                     boolean isFire = action.isFire();
                     int acceleration = action.getAcceleration();
@@ -155,6 +176,10 @@ public class Server implements ActionListener{
                 }
             } catch (IOException e) {
                 System.out.println("Первый игрок, беда");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
         }).start();
     }
@@ -166,14 +191,16 @@ public class Server implements ActionListener{
                 String line = br.readLine();
                 secondPlayerName = line.replace("\"", "");
                 System.out.println("Second player name: " + secondPlayerName);
+                secondPlayerReady.complete(true);
+                firstPlayerReady.get();
                 //Здесь читаем действия игрока в бесконечном цикле
                 LogicPanzer panzer = level.getLogicPanzers()[1];
                 GraphicPanzer gPanzer = level.getGraphicPanzers()[1];
                 Action action;
                 while (true) {
                     String message = br.readLine();
+                    if (message == null) continue;
                     action = gson.fromJson(message, Action.class);
-
                     System.out.println(message);
                     boolean isFire = action.isFire();
                     int acceleration = action.getAcceleration();
@@ -200,6 +227,10 @@ public class Server implements ActionListener{
 
             } catch (IOException e) {
                 System.out.println("Второй игрок, беда");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
         }).start();
     }
@@ -208,16 +239,18 @@ public class Server implements ActionListener{
         try {
             //Отправляем клиентам название карты
             String jsonStrMapName = gson.toJson(mapName);
-            bw1.write(jsonStrMapName);
+            bw1.write(jsonStrMapName + "\n");
             bw1.flush();
-            bw2.write(jsonStrMapName);
+            bw2.write(jsonStrMapName + "\n");
             bw2.flush();
 
             //Отправляем клиентам их ID
-            bw1.write(gson.toJson("1"));
+            bw1.write("1\n");
             bw1.flush();
-            bw2.write(gson.toJson("2"));
+            bw2.write("2\n");
             bw2.flush();
+
+            System.out.println("Map and ID sent");
         } catch (IOException e) {
             System.out.println("Беда в sendMapName");
         }
@@ -226,12 +259,13 @@ public class Server implements ActionListener{
     private void sendState(State state) {
         try {
             String json = gson.toJson(state);
-            bw1.write(json);
+            bw1.write(json + "\n");
             bw1.flush();
-            bw2.write(json);
+            bw2.write(json + "\n");
             bw2.flush();
         } catch (IOException e) {
-            System.out.println("Беда в sendMessage");
+            System.out.println("Беда в sendState");
+            timer.stop();
         }
     }
 
