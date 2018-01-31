@@ -109,6 +109,10 @@ public class LogicPanzer implements LogicElement {
         commonMove();
     }
 
+    public void setRotation(double angle) {
+        angleOfMove = angle;
+    }
+
     //Ускорение
     public void accelerate() {
         if (currentSpeed <= maxSpeed)
