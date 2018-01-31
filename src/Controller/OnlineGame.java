@@ -1,5 +1,7 @@
 package Controller;
 
+import Graphic.GraphicPanzer;
+import Logic.LogicPanzer;
 import Server.Action;
 import Server.PanzerPos;
 import Server.State;
@@ -10,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class OnlineGame extends Application {
@@ -104,9 +107,16 @@ public class OnlineGame extends Application {
 
     //TODO
     private void setState(String message) {
+        LogicPanzer[] logicPanzers = level.getLogicPanzers();
         State state = gsonR.fromJson(message, State.class);
-        for (PanzerPos panzerPos : state.getPanzerPoses()) {
-
+        List<PanzerPos> panzerPoses = state.getPanzerPoses();
+        for (int i = 0; i < panzerPoses.size(); i++) {
+            PanzerPos panzerPos = panzerPoses.get(i);
+            logicPanzers[i].setTranslate(panzerPos.getX(), panzerPos.getY());
+            logicPanzers[i].setRotation(panzerPos.getAngle() * (180 / Math.PI));
+        }
+        for (GraphicPanzer graphicPanzer : level.getGraphicPanzers()) {
+            graphicPanzer.drawing();
         }
     }
 
