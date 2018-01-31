@@ -42,42 +42,43 @@ public class Level {
     private Scene scene;
     private Pane gameRoot;
     //TODO
-    private final MultiplePressedKeysEventHandler keyHandler =
-            new MultiplePressedKeysEventHandler(new MultiplePressedKeysEventHandler.MultiKeyEventHandler() {
-
-                public void handle(MultiplePressedKeysEventHandler.MultiKeyEvent ke) {
-
-                    if (ke.isPressed(KeyCode.LEFT) && ke.isPressed(KeyCode.UP)) {
-                        logicPanzers[0].rotate(-Math.PI / 20);
-                        graphicPanzers[0].transformPanzer(-Math.PI/20);
-                        logicPanzers[0].accelerate();
-                    }
-                    if (ke.isPressed(KeyCode.RIGHT)  && ke.isPressed(KeyCode.UP)) {
-                        logicPanzers[0].rotate(Math.PI / 20);
-                        graphicPanzers[0].transformPanzer(Math.PI/20);
-                        logicPanzers[0].accelerate();
-                    }
-                    if (ke.isPressed(KeyCode.RIGHT) && ke.isPressed(KeyCode.ENTER)) {
-                        logicPanzers[0].rotate(Math.PI / 20);
-                        graphicPanzers[0].transformPanzer(Math.PI/20);
-                        logicPanzers[0].fire();
-                    }
-
-                    if (ke.isPressed(KeyCode.LEFT) && ke.isPressed(KeyCode.ENTER)) {
-                        logicPanzers[0].rotate(-Math.PI / 20);
-                        graphicPanzers[0].transformPanzer(-Math.PI/20);
-                        logicPanzers[0].fire();
-                    }
-                    if (ke.isPressed(KeyCode.DOWN) && ke.isPressed(KeyCode.ENTER)) {
-                        logicPanzers[0].backAccelerate();
-                        logicPanzers[0].fire();
-                    }
-                    if (ke.isPressed(KeyCode.UP) && ke.isPressed(KeyCode.ENTER)) {
-                        logicPanzers[0].accelerate();
-                        logicPanzers[0].fire();
-                    }
-                }
-            });
+//    private final MultiplePressedKeysEventHandler keyHandler =
+//            new MultiplePressedKeysEventHandler(new MultiplePressedKeysEventHandler.MultiKeyEventHandler() {
+//
+//                public void handle(MultiplePressedKeysEventHandler.MultiKeyEvent ke) {
+//
+//                    if (ke.isPressed(KeyCode.LEFT) || ke.isPressed(KeyCode.UP)) {
+//                        logicPanzers[0].rotate(-Math.PI / 20);
+//                        graphicPanzers[0].transformPanzer(-Math.PI/20);
+//                        logicPanzers[0].accelerate();
+//                    }
+//                    if (ke.isPressed(KeyCode.RIGHT)  || ke.isPressed(KeyCode.UP)) {
+//                        logicPanzers[0].rotate(Math.PI / 20);
+//                        graphicPanzers[0].transformPanzer(Math.PI/20);
+//                        logicPanzers[0].accelerate();
+//                    }
+//                    if (ke.isPressed(KeyCode.RIGHT)&&  ke.isPressed(KeyCode.ENTER)) {
+//                        logicPanzers[0].rotate(Math.PI / 20);
+//                        graphicPanzers[0].transformPanzer(Math.PI/20);
+//                        logicPanzers[0].fire();
+//                    }
+//
+//                    if (ke.isPressed(KeyCode.LEFT) && ke.isPressed(KeyCode.ENTER)) {
+//                        logicPanzers[0].rotate(-Math.PI / 20);
+//                        graphicPanzers[0].transformPanzer(-Math.PI/20);
+//                        logicPanzers[0].fire();
+//                    }
+//                    if (ke.isPressed(KeyCode.DOWN) && ke.isPressed(KeyCode.ENTER)) {
+//                        logicPanzers[0].backAccelerate();
+//                        logicPanzers[0].fire();
+//                    }
+//                    if (ke.isPressed(KeyCode.UP) && ke.isPressed(KeyCode.ENTER)) {
+//                        logicPanzers[0].accelerate();
+//                        logicPanzers[0].fire();
+//                    }
+//                }
+//            });
+    //TODO
 
 
 
@@ -280,7 +281,7 @@ public class Level {
         scene.setOnKeyPressed(event -> {
 
             //TODO
-            keyHandler.handle(event);
+//            keyHandler.handle(event);
 
             switch (event.getCode()) {
 

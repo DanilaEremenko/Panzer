@@ -8,7 +8,7 @@ GorizontalEl <1>
 2PanzTranslateX <500>
 2PanzTranslateY <600>
 |
-1_Vertical_El_Trans_X <0>
+1_Vertical_El_Trans_X <-20>
 1_Vertical_El_Trans_Y <0>
 |
 1_Gorizontal_El_Trans_X <0>

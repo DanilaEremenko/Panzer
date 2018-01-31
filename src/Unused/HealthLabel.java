@@ -1,6 +1,7 @@
-package Graphic;
+package Unused;
 
 
+import Graphic.GraphicPanzer;
 import javafx.scene.control.Label;
 //TODO
 public class HealthLabel extends Label {
