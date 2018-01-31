@@ -69,6 +69,7 @@ public class GraphicPanzer extends Pane implements GraphicElement {
         }
         setTranslateX(logicPanzer.getTranslateX());
         setTranslateY(logicPanzer.getTranslateY());
+        setRotate(logicPanzer.getAngleOfMove());
         checkArea();
     }
 
